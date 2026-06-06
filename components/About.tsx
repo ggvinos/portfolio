@@ -12,12 +12,12 @@ export default function About() {
       <div className="max-w-6xl mx-auto px-6">
         <div
           ref={ref}
-          className={`grid grid-cols-1 lg:grid-cols-[1fr_340px] gap-16 transition-all duration-700 ease-out ${
+          className={`grid grid-cols-1 lg:grid-cols-2 gap-16 transition-all duration-700 ease-out ${
             inView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"
           }`}
         >
-          {/* label + bio na mesma coluna */}
-          <div>
+          {/* label + bio — sticky enquanto os cards são lidos */}
+          <div className="lg:sticky lg:top-24 lg:self-start">
             <h2 className="font-mono text-xs text-accent uppercase tracking-widest mb-8">
               {t.sections.about}
             </h2>
