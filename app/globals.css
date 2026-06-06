@@ -135,9 +135,8 @@ body::after {
 }
 
 @keyframes title {
-  0%   { opacity: 0; filter: blur(20px); letter-spacing: 0.6em; }
-  60%  { filter: blur(0); }
-  100% { opacity: 1; letter-spacing: normal; }
+  0%   { opacity: 0; filter: blur(10px); transform: translateY(10px); }
+  100% { opacity: 1; filter: blur(0);    transform: translateY(0); }
 }
 
 @keyframes glow {

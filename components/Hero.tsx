@@ -55,13 +55,7 @@ export default function Hero() {
       {/* camada 3: conteúdo */}
       <div className="relative z-[3] w-full max-w-6xl mx-auto px-6 flex flex-col items-center text-center py-24">
 
-        <p
-          className="font-mono text-xs text-muted mb-6 tracking-[0.3em] uppercase animate-fade-in"
-          style={fadeIn("0.1s")}
-        >
-          {t.hero.label}
-        </p>
-
+        {/* nome entra primeiro, sozinho */}
         <h1
           className="font-bold tracking-tight text-primary text-edge-outline animate-title"
           style={{ fontSize: "clamp(3rem, 11vw, 8rem)", lineHeight: 0.95, animationFillMode: "both" }}
@@ -69,22 +63,30 @@ export default function Hero() {
           {t.hero.name}
         </h1>
 
+        {/* resto entra em cascata suave depois do nome */}
         <p
-          className="mt-5 font-mono text-base sm:text-lg text-primary tracking-widest animate-fade-in"
-          style={fadeIn("0.6s")}
+          className="font-mono text-xs text-muted mt-6 tracking-[0.3em] uppercase animate-fade-in"
+          style={fadeIn("0.9s")}
+        >
+          {t.hero.label}
+        </p>
+
+        <p
+          className="mt-4 font-mono text-base sm:text-lg text-primary tracking-widest animate-fade-in"
+          style={fadeIn("1.1s")}
         >
           {t.hero.subtitle}
         </p>
 
         <p
           className="mt-3 text-sm text-muted max-w-md leading-relaxed animate-fade-in"
-          style={fadeIn("0.8s")}
+          style={fadeIn("1.3s")}
         >
           {t.hero.tagline}
         </p>
 
         {/* marquee */}
-        <div className="relative mt-8 w-screen overflow-hidden animate-fade-in" style={fadeIn("1s")}>
+        <div className="relative mt-8 w-screen overflow-hidden animate-fade-in" style={fadeIn("1.5s")}>
           <div className="pointer-events-none absolute left-0 top-0 bottom-0 w-24 z-10"
             style={{ background: "linear-gradient(to right, var(--bg), transparent)" }} />
           <div className="pointer-events-none absolute right-0 top-0 bottom-0 w-24 z-10"
@@ -99,7 +101,7 @@ export default function Hero() {
         </div>
 
         {/* métricas */}
-        <div className="mt-10 flex flex-wrap justify-center gap-8 sm:gap-12 animate-fade-in" style={fadeIn("1.1s")}>
+        <div className="mt-10 flex flex-wrap justify-center gap-8 sm:gap-12 animate-fade-in" style={fadeIn("1.7s")}>
           {t.hero.metrics.map((m) => (
             <div key={m.label} className="flex flex-col items-center gap-1">
               <span className="font-mono text-xl sm:text-2xl font-bold text-[var(--text)]">{m.value}</span>
@@ -109,7 +111,7 @@ export default function Hero() {
         </div>
 
         {/* CTAs */}
-        <div className="mt-10 flex gap-4 animate-fade-in" style={fadeIn("1.2s")}>
+        <div className="mt-10 flex gap-4 animate-fade-in" style={fadeIn("1.9s")}>
           <a href="#projects" className="px-6 py-3 bg-[var(--text)] text-[var(--bg)] text-sm font-medium hover:opacity-85 transition-opacity">
             {t.hero.cta_primary}
           </a>
@@ -120,7 +122,7 @@ export default function Hero() {
       </div>
 
       {/* scroll hint */}
-      <div className="absolute bottom-8 left-1/2 -translate-x-1/2 z-[3] animate-fade-in" style={fadeIn("1.4s")}>
+      <div className="absolute bottom-8 left-1/2 -translate-x-1/2 z-[3] animate-fade-in" style={fadeIn("2.1s")}>
         <div className="flex flex-col items-center gap-2">
           <span className="font-mono text-[10px] text-muted tracking-widest uppercase">scroll</span>
           <div className="w-px h-8" style={{ background: "linear-gradient(to bottom, var(--muted), transparent)" }} />

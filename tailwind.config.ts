@@ -22,7 +22,7 @@ const config: Config = {
         "fade-up":      "fade-up 0.8s ease forwards",
         "fade-left":    "fade-left 1s ease forwards",
         "fade-right":   "fade-right 1s ease forwards",
-        title:          "title 2s cubic-bezier(0.25, 0.4, 0.55, 1.4) forwards",
+        title:          "title 1.4s cubic-bezier(0.16, 1, 0.3, 1) forwards",
         glow:           "glow 3s ease-in-out infinite",
         marquee:        "marquee 30s linear infinite",
         "marquee-reverse": "marquee-reverse 30s linear infinite",
@@ -33,9 +33,8 @@ const config: Config = {
         "fade-left":  { from: { opacity: "0", transform: "translateX(20px)" }, to: { opacity: "1", transform: "translateX(0)" } },
         "fade-right": { from: { opacity: "0", transform: "translateX(-20px)" }, to: { opacity: "1", transform: "translateX(0)" } },
         title: {
-          "0%":   { opacity: "0", filter: "blur(20px)", letterSpacing: "0.6em" },
-          "60%":  { filter: "blur(0)" },
-          "100%": { opacity: "1", letterSpacing: "normal" },
+          "0%":   { opacity: "0", filter: "blur(10px)", transform: "translateY(10px)" },
+          "100%": { opacity: "1", filter: "blur(0)",    transform: "translateY(0)" },
         },
         glow: {
           "0%, 100%": { opacity: "0" },
