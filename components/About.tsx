@@ -8,44 +8,45 @@ export default function About() {
   const [ref, inView] = useInView(0.15);
 
   return (
-    <section id="about" className="py-24 bg-surface border-y border-default">
+    <section id="about" className="py-24 bg-page">
       <div className="max-w-6xl mx-auto px-6">
-        <h2 className="font-mono text-xs text-accent uppercase tracking-widest mb-10">
-          {t.sections.about}
-        </h2>
-
         <div
           ref={ref}
-          className={`transition-all duration-700 ease-out ${
+          className={`grid grid-cols-1 lg:grid-cols-[1fr_340px] gap-16 transition-all duration-700 ease-out ${
             inView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"
           }`}
         >
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start">
+          {/* label + bio na mesma coluna */}
+          <div>
+            <h2 className="font-mono text-xs text-accent uppercase tracking-widest mb-8">
+              {t.sections.about}
+            </h2>
             <p className="text-lg text-muted leading-relaxed">
               {t.about.bio}
             </p>
+          </div>
 
-            <div className="space-y-4">
-              {t.about.differentials.map((d, i) => (
-                <div
-                  key={d.label}
-                  style={{ transitionDelay: `${i * 80}ms` }}
-                  className={`border border-default p-5 transition-all duration-500 ease-out ${
-                    inView ? "opacity-100 translate-x-0" : "opacity-0 translate-x-4"
-                  }`}
-                >
-                  <div className="flex items-center gap-3 mb-2">
-                    <span className="font-mono text-[10px] text-muted uppercase tracking-widest">
-                      {d.label}
-                    </span>
-                    <span className="font-mono text-sm font-semibold text-accent">
-                      {d.value}
-                    </span>
-                  </div>
-                  <p className="text-sm text-muted leading-relaxed">{d.note}</p>
+          {/* cards alinhados ao topo da coluna */}
+          <div className="space-y-3">
+            {t.about.differentials.map((d, i) => (
+              <div
+                key={d.label}
+                style={{ transitionDelay: `${i * 80}ms` }}
+                className={`border border-[var(--border)] p-5 transition-all duration-500 ease-out hover:border-[#334155] ${
+                  inView ? "opacity-100 translate-x-0" : "opacity-0 translate-x-4"
+                }`}
+              >
+                <div className="flex items-baseline gap-3 mb-2">
+                  <span className="font-mono text-[10px] text-muted uppercase tracking-widest">
+                    {d.label}
+                  </span>
+                  <span className="font-mono text-sm font-semibold text-[var(--text)]">
+                    {d.value}
+                  </span>
                 </div>
-              ))}
-            </div>
+                <p className="text-sm text-muted leading-relaxed">{d.note}</p>
+              </div>
+            ))}
           </div>
         </div>
       </div>
