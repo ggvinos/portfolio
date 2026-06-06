@@ -55,6 +55,14 @@ export default function Hero() {
       {/* camada 3: conteúdo */}
       <div className="relative z-[3] w-full max-w-6xl mx-auto px-6 flex flex-col items-center text-center py-24">
 
+        {/* label acima do nome */}
+        <p
+          className="font-mono text-xs text-muted mb-6 tracking-[0.3em] uppercase animate-fade-in"
+          style={fadeIn("0.9s")}
+        >
+          {t.hero.label}
+        </p>
+
         {/* nome entra primeiro, sozinho */}
         <h1
           className="font-bold tracking-tight text-primary text-edge-outline animate-title"
@@ -62,14 +70,6 @@ export default function Hero() {
         >
           {t.hero.name}
         </h1>
-
-        {/* resto entra em cascata suave depois do nome */}
-        <p
-          className="font-mono text-xs text-muted mt-6 tracking-[0.3em] uppercase animate-fade-in"
-          style={fadeIn("0.9s")}
-        >
-          {t.hero.label}
-        </p>
 
         <p
           className="mt-4 font-mono text-base sm:text-lg text-primary tracking-widest animate-fade-in"
