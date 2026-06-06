@@ -13,14 +13,13 @@ export const translations = {
     hero: {
       label: "// software engineer in test",
       name: "VINICIOS FERREIRA",
-      subtitle: "QA Engineer · Builder · 6+ years",
-      tagline: "QA engineer who automates, measures, and builds what testing needs.",
+      subtitle: "Software Engineer in Test · Builder · 6+ years in tech",
+      tagline: "QA who automates, measures, and delivers what the team doesn't have yet.",
       metrics: [
-        { value: "20 → 2 min", label: "validation time reduced" },
+        { value: "20 → 2 min", label: "validation time per deploy" },
+        { value: "47 bugs", label: "caught before production" },
         { value: "40%", label: "fewer regressions" },
         { value: "2", label: "tools in production" },
-        { value: "120+", label: "test cases written" },
-        { value: "6+", label: "years in tech" },
       ],
       cta_primary: "View Projects",
       cta_secondary: "Contact",
@@ -35,22 +34,22 @@ export const translations = {
       personal: "SIDE PROJECTS",
     },
     about: {
-      bio: "QA focused on automation, coverage, and the metrics that turn instinct into decisions. Background in front-end development and UX design — it changes how I read requirements, talk to developers, and find defects. Beyond testing, I build tools that make quality measurable and visible.",
+      bio: "QA focused on automation, coverage, and the metrics that turn instinct into decisions. Background in front-end dev and UX design — it changes how I read a spec, where I look for defects, and how I translate quality to the business. Beyond testing, I build the tools the team doesn't have yet.",
       differentials: [
         {
           label: "Cross-domain",
           value: "Dev → UX → QA",
-          note: "I've worked on all three sides of a product. That context changes how I write test cases.",
+          note: "Dev → UX → Support → QA. Each layer added a different lens: user flow, system architecture, business process. I can think in all three simultaneously.",
         },
         {
           label: "Builder",
           value: "2 tools shipped",
-          note: "Two tools in production: a metrics dashboard that drives release decisions, and a CLI that eliminates 60 minutes of manual configuration. I build because it's faster than waiting.",
+          note: "Two tools in production: NinaDash, which turns Jira data into a go/no-go criterion per release, and NinaFlow Generator, a CLI that eliminates 60 minutes of manual configuration. I build because it's faster than waiting.",
         },
         {
           label: "User-first",
           value: "UX background",
-          note: "Exploratory testing informed by real user journeys, not just specs. I find what others miss.",
+          note: "Five years in UX taught me to think about the journey before writing the scenario. Usability bugs show up in wireframes — not in the backlog.",
         },
       ],
     },
@@ -59,7 +58,7 @@ export const translations = {
         id: "ninadash",
         title: "NinaDash",
         description:
-          "QA metrics dashboard built from scratch with Streamlit and Python. Pulls live data from Jira via REST API, processes it with Pandas, and renders 12+ interactive charts per tab. Tracks Fator K, FPY, DDP, lead time and a composite Health Score across sprints. Used in daily QA standups and sprint retrospectives.",
+          "QA metrics lived in outdated spreadsheets. Built from scratch: Streamlit + Python pulling live data from Jira via REST, processing with Pandas, rendering 12+ interactive charts in real time. The composite Health Score defines the go/no-go for each release — used daily by the team.",
         detail: [
           "Role-based access control: 4 profiles (QA, Dev, Lead, Admin), each with different tab visibility",
           "10 tabs: Overview, QA, Dev, Governance, Product, Backlog, Clients, History, Leadership, Admin",
@@ -84,7 +83,7 @@ export const translations = {
         id: "ninaflow",
         title: "NinaFlow Generator",
         description:
-          "CLI tool that generates chatbot workspace exports using Claude AI. Takes a structured prompt describing a flow (intents, conditions, fallbacks) and outputs a valid JSON workspace file, ready to import. Eliminates 30–60 min of manual node-by-node configuration per flow.",
+          "Node-by-node chatbot flow configuration took 30–60 minutes. NinaFlow Generator solves it: describe the flow in natural language, the CLI outputs the JSON ready to import. No templates, no manual configuration.",
         detail: [
           "Generates flows with random stable IDs, no template variables, accountId injection",
           "Supports conditional branches, API call nodes, and multi-turn dialogues",
@@ -102,7 +101,7 @@ export const translations = {
         id: "cypress-e2e",
         title: "Cypress E2E Automation",
         description:
-          "End-to-end test suite reducing validation time from 20 to 2 minutes. Integrated with GitHub Actions CI pipeline.",
+          "Manual validation took 20 minutes per deploy. The E2E suite cut it to 2 minutes, runs on CI at every push, and caught 47 bugs before they reached production.",
         detail: null,
         snapshot: null,
         metrics: ["85% E2E coverage", "47 bugs caught pre-prod", "CI run: 4 min"],
@@ -115,7 +114,7 @@ export const translations = {
         id: "crud-api",
         title: "CRUD API Test Suite",
         description:
-          "Full CRUD coverage with Cypress, achieving 40% reduction in production regressions.",
+          "120 cases covering all CRUD operations of a critical system — happy paths, edge cases, and integration failures. Result: 40% fewer regressions and 30% faster deploy cycles.",
         detail: null,
         snapshot: null,
         metrics: ["120 test cases", "40% fewer regressions", "30% faster deploys"],
@@ -250,14 +249,13 @@ export const translations = {
     hero: {
       label: "// software engineer in test",
       name: "VINICIOS FERREIRA",
-      subtitle: "QA Engineer · Builder · 6+ anos de produto",
-      tagline: "QA que automatiza, mede e constrói o que falta.",
+      subtitle: "Software Engineer in Test · Builder · 6+ anos em tecnologia",
+      tagline: "QA que automatiza, mede e entrega o que o time ainda não tem.",
       metrics: [
-        { value: "20 → 2 min", label: "tempo de validação reduzido" },
+        { value: "20 → 2 min", label: "tempo de validação por deploy" },
+        { value: "47 bugs", label: "capturados antes da produção" },
         { value: "40%", label: "menos regressões" },
         { value: "2", label: "ferramentas em produção" },
-        { value: "120+", label: "casos de teste escritos" },
-        { value: "6+", label: "anos em tecnologia" },
       ],
       cta_primary: "Ver Projetos",
       cta_secondary: "Contato",
@@ -272,22 +270,22 @@ export const translations = {
       personal: "PROJETOS PESSOAIS",
     },
     about: {
-      bio: "QA com foco em automação, cobertura e as métricas que transformam instinto em decisão. Background em desenvolvimento front-end e design UX — muda como leio requisitos, converso com devs e onde procuro defeitos. Além de testar, construo ferramentas que tornam a qualidade mensurável e visível.",
+      bio: "QA com foco em automação, cobertura e nas métricas que transformam instinto em decisão. Background em dev front-end e UX design — muda como leio uma spec, onde procuro falhas e como traduzo qualidade para o negócio. Além de testar, construo as ferramentas que o time ainda não tem.",
       differentials: [
         {
           label: "Multidisciplinar",
           value: "Dev → UX → QA",
-          note: "Fui dev, designer e analista antes de ser QA. Isso muda como leio uma spec, como converso com devs e onde procuro defeitos.",
+          note: "Dev → UX → Suporte → QA. Cada camada adicionou uma perspectiva diferente: fluxo do usuário, arquitetura do sistema, processo de negócio. Consigo pensar nos três ao mesmo tempo.",
         },
         {
           label: "Builder",
           value: "2 ferramentas em produção",
-          note: "Dois projetos em produção: um dashboard que define go/no-go por release e uma CLI que elimina 60 minutos de configuração manual. Construo porque é mais rápido que esperar.",
+          note: "Dois projetos em produção: NinaDash, que transforma dados do Jira em critério de go/no-go por release, e NinaFlow Generator, CLI que elimina 60 minutos de configuração manual. Construo porque é mais rápido que esperar.",
         },
         {
           label: "User-first",
           value: "Background em UX",
-          note: "Cinco anos de UX ensinaram a mapear jornadas antes de escrever cenários. Bugs de usabilidade aparecem antes de chegar no backlog.",
+          note: "Cinco anos de UX ensinaram a pensar na jornada antes de escrever o cenário. Bugs de usabilidade aparecem nos wireframes — não no backlog.",
         },
       ],
     },
@@ -296,7 +294,7 @@ export const translations = {
         id: "ninadash",
         title: "NinaDash",
         description:
-          "Antes do NinaDash, métricas de qualidade viviam em planilhas desatualizadas. Construí do zero com Streamlit e Python: consome o Jira via REST, processa com Pandas e exibe 12+ gráficos em tempo real. O Health Score composto vira critério de go/no-go para cada release. Usado diariamente pelo time.",
+          "Métricas de qualidade viviam em planilhas desatualizadas. Construí do zero: Streamlit + Python consumindo o Jira via REST, processando com Pandas, exibindo 12+ gráficos em tempo real. O Health Score composto define o go/no-go de cada release — usado diariamente pelo time.",
         detail: [
           "4 perfis de acesso com visibilidade distinta: cada colaborador vê só o que precisa",
           "10 abas cobrindo todo o ciclo: qualidade, backlog, clientes, histórico e painel de liderança",
@@ -321,7 +319,7 @@ export const translations = {
         id: "ninaflow",
         title: "NinaFlow Generator",
         description:
-          "Configurar um fluxo de chatbot nó por nó levava entre 30 e 60 minutos. O NinaFlow Generator resolve: você descreve o fluxo em linguagem natural, a CLI gera o JSON de workspace pronto para importar. Sem variáveis de template, sem configuração manual.",
+          "Configurar um fluxo de chatbot nó por nó levava 30–60 minutos. O NinaFlow Generator resolve: descreva o fluxo em linguagem natural, a CLI gera o JSON pronto para importar. Sem template, sem configuração manual.",
         detail: [
           "IDs aleatórios, accountId injetado automaticamente — pronto para produção sem ajustes",
           "Suporta fluxos complexos: branches condicionais, chamadas de API e diálogos multi-turno",
@@ -339,7 +337,7 @@ export const translations = {
         id: "cypress-e2e",
         title: "Cypress E2E Automation",
         description:
-          "O ciclo de validação manual levava 20 minutos por deploy. A suite E2E reduziu para 2 minutos, roda automaticamente no CI e capturou 47 bugs antes de chegarem em produção.",
+          "Validação manual levava 20 minutos por deploy. A suite E2E reduziu para 2 minutos, roda no CI a cada push e capturou 47 bugs antes de chegarem em produção.",
         detail: null,
         snapshot: null,
         metrics: ["85% cobertura E2E", "47 bugs pré-prod", "CI: 4 min/run"],
@@ -352,7 +350,7 @@ export const translations = {
         id: "crud-api",
         title: "CRUD API Test Suite",
         description:
-          "120 casos de teste cobrindo todas as operações CRUD de um sistema crítico. A cobertura reduziu regressões em 40% e acelerou o ciclo de deploy em 30%.",
+          "120 casos cobrindo todas as operações CRUD de um sistema crítico — happy paths, edge cases e falhas de integração. Resultado: 40% menos regressões e ciclo de deploy 30% mais rápido.",
         detail: null,
         snapshot: null,
         metrics: ["120 casos de teste", "40% menos regressões", "30% deploys mais rápidos"],
