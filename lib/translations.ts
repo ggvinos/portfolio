@@ -51,6 +51,11 @@ export const translations = {
           value: "UX background",
           note: "Five years in UX taught me to think about the journey before writing the scenario. Usability bugs show up in wireframes — not in the backlog.",
         },
+        {
+          label: "AI-augmented",
+          value: "AI in every stage",
+          note: "I use AI across the entire QA cycle: generating test cases from requirements, analyzing logs for bug triage, automating documentation, and building internal tools. NinaFlow Generator came from this — AI as a capacity multiplier, not a buzzword.",
+        },
       ],
     },
     projects: [
@@ -111,6 +116,24 @@ export const translations = {
         featured: false,
       },
       {
+        id: "api-postman",
+        title: "API Test Suite",
+        description:
+          "APIs reaching production with broken contracts, failed authentication, and inconsistent responses. Structured a suite covering JSON schema validation, JWT authentication, input edge cases, and cross-service integration flows. Every endpoint documented with positive, negative, and boundary scenarios — executed automatically via Newman in CI.",
+        detail: [
+          "Automated schema validation — any contract break is caught before deploy",
+          "Auth coverage: valid, expired, malformed, and missing tokens",
+          "Integration tests: flows crossing multiple services validated end-to-end",
+          "Exportable collection versioned in Git — any dev can run locally",
+        ],
+        snapshot: null,
+        metrics: ["30+ critical failures found", "100% endpoint coverage", "CI: < 3 min/run"],
+        tags: ["Postman", "Newman", "JSON Schema", "JWT", "REST API", "GitHub Actions"],
+        label: "API TESTING",
+        link: null,
+        featured: false,
+      },
+      {
         id: "crud-api",
         title: "CRUD API Test Suite",
         description:
@@ -120,6 +143,42 @@ export const translations = {
         metrics: ["120 test cases", "40% fewer regressions", "30% faster deploys"],
         tags: ["Cypress", "Postman", "API Testing"],
         label: null,
+        link: null,
+        featured: false,
+      },
+      {
+        id: "flipboard",
+        title: "Usability Analysis — Flipboard",
+        description:
+          "Conducted usability and black-box testing on Flipboard targeting real-use scenarios. Analysis covered navigation flows, interface consistency across platforms (web and mobile), and underlying API validation with Postman. Goal: map user journey friction before it reaches the backlog.",
+        detail: [
+          "15+ improvements identified and prioritized by user impact",
+          "Cross-platform consistency testing: web vs. mobile vs. app",
+          "Underlying API validation with Postman — data failures invisible in the UI",
+          "Structured report with evidence, severity, and recommendations",
+        ],
+        snapshot: null,
+        metrics: ["15+ improvements mapped", "Cross-platform: web + mobile + app"],
+        tags: ["UX Testing", "Black Box", "Postman", "Mobile", "Usability"],
+        label: "UX TESTING",
+        link: null,
+        featured: false,
+      },
+      {
+        id: "kukac-kanban",
+        title: "Cross-Platform Usability — Kukac Kanban",
+        description:
+          "Full usability and functionality evaluation of Kukac Kanban Board across web and mobile. Tested card creation, movement, and organization flows, documenting behavioral inconsistencies between platforms and bugs impacting the daily user experience.",
+        detail: [
+          "Web and mobile testing — divergent behaviors identified and documented",
+          "UI and UX bugs prioritized by usage frequency and flow impact",
+          "Structured report with screenshot evidence and fix suggestions",
+          "Real journey focus: scenarios based on how users actually use it, not how devs imagined",
+        ],
+        snapshot: null,
+        metrics: ["35% fewer reported errors after fixes", "Coverage: main flows + cross-platform"],
+        tags: ["UX Testing", "Usability", "Mobile", "Web", "Bug Report"],
+        label: "UX TESTING",
         link: null,
         featured: false,
       },
@@ -154,37 +213,37 @@ export const translations = {
       {
         company: "Nina Tecnologia",
         role: "QA Engineer",
-        period: "Dez 2025 – present",
+        period: "Dec 2025 – present",
         description:
-          "Building QA processes, metrics tooling, and test automation for a SaaS chatbot platform. Created NinaDash and NinaFlow Generator.",
+          "HealthTech ecosystem quality: Web, Mobile, APIs and conversational self-service. Automation, real-time metrics (NinaDash) and homologation of AI-driven conversational flows.",
       },
       {
         company: "Pipoca Ágil",
         role: "QA Engineer",
-        period: "Jan 2025 – Ago 2025",
+        period: "Jan 2025 – Oct 2025",
         description:
-          "Quality assurance in an agile product team. Test planning, bug tracking, and functional validation.",
+          "Volunteer QA in an agile environment. Cypress E2E + Postman API. 90% coverage, 40% fewer bugs, validation from 4 hours to 30 minutes per sprint.",
       },
       {
         company: "CTC Tech",
         role: "BackOffice Analyst",
-        period: "Jun 2022 – Ago 2025",
+        period: "Jun 2022 – Aug 2025",
         description:
-          "Operational analysis and process support. Deep product knowledge that later grounded QA work.",
+          "Incident diagnosis and resolution in critical national systems (Ministry of Health, CNJ). 500+ incidents validated. 98% availability maintained.",
       },
       {
         company: "Freelancer",
         role: "UX/UI Product Designer",
-        period: "Jan 2022 – Mai 2024",
+        period: "Jan 2022 – May 2024",
         description:
-          "UX research, usability testing, wireframing and interface design for digital products.",
+          "Wireframes, Figma prototypes, and usability testing for startups. 85% test coverage with Cypress and Appium, 20+ critical failures identified.",
       },
       {
         company: "Startup Uniceplac",
         role: "Front-End Developer",
         period: "Jan 2020 – Jan 2022",
         description:
-          "Front-end development during undergraduate studies. First contact with digital product thinking.",
+          "Front-end development and UX/UI in an applied academic project. Docker infrastructure, usability testing that reduced inconsistencies by 30%.",
       },
     ],
     achievements: [
@@ -224,14 +283,18 @@ export const translations = {
       Methodologies: [
         "E2E Testing",
         "API Testing",
-        "Exploratory Testing",
+        "Integration Testing",
         "UX Testing",
+        "Exploratory Testing",
         "Regression Testing",
         "Performance Testing",
+        "AI-augmented QA",
+        "JSON Schema Validation",
+        "Contract Testing",
       ],
     },
     contact: {
-      headline: "Let's work together.",
+      headline: "Open to remote opportunities — full-time or freelance.",
     },
     footer: {
       copy: "© 2026 Vinicios Ferreira",
@@ -287,6 +350,11 @@ export const translations = {
           value: "Background em UX",
           note: "Cinco anos de UX ensinaram a pensar na jornada antes de escrever o cenário. Bugs de usabilidade aparecem nos wireframes — não no backlog.",
         },
+        {
+          label: "AI-augmented",
+          value: "IA em todo o processo",
+          note: "Uso IA em praticamente todo o ciclo de QA: geração de casos de teste a partir de requisitos, análise de logs para triagem de bugs, automação de documentação e criação de ferramentas internas. O NinaFlow Generator nasceu disso — IA como multiplicador de capacidade, não como buzzword.",
+        },
       ],
     },
     projects: [
@@ -327,7 +395,7 @@ export const translations = {
           "Após a geração, funciona offline — sem dependência contínua da API",
         ],
         snapshot: null,
-        metrics: ["30-60 min/fluxo economizados", "Schema validado na saída", "CLI-first"],
+        metrics: ["30–60 min/fluxo economizados", "Schema validado na saída", "CLI-first"],
         tags: ["Python", "Claude API", "CLI", "JSON Schema"],
         label: "FERRAMENTA INTERNA",
         link: null,
@@ -347,6 +415,24 @@ export const translations = {
         featured: false,
       },
       {
+        id: "api-postman",
+        title: "API Test Suite",
+        description:
+          "APIs mal testadas chegam em produção com contratos quebrados, autenticações falhas e respostas inconsistentes. Estruturei uma suite cobrindo validação de schema JSON, autenticação JWT, edge cases de entrada e fluxos de integração entre serviços. Cada endpoint documentado com cenários positivos, negativos e condições de borda — executados automaticamente via Newman no CI.",
+        detail: [
+          "Schema validation automatizado — qualquer quebra de contrato é capturada antes do deploy",
+          "Cobertura de autenticação: tokens válidos, expirados, mal-formados e ausentes",
+          "Testes de integração: fluxos que cruzam múltiplos serviços validados de ponta a ponta",
+          "Collection exportável e versionada no Git — qualquer dev pode rodar localmente",
+        ],
+        snapshot: null,
+        metrics: ["30+ falhas críticas identificadas", "100% dos endpoints cobertos", "CI: < 3 min/run"],
+        tags: ["Postman", "Newman", "JSON Schema", "JWT", "REST API", "GitHub Actions"],
+        label: "API TESTING",
+        link: null,
+        featured: false,
+      },
+      {
         id: "crud-api",
         title: "CRUD API Test Suite",
         description:
@@ -356,6 +442,42 @@ export const translations = {
         metrics: ["120 casos de teste", "40% menos regressões", "30% deploys mais rápidos"],
         tags: ["Cypress", "Postman", "API Testing"],
         label: null,
+        link: null,
+        featured: false,
+      },
+      {
+        id: "flipboard",
+        title: "Análise de Usabilidade — Flipboard",
+        description:
+          "Conduzi testes de usabilidade e caixa-preta no Flipboard com foco em cenários reais de uso. A análise cobriu fluxos de navegação, consistência de interface entre plataformas (web e mobile) e validação de APIs subjacentes com Postman. O objetivo foi ir além de encontrar bugs — mapear fricções na jornada do usuário antes que chegassem ao backlog.",
+        detail: [
+          "15+ melhorias identificadas e priorizadas por impacto no usuário",
+          "Testes de consistência multiplataforma: web vs. mobile vs. app",
+          "Validação de APIs subjacentes com Postman — falhas de dados invisíveis na UI",
+          "Relatório estruturado com evidências, severidade e recomendações",
+        ],
+        snapshot: null,
+        metrics: ["15+ melhorias mapeadas", "Cobertura: web + mobile + app"],
+        tags: ["UX Testing", "Black Box", "Postman", "Mobile", "Usability"],
+        label: "UX TESTING",
+        link: null,
+        featured: false,
+      },
+      {
+        id: "kukac-kanban",
+        title: "Testes Multiplataforma — Kukac Kanban",
+        description:
+          "Avaliação completa de usabilidade e funcionalidade do Kukac Kanban Board, cobrindo web e mobile. Testei fluxos de criação, movimentação e organização de cards, documentando inconsistências de comportamento entre plataformas e bugs que afetavam a experiência diária do usuário.",
+        detail: [
+          "Testes em web e mobile — comportamentos divergentes identificados e documentados",
+          "Bugs de UI e UX priorizados por frequência de uso e impacto no fluxo",
+          "Relatório estruturado com print de evidências e sugestões de correção",
+          "Foco na jornada real: cenários baseados em como o usuário usa, não como o dev imaginou",
+        ],
+        snapshot: null,
+        metrics: ["35% redução em erros reportados após correções", "Cobertura: fluxos principais + multiplataforma"],
+        tags: ["UX Testing", "Usability", "Mobile", "Web", "Bug Report"],
+        label: "UX TESTING",
         link: null,
         featured: false,
       },
@@ -392,35 +514,35 @@ export const translations = {
         role: "QA Engineer",
         period: "Dez 2025 – presente",
         description:
-          "Implantei a área de qualidade do zero. Criei o NinaDash e o NinaFlow Generator — ambos em produção. Automação, cobertura de testes e métricas de qualidade para plataforma SaaS de chatbot.",
+          "Qualidade de ecossistema HealthTech: Web, Mobile, APIs e autoatendimento. Automação, métricas em tempo real (NinaDash) e homologação de fluxos conversacionais com IA.",
       },
       {
         company: "Pipoca Ágil",
         role: "QA Engineer",
-        period: "Jan 2025 – Ago 2025",
+        period: "Jan 2025 – Out 2025",
         description:
-          "Primeiro contato com QA em produto real: definição de critérios de aceite, planejamento de testes e rastreamento de bugs em ciclos curtos de entrega.",
+          "QA voluntário em ambiente ágil. Cypress E2E + Postman API. 90% de cobertura, 40% menos bugs, validação de 30 minutos por sprint (antes: 4 horas).",
       },
       {
         company: "CTC Tech",
         role: "BackOffice Analyst",
         period: "Jun 2022 – Ago 2025",
         description:
-          "Três anos em suporte técnico e análise operacional deram um entendimento granular de produto que nenhum curso dá. Esse contexto aparece na qualidade dos meus casos de teste.",
+          "Diagnóstico e resolução de incidentes em sistemas críticos nacionais (Ministério da Saúde, CNJ). 500+ incidentes validados. 98% de disponibilidade mantida.",
       },
       {
         company: "Freelancer",
         role: "UX/UI Product Designer",
         period: "Jan 2022 – Mai 2024",
         description:
-          "Pesquisa com usuários, testes de usabilidade e design de produto. Esse período definiu minha forma de pensar qualidade: o defeito mais grave nem sempre é técnico.",
+          "Wireframes, protótipos em Figma e testes de usabilidade para startups. 85% de cobertura com Cypress e Appium, 20+ falhas críticas identificadas.",
       },
       {
         company: "Startup Uniceplac",
         role: "Front-End Developer",
         period: "Jan 2020 – Jan 2022",
         description:
-          "Desenvolvimento front-end durante a graduação. Primeiro contato com o ciclo completo de um produto digital — da ideia ao deploy.",
+          "Desenvolvimento front-end e UX/UI em projeto acadêmico aplicado. Infraestrutura com Docker, testes de usabilidade que reduziram inconsistências em 30%.",
       },
     ],
     achievements: [
@@ -460,14 +582,18 @@ export const translations = {
       Methodologies: [
         "Testes E2E",
         "Testes de API",
-        "Testes Exploratórios",
+        "Testes de Integração",
         "UX Testing",
+        "Testes Exploratórios",
         "Testes de Regressão",
         "Testes de Performance",
+        "AI-augmented QA",
+        "JSON Schema Validation",
+        "Contract Testing",
       ],
     },
     contact: {
-      headline: "Disponível para oportunidades remotas.",
+      headline: "Disponível para oportunidades remotas — CLT ou freelance.",
     },
     footer: {
       copy: "© 2026 Vinicios Ferreira",
