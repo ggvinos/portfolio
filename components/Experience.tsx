@@ -93,6 +93,17 @@ export default function Experience() {
           </div>
         )}
 
+        {"languages" in t && Array.isArray((t as any).languages) && (
+          <div className="mt-10 flex flex-wrap gap-3">
+            {((t as any).languages as {lang: string; level: string}[]).map((l) => (
+              <div key={l.lang} className="border border-[var(--border)] px-4 py-2 flex gap-2 items-baseline">
+                <span className="text-sm font-semibold text-primary">{l.lang}</span>
+                <span className="font-mono text-[10px] text-muted">{l.level}</span>
+              </div>
+            ))}
+          </div>
+        )}
+
         <div
           ref={refAch}
           className={`mt-16 transition-all duration-700 ease-out ${

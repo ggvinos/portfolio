@@ -234,35 +234,42 @@ export const translations = {
         role: "QA Engineer",
         period: "Dec 2025 – present",
         description:
-          "Quality engineering across a HealthTech ecosystem: NinaChat (WhatsApp/chatbot), ConfirmationCall (scheduling), NinaFlow (conversational flows), Check-in/Kiosk, Patient App and HUB. Cypress automation, real-time QA metrics via an internal dashboard, and homologation of AI-driven conversational flows. Integrations validated across 5 ERPs (Tasy, MV, Feegow, NetPacs, MKData).",
+          "Quality engineering across a HealthTech ecosystem (Web, Mobile, APIs, self-service). Test strategy, regression automation, root-cause analysis (race conditions), QA on AI conversational flows, and bug density monitoring via KPIs. Products: NinaChat, ConfirmationCall, NinaFlow, Check-in/Kiosk, Patient App. ERPs: Tasy, MV, Feegow, NetPacs, MKData.",
       },
       {
         company: "Pipoca Ágil",
         role: "QA Engineer",
-        period: "Jan 2025 – Oct 2025",
+        period: "Feb 2025 – Oct 2025",
         description:
-          "Volunteer QA in an agile environment. Cypress E2E + Postman API. 90% coverage, 40% fewer bugs, validation from 4 hours to 30 minutes per sprint.",
+          "Volunteer QA in an open-source agile environment. Cypress E2E + Postman API (30+ critical failures found) + Appium mobile. Test documentation in TestRail and Jira, usability and accessibility validation (WCAG). 90% coverage, 40% fewer bugs, validation from 4 hours to 30 min/sprint.",
       },
       {
         company: "CTC Tech",
         role: "BackOffice Analyst",
         period: "Jun 2022 – Aug 2025",
         description:
-          "Incident diagnosis and resolution in critical national systems (Ministry of Health, CNJ). 500+ incidents validated. 98% availability maintained.",
+          "Started as Support Analyst N1 at the Ministry of Health, promoted to CNJ after earning ITIL 4 and MD-100 certifications, then returned as BackOffice Analyst. 500+ incidents validated in critical national systems. Resolution time reduced by 35%. 98% system availability. 40% reliability improvement.",
       },
       {
-        company: "Freelancer",
+        company: "Workana",
         role: "UX/UI Product Designer",
         period: "Jan 2022 – May 2024",
         description:
-          "Wireframes, Figma prototypes, and usability testing for startups. 85% test coverage with Cypress and Appium, 20+ critical failures identified.",
+          "UX Freelancer on Workana. Figma and Adobe XD wireframes and prototypes with focus on usability and accessibility (WCAG). Cypress (web) + Appium (mobile) automation — 85% coverage, 20+ critical failures found, 25% UX improvement (user feedback), 35% faster validations.",
       },
       {
-        company: "Startup Uniceplac",
-        role: "Front-End Developer",
+        company: "UNICEPLAC",
+        role: "Infrastructure & UX/UI Analyst",
         period: "Jan 2020 – Jan 2022",
         description:
-          "Front-end development and UX/UI in an applied academic project. Docker infrastructure, usability testing that reduced inconsistencies by 30%.",
+          "Infrastructure and UX/UI in the Software Engineering graduation startup project. Figma wireframes and prototypes, usability testing (−30% inconsistencies), Docker support (+90% environment availability), +25% UX based on feedback.",
+      },
+      {
+        company: "Hospital Santa Lúcia",
+        role: "Administrative Assistant",
+        period: "May 2017 – May 2019",
+        description:
+          "Apprentice in the hospital pharmacy. Document management, internal service, and administrative support. Built the attention to detail and organization habits that carry into QA work today.",
       },
     ],
     achievements: [
@@ -275,8 +282,18 @@ export const translations = {
       {
         title: "Education",
         result: "B.Sc. Software Engineering",
-        description: "Centro Universitário UNICEPLAC, Brasília/DF (2020–2024). Emphasis on software development and UX design. Final project applied in an academic startup — recognized by the institution.",
+        description: "Centro Universitário UNICEPLAC, Brasília/DF (Jan 2020 – Jun 2024). Emphasis on software development and UX design. Final project applied in an academic startup.",
       },
+      {
+        title: "HDI Support Center Analyst",
+        result: "HDI-SCA Certified",
+        description: "International certification for IT support and service desk professionals. Validates incident management, SLA compliance, and end-user communication under pressure.",
+      },
+    ],
+    languages: [
+      { lang: "English", level: "Professional Working" },
+      { lang: "Spanish", level: "Professional Working" },
+      { lang: "Portuguese", level: "Native" },
     ],
     articles: [
       {
@@ -296,9 +313,9 @@ export const translations = {
       },
     ],
     skills: {
-      Testing: ["Cypress", "Playwright", "Postman", "Appium", "JMeter", "pytest"],
+      Testing: ["Cypress", "Playwright", "Postman", "Appium", "JMeter", "pytest", "TestRail"],
       Languages: ["Python", "JavaScript", "TypeScript"],
-      Tools: ["Git", "GitHub Actions", "Streamlit", "Claude API", "Figma", "Jira", "ITIL 4"],
+      Tools: ["Git", "GitHub Actions", "Streamlit", "Claude API", "Figma", "Jira", "Docker", "ITIL 4"],
       Methodologies: [
         "E2E Testing",
         "API Testing",
@@ -310,6 +327,8 @@ export const translations = {
         "AI-augmented QA",
         "JSON Schema Validation",
         "Contract Testing",
+        "WCAG Accessibility",
+        "Root Cause Analysis",
       ],
     },
     contact: {
@@ -552,35 +571,42 @@ export const translations = {
         role: "QA Engineer",
         period: "Dez 2025 – presente",
         description:
-          "Engenharia de qualidade em ecossistema HealthTech: NinaChat (WhatsApp/chatbot), ConfirmationCall (agendamentos), NinaFlow (fluxos conversacionais), Check-in/Totem, App Paciente e HUB. Automação Cypress, métricas de QA em tempo real via dashboard interno e homologação de fluxos conversacionais com IA. Integrações validadas em 5 ERPs (Tasy, MV, Feegow, NetPacs, MKData).",
+          "Garantia de qualidade em ecossistema HealthTech (Web, Mobile, APIs, autoatendimento). Estratégia de testes, automação de regressão, análise de causa raiz (race conditions), homologação de fluxos de IA conversacional e monitoramento de densidade de bugs via KPIs. Produtos: NinaChat, ConfirmationCall, NinaFlow, Check-in/Totem, App Paciente. ERPs: Tasy, MV, Feegow, NetPacs, MKData.",
       },
       {
         company: "Pipoca Ágil",
         role: "QA Engineer",
-        period: "Jan 2025 – Out 2025",
+        period: "Fev 2025 – Out 2025",
         description:
-          "QA voluntário em ambiente ágil. Cypress E2E + Postman API. 90% de cobertura, 40% menos bugs, validação de 30 minutos por sprint (antes: 4 horas).",
+          "QA voluntário em ambiente ágil open source. Cypress E2E + Postman API (30+ falhas críticas identificadas) + Appium mobile. Documentação no TestRail e Jira, validação com foco em usabilidade e acessibilidade (WCAG). 90% de cobertura, 40% menos bugs, ciclo reduzido de 4 horas para 30 min/sprint.",
       },
       {
         company: "CTC Tech",
-        role: "BackOffice Analyst",
+        role: "Analista BackOffice",
         period: "Jun 2022 – Ago 2025",
         description:
-          "Diagnóstico e resolução de incidentes em sistemas críticos nacionais (Ministério da Saúde, CNJ). 500+ incidentes validados. 98% de disponibilidade mantida.",
+          "Iniciou como Analista de Suporte N1 no Ministério da Saúde, promovido ao CNJ após certificações ITIL 4 e MD-100, retornando como Analista BackOffice. 500+ incidentes validados em sistemas críticos nacionais. Tempo de resolução reduzido em 35%. 98% de disponibilidade. 40% de melhoria na confiabilidade dos sistemas.",
       },
       {
-        company: "Freelancer",
+        company: "Workana",
         role: "UX/UI Product Designer",
         period: "Jan 2022 – Mai 2024",
         description:
-          "Wireframes, protótipos em Figma e testes de usabilidade para startups. 85% de cobertura com Cypress e Appium, 20+ falhas críticas identificadas.",
+          "UX Designer Freelancer na Workana. Wireframes e protótipos em Figma e Adobe XD com foco em usabilidade e acessibilidade (WCAG). Cypress (web) + Appium (mobile) — 85% de cobertura, 20+ falhas críticas, UX melhorada em 25% (feedback), validações 35% mais rápidas.",
       },
       {
-        company: "Startup Uniceplac",
-        role: "Front-End Developer",
+        company: "UNICEPLAC",
+        role: "Analista de Infraestrutura e UX/UI",
         period: "Jan 2020 – Jan 2022",
         description:
-          "Desenvolvimento front-end e UX/UI em projeto acadêmico aplicado. Infraestrutura com Docker, testes de usabilidade que reduziram inconsistências em 30%.",
+          "Infraestrutura e UX/UI no Projeto Startup da graduação em Engenharia de Software. Protótipos em Figma, testes de usabilidade (-30% inconsistências), suporte com Docker (+90% disponibilidade dos ambientes), +25% UX.",
+      },
+      {
+        company: "Hospital Santa Lúcia",
+        role: "Assistente Administrativo",
+        period: "Mai 2017 – Mai 2019",
+        description:
+          "Menor Aprendiz na área administrativa da Farmácia. Organização de documentos, atendimento interno e suporte às rotinas. Base de atenção a detalhes e organização que aplico na área de QA hoje.",
       },
     ],
     achievements: [
@@ -593,8 +619,18 @@ export const translations = {
       {
         title: "Formação",
         result: "Bacharelado em Eng. de Software",
-        description: "Centro Universitário UNICEPLAC, Brasília/DF (2020–2024). Ênfase em desenvolvimento de software e UX design. Projeto de conclusão aplicado em startup acadêmica — reconhecido pela instituição.",
+        description: "Centro Universitário UNICEPLAC, Brasília/DF (jan/2020 – jun/2024). Ênfase em desenvolvimento de software e UX design. Projeto de conclusão aplicado em startup acadêmica.",
       },
+      {
+        title: "HDI Support Center Analyst",
+        result: "Certificado HDI-SCA",
+        description: "Certificação internacional para profissionais de suporte e service desk. Valida gestão de incidentes, cumprimento de SLA e comunicação sob pressão.",
+      },
+    ],
+    languages: [
+      { lang: "Inglês", level: "Professional Working" },
+      { lang: "Espanhol", level: "Professional Working" },
+      { lang: "Português", level: "Nativo" },
     ],
     articles: [
       {
@@ -614,9 +650,9 @@ export const translations = {
       },
     ],
     skills: {
-      Testing: ["Cypress", "Playwright", "Postman", "Appium", "JMeter", "pytest"],
+      Testing: ["Cypress", "Playwright", "Postman", "Appium", "JMeter", "pytest", "TestRail"],
       Languages: ["Python", "JavaScript", "TypeScript"],
-      Tools: ["Git", "GitHub Actions", "Streamlit", "Claude API", "Figma", "Jira", "ITIL 4"],
+      Tools: ["Git", "GitHub Actions", "Streamlit", "Claude API", "Figma", "Jira", "Docker", "ITIL 4"],
       Methodologies: [
         "Testes E2E",
         "Testes de API",
@@ -628,6 +664,8 @@ export const translations = {
         "AI-augmented QA",
         "JSON Schema Validation",
         "Contract Testing",
+        "Acessibilidade WCAG",
+        "Análise de Causa Raiz",
       ],
     },
     contact: {
