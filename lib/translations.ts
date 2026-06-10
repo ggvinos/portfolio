@@ -382,6 +382,7 @@ export const translations = {
     sections_education: {
       education: "EDUCATION",
       certifications: "CERTIFICATIONS",
+      degree_badge: "B.SC.",
     },
     education: {
       degree: "Bachelor of Software Engineering",
@@ -786,6 +787,7 @@ export const translations = {
     sections_education: {
       education: "FORMAÇÃO",
       certifications: "CERTIFICAÇÕES",
+      degree_badge: "BACHARELADO",
     },
     education: {
       degree: "Bacharelado em Engenharia de Software",

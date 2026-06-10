@@ -40,7 +40,7 @@ export default function Education() {
               </div>
               <div className="shrink-0 sm:text-right">
                 <span className="font-mono text-[10px] px-3 py-1.5 border border-accent text-accent tracking-widest">
-                  B.SC.
+                  {sectionLabel?.degree_badge ?? "B.SC."}
                 </span>
               </div>
             </div>
