@@ -93,7 +93,7 @@ export default function Particles({
 
   const drawCircle = (c: Circle, update = false) => {
     if (!ctx.current) return;
-    // 90% white stars, 7% warm amber, 3% cool blue — retro space mix
+    // 90% white stars, 7% warm amber, 3% cool blue, retro space mix
     const roll = (c.x * c.y) % 100;
     const rgb = roll < 7
       ? `255, 220, 140`       // amber/warm star

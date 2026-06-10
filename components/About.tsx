@@ -16,7 +16,7 @@ export default function About() {
             inView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"
           }`}
         >
-          {/* label + bio — sticky enquanto os cards são lidos */}
+          {/* label + bio, sticky enquanto os cards são lidos */}
           <div className="lg:sticky lg:top-24 lg:self-start">
             <h2 className="font-mono text-xs text-accent uppercase tracking-widest mb-8">
               {t.sections.about}

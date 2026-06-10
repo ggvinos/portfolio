@@ -37,7 +37,7 @@ export const translations = {
       achievements: "ACHIEVEMENTS",
     },
     about: {
-      bio: "QA focused on automation, coverage, and the metrics that turn instinct into decisions. Background in front-end dev and UX design — it changes how I read a spec, where I look for defects, and how I translate quality to the business. Beyond testing, I build the tools the team doesn't have yet.",
+      bio: "QA focused on automation, coverage, and the metrics that turn instinct into decisions. Background in front-end dev and UX design, it changes how I read a spec, where I look for defects, and how I translate quality to the business. Beyond testing, I build the tools the team doesn't have yet.",
       differentials: [
         {
           label: "Cross-domain",
@@ -52,12 +52,12 @@ export const translations = {
         {
           label: "User-first",
           value: "UX background",
-          note: "Five years in UX taught me to think about the journey before writing the scenario. Usability bugs show up in wireframes — not in the backlog.",
+          note: "Five years in UX taught me to think about the journey before writing the scenario. Usability bugs show up in wireframes, not in the backlog.",
         },
         {
           label: "AI-augmented",
           value: "AI in every stage",
-          note: "I use AI across the entire QA cycle: generating test cases from requirements, analyzing logs for bug triage, automating documentation, and building internal tools. Our internal flow CLI was born from this — AI as a capacity multiplier, not a buzzword.",
+          note: "I use AI across the entire QA cycle: generating test cases from requirements, analyzing logs for bug triage, automating documentation, and building internal tools. Our internal flow CLI was born from this, AI as a capacity multiplier, not a buzzword.",
         },
       ],
     },
@@ -66,7 +66,7 @@ export const translations = {
         id: "ninadash",
         title: "QA Metrics Dashboard",
         description:
-          "QA metrics lived in outdated spreadsheets. Built from scratch: Streamlit + Python pulling live data from Jira via REST, processing with Pandas, rendering 12+ interactive charts in real time. The composite Quality Score defines the go/no-go for each release — used daily by the team.",
+          "QA metrics lived in outdated spreadsheets. Built from scratch: Streamlit + Python pulling live data from Jira via REST, processing with Pandas, rendering 12+ interactive charts in real time. The composite Quality Score defines the go/no-go for each release, used daily by the team.",
         detail: [
           "Role-based access control: 4 profiles (QA, Dev, Lead, Admin), each with different tab visibility",
           "10 tabs: Overview, QA, Dev, Governance, Product, Backlog, Clients, History, Leadership, Admin",
@@ -111,7 +111,7 @@ export const translations = {
         description:
           "Manual validation took 20 minutes per deploy. The E2E suite cut it to 2 minutes, runs on CI at every push, and caught 47 bugs before they reached production.",
         detail: [
-          "Page Object Model pattern — maintainable selectors decoupled from test logic",
+          "Page Object Model pattern, maintainable selectors decoupled from test logic",
           "Custom commands for repeated flows (login, form fill, API intercept)",
           "GitHub Actions pipeline: runs on every push to main, fails fast on regression",
           "Viewport tests across desktop, tablet and mobile breakpoints",
@@ -127,12 +127,12 @@ export const translations = {
         id: "api-postman",
         title: "API Test Suite",
         description:
-          "APIs reaching production with broken contracts, failed authentication, and inconsistent responses. Structured a suite covering JSON schema validation, JWT authentication, input edge cases, and cross-service integration flows. Every endpoint documented with positive, negative, and boundary scenarios — executed automatically via Newman in CI.",
+          "APIs reaching production with broken contracts, failed authentication, and inconsistent responses. Structured a suite covering JSON schema validation, JWT authentication, input edge cases, and cross-service integration flows. Every endpoint documented with positive, negative, and boundary scenarios, executed automatically via Newman in CI.",
         detail: [
-          "Automated schema validation — any contract break is caught before deploy",
+          "Automated schema validation, any contract break is caught before deploy",
           "Auth coverage: valid, expired, malformed, and missing tokens",
           "Integration tests: flows crossing multiple services validated end-to-end",
-          "Exportable collection versioned in Git — any dev can run locally",
+          "Exportable collection versioned in Git, any dev can run locally",
         ],
         snapshot: null,
         metrics: ["30+ critical failures found", "100% endpoint coverage", "CI: < 3 min/run"],
@@ -145,12 +145,12 @@ export const translations = {
         id: "crud-api",
         title: "CRUD API Test Suite",
         description:
-          "120 cases covering all CRUD operations of a critical system — happy paths, edge cases, and integration failures. Result: 40% fewer regressions and 30% faster deploy cycles.",
+          "120 cases covering all CRUD operations of a critical system, happy paths, edge cases, and integration failures. Result: 40% fewer regressions and 30% faster deploy cycles.",
         detail: [
           "Full CRUD coverage: create, read, update, delete with valid and invalid payloads",
           "Edge cases: empty fields, boundary values, duplicate entries, unauthorized access",
           "Integration layer: tested service-to-service calls across the critical path",
-          "Postman collection exported and version-controlled — runnable by any team member",
+          "Postman collection exported and version-controlled, runnable by any team member",
         ],
         snapshot: null,
         metrics: ["120 test cases", "40% fewer regressions", "30% faster deploys"],
@@ -161,13 +161,13 @@ export const translations = {
       },
       {
         id: "flipboard",
-        title: "Usability Analysis — Flipboard",
+        title: "Usability Analysis, Flipboard",
         description:
           "Conducted usability and black-box testing on Flipboard targeting real-use scenarios. Analysis covered navigation flows, interface consistency across platforms (web and mobile), and underlying API validation with Postman. Goal: map user journey friction before it reaches the backlog.",
         detail: [
           "15+ improvements identified and prioritized by user impact",
           "Cross-platform consistency testing: web vs. mobile vs. app",
-          "Underlying API validation with Postman — data failures invisible in the UI",
+          "Underlying API validation with Postman, data failures invisible in the UI",
           "Structured report with evidence, severity, and recommendations",
         ],
         snapshot: null,
@@ -179,11 +179,11 @@ export const translations = {
       },
       {
         id: "kukac-kanban",
-        title: "Cross-Platform Usability — Kukac Kanban",
+        title: "Cross-Platform Usability, Kukac Kanban",
         description:
           "Full usability and functionality evaluation of Kukac Kanban Board across web and mobile. Tested card creation, movement, and organization flows, documenting behavioral inconsistencies between platforms and bugs impacting the daily user experience.",
         detail: [
-          "Web and mobile testing — divergent behaviors identified and documented",
+          "Web and mobile testing, divergent behaviors identified and documented",
           "UI and UX bugs prioritized by usage frequency and flow impact",
           "Structured report with screenshot evidence and fix suggestions",
           "Real journey focus: scenarios based on how users actually use it, not how devs imagined",
@@ -199,11 +199,11 @@ export const translations = {
         id: "hub-psicologia",
         title: "Hub de Psicologia",
         description:
-          "Platform connecting patients to psychologists in Florianópolis. Designed and built the landing page and system architecture from scratch — validating the product with real users before investing in full development.",
+          "Platform connecting patients to psychologists in Florianópolis. Designed and built the landing page and system architecture from scratch, validating the product with real users before investing in full development.",
         detail: [
           "User research: interviews with psychologists to validate pain points before building",
           "Landing page built with semantic HTML and accessibility best practices",
-          "Form flow tested across browsers and devices — zero broken submissions",
+          "Form flow tested across browsers and devices, zero broken submissions",
           "Architecture designed to scale from landing page to full booking system",
         ],
         snapshot: null,
@@ -267,7 +267,7 @@ export const translations = {
         role: "UX/UI Product Designer",
         period: "Jan 2022 – May 2024",
         description:
-          "UX Freelancer on Workana. Figma and Adobe XD wireframes and prototypes with focus on usability and accessibility (WCAG). Cypress (web) + Appium (mobile) automation — 85% coverage, 20+ critical failures found, 25% UX improvement (user feedback), 35% faster validations.",
+          "UX Freelancer on Workana. Figma and Adobe XD wireframes and prototypes with focus on usability and accessibility (WCAG). Cypress (web) + Appium (mobile) automation, 85% coverage, 20+ critical failures found, 25% UX improvement (user feedback), 35% faster validations.",
       },
       {
         company: "UNICEPLAC",
@@ -289,7 +289,7 @@ export const translations = {
         title: "Hackathon Brasília +TI 2025",
         result: "4th place",
         description:
-          "Built a smart scheduling solution for Caixa Econômica Federal's Sandbox, integrating IBM watsonx tools with conversational AI agents and UX-first flows. Competed against teams from all over Brazil — ranked 4th overall.",
+          "Built a smart scheduling solution for Caixa Econômica Federal's Sandbox, integrating IBM watsonx tools with conversational AI agents and UX-first flows. Competed against teams from all over Brazil, ranked 4th overall.",
       },
       {
         title: "Education",
@@ -352,7 +352,7 @@ export const translations = {
       institution: "Centro Universitário UNICEPLAC",
       period: "Jan 2020 – Jun 2024",
       location: "Brasília/DF",
-      description: "Emphasis on software development, UX design and systems architecture. Final applied project in an academic startup — combining front-end development, infrastructure and quality assurance.",
+      description: "Emphasis on software development, UX design and systems architecture. Final applied project in an academic startup, combining front-end development, infrastructure and quality assurance.",
     },
     certifications: [
       { title: "ITIL® Foundation Certificate in IT Service Management", issuer: "PeopleCert" },
@@ -361,7 +361,9 @@ export const translations = {
       { title: "Introduction to Software Testing & QA", issuer: "Coursera" },
     ],
     contact: {
-      headline: "Open to remote opportunities — full-time or freelance.",
+      headline: "Open to remote opportunities, full-time or freelance.",
+      cv_label: "Download CV",
+      email_label: "Send Email",
     },
     footer: {
       copy: "© 2026 Vinicios Ferreira",
@@ -403,7 +405,7 @@ export const translations = {
       achievements: "CONQUISTAS",
     },
     about: {
-      bio: "QA com foco em automação, cobertura e nas métricas que transformam instinto em decisão. Background em dev front-end e UX design — muda como leio uma spec, onde procuro falhas e como traduzo qualidade para o negócio. Além de testar, construo as ferramentas que o time ainda não tem.",
+      bio: "QA com foco em automação, cobertura e nas métricas que transformam instinto em decisão. Background em dev front-end e UX design, muda como leio uma spec, onde procuro falhas e como traduzo qualidade para o negócio. Além de testar, construo as ferramentas que o time ainda não tem.",
       differentials: [
         {
           label: "Multidisciplinar",
@@ -418,12 +420,12 @@ export const translations = {
         {
           label: "User-first",
           value: "Background em UX",
-          note: "Cinco anos de UX ensinaram a pensar na jornada antes de escrever o cenário. Bugs de usabilidade aparecem nos wireframes — não no backlog.",
+          note: "Cinco anos de UX ensinaram a pensar na jornada antes de escrever o cenário. Bugs de usabilidade aparecem nos wireframes, não no backlog.",
         },
         {
           label: "AI-augmented",
           value: "IA em todo o processo",
-          note: "Uso IA em praticamente todo o ciclo de QA: geração de casos de teste a partir de requisitos, análise de logs para triagem de bugs, automação de documentação e criação de ferramentas internas. Nossa CLI de fluxos nasceu disso — IA como multiplicador de capacidade, não como buzzword.",
+          note: "Uso IA em praticamente todo o ciclo de QA: geração de casos de teste a partir de requisitos, análise de logs para triagem de bugs, automação de documentação e criação de ferramentas internas. Nossa CLI de fluxos nasceu disso, IA como multiplicador de capacidade, não como buzzword.",
         },
       ],
     },
@@ -432,11 +434,11 @@ export const translations = {
         id: "ninadash",
         title: "QA Metrics Dashboard",
         description:
-          "Métricas de qualidade viviam em planilhas desatualizadas. Construí do zero: Streamlit + Python consumindo o Jira via REST, processando com Pandas, exibindo 12+ gráficos em tempo real. O Quality Score composto define o go/no-go de cada release — usado diariamente pelo time.",
+          "Métricas de qualidade viviam em planilhas desatualizadas. Construí do zero: Streamlit + Python consumindo o Jira via REST, processando com Pandas, exibindo 12+ gráficos em tempo real. O Quality Score composto define o go/no-go de cada release, usado diariamente pelo time.",
         detail: [
           "4 perfis de acesso com visibilidade distinta: cada colaborador vê só o que precisa",
           "10 abas cobrindo todo o ciclo: qualidade, backlog, clientes, histórico e painel de liderança",
-          "Tendências por sprint calculadas automaticamente — sem planilha, sem esforço manual",
+          "Tendências por sprint calculadas automaticamente, sem planilha, sem esforço manual",
           "Autenticação JWT integrada à API interna, sessão persistida em cookie",
         ],
         snapshot: [
@@ -459,10 +461,10 @@ export const translations = {
         description:
           "Configurar um fluxo de chatbot nó por nó levava 30–60 minutos. O Flow CLI Generator resolve: descreva o fluxo em linguagem natural, a CLI gera o JSON pronto para importar. Sem template, sem configuração manual.",
         detail: [
-          "IDs aleatórios, accountId injetado automaticamente — pronto para produção sem ajustes",
+          "IDs aleatórios, accountId injetado automaticamente, pronto para produção sem ajustes",
           "Suporta fluxos complexos: branches condicionais, chamadas de API e diálogos multi-turno",
-          "Valida o schema antes de salvar — zero imports inválidos",
-          "Após a geração, funciona offline — sem dependência contínua da API",
+          "Valida o schema antes de salvar, zero imports inválidos",
+          "Após a geração, funciona offline, sem dependência contínua da API",
         ],
         snapshot: null,
         metrics: ["30–60 min/fluxo economizados", "Schema validado na saída", "CLI-first"],
@@ -477,7 +479,7 @@ export const translations = {
         description:
           "Validação manual levava 20 minutos por deploy. A suite E2E reduziu para 2 minutos, roda no CI a cada push e capturou 47 bugs antes de chegarem em produção.",
         detail: [
-          "Padrão Page Object Model — seletores desacoplados da lógica de teste",
+          "Padrão Page Object Model, seletores desacoplados da lógica de teste",
           "Comandos customizados para fluxos repetidos (login, preenchimento, interceptação de API)",
           "Pipeline GitHub Actions: roda a cada push para main, falha rápido em regressão",
           "Testes de viewport em desktop, tablet e mobile",
@@ -493,12 +495,12 @@ export const translations = {
         id: "api-postman",
         title: "API Test Suite",
         description:
-          "APIs mal testadas chegam em produção com contratos quebrados, autenticações falhas e respostas inconsistentes. Estruturei uma suite cobrindo validação de schema JSON, autenticação JWT, edge cases de entrada e fluxos de integração entre serviços. Cada endpoint documentado com cenários positivos, negativos e condições de borda — executados automaticamente via Newman no CI.",
+          "APIs mal testadas chegam em produção com contratos quebrados, autenticações falhas e respostas inconsistentes. Estruturei uma suite cobrindo validação de schema JSON, autenticação JWT, edge cases de entrada e fluxos de integração entre serviços. Cada endpoint documentado com cenários positivos, negativos e condições de borda, executados automaticamente via Newman no CI.",
         detail: [
-          "Schema validation automatizado — qualquer quebra de contrato é capturada antes do deploy",
+          "Schema validation automatizado, qualquer quebra de contrato é capturada antes do deploy",
           "Cobertura de autenticação: tokens válidos, expirados, mal-formados e ausentes",
           "Testes de integração: fluxos que cruzam múltiplos serviços validados de ponta a ponta",
-          "Collection exportável e versionada no Git — qualquer dev pode rodar localmente",
+          "Collection exportável e versionada no Git, qualquer dev pode rodar localmente",
         ],
         snapshot: null,
         metrics: ["30+ falhas críticas identificadas", "100% dos endpoints cobertos", "CI: < 3 min/run"],
@@ -511,12 +513,12 @@ export const translations = {
         id: "crud-api",
         title: "CRUD API Test Suite",
         description:
-          "120 casos cobrindo todas as operações CRUD de um sistema crítico — happy paths, edge cases e falhas de integração. Resultado: 40% menos regressões e ciclo de deploy 30% mais rápido.",
+          "120 casos cobrindo todas as operações CRUD de um sistema crítico, happy paths, edge cases e falhas de integração. Resultado: 40% menos regressões e ciclo de deploy 30% mais rápido.",
         detail: [
           "Cobertura CRUD completa: create, read, update, delete com payloads válidos e inválidos",
           "Edge cases: campos vazios, valores limite, entradas duplicadas, acesso não autorizado",
           "Camada de integração: chamadas entre serviços validadas em toda a jornada crítica",
-          "Collection Postman exportada e versionada no Git — executável por qualquer membro do time",
+          "Collection Postman exportada e versionada no Git, executável por qualquer membro do time",
         ],
         snapshot: null,
         metrics: ["120 casos de teste", "40% menos regressões", "30% deploys mais rápidos"],
@@ -527,13 +529,13 @@ export const translations = {
       },
       {
         id: "flipboard",
-        title: "Análise de Usabilidade — Flipboard",
+        title: "Análise de Usabilidade, Flipboard",
         description:
-          "Conduzi testes de usabilidade e caixa-preta no Flipboard com foco em cenários reais de uso. A análise cobriu fluxos de navegação, consistência de interface entre plataformas (web e mobile) e validação de APIs subjacentes com Postman. O objetivo foi ir além de encontrar bugs — mapear fricções na jornada do usuário antes que chegassem ao backlog.",
+          "Conduzi testes de usabilidade e caixa-preta no Flipboard com foco em cenários reais de uso. A análise cobriu fluxos de navegação, consistência de interface entre plataformas (web e mobile) e validação de APIs subjacentes com Postman. O objetivo foi ir além de encontrar bugs, mapear fricções na jornada do usuário antes que chegassem ao backlog.",
         detail: [
           "15+ melhorias identificadas e priorizadas por impacto no usuário",
           "Testes de consistência multiplataforma: web vs. mobile vs. app",
-          "Validação de APIs subjacentes com Postman — falhas de dados invisíveis na UI",
+          "Validação de APIs subjacentes com Postman, falhas de dados invisíveis na UI",
           "Relatório estruturado com evidências, severidade e recomendações",
         ],
         snapshot: null,
@@ -545,11 +547,11 @@ export const translations = {
       },
       {
         id: "kukac-kanban",
-        title: "Testes Multiplataforma — Kukac Kanban",
+        title: "Testes Multiplataforma, Kukac Kanban",
         description:
           "Avaliação completa de usabilidade e funcionalidade do Kukac Kanban Board, cobrindo web e mobile. Testei fluxos de criação, movimentação e organização de cards, documentando inconsistências de comportamento entre plataformas e bugs que afetavam a experiência diária do usuário.",
         detail: [
-          "Testes em web e mobile — comportamentos divergentes identificados e documentados",
+          "Testes em web e mobile, comportamentos divergentes identificados e documentados",
           "Bugs de UI e UX priorizados por frequência de uso e impacto no fluxo",
           "Relatório estruturado com print de evidências e sugestões de correção",
           "Foco na jornada real: cenários baseados em como o usuário usa, não como o dev imaginou",
@@ -565,7 +567,7 @@ export const translations = {
         id: "hub-psicologia",
         title: "Hub de Psicologia",
         description:
-          "Plataforma conectando pacientes a psicólogos da Grande Florianópolis. Desenvolvi a landing page e a arquitetura do sistema do zero — validando o produto com usuários reais antes de investir no desenvolvimento completo.",
+          "Plataforma conectando pacientes a psicólogos da Grande Florianópolis. Desenvolvi a landing page e a arquitetura do sistema do zero, validando o produto com usuários reais antes de investir no desenvolvimento completo.",
         detail: [
           "Pesquisa com usuários: entrevistas com psicólogos para validar dores antes de construir",
           "Landing page com HTML semântico e boas práticas de acessibilidade",
@@ -633,7 +635,7 @@ export const translations = {
         role: "UX/UI Product Designer",
         period: "Jan 2022 – Mai 2024",
         description:
-          "UX Designer Freelancer na Workana. Wireframes e protótipos em Figma e Adobe XD com foco em usabilidade e acessibilidade (WCAG). Cypress (web) + Appium (mobile) — 85% de cobertura, 20+ falhas críticas, UX melhorada em 25% (feedback), validações 35% mais rápidas.",
+          "UX Designer Freelancer na Workana. Wireframes e protótipos em Figma e Adobe XD com foco em usabilidade e acessibilidade (WCAG). Cypress (web) + Appium (mobile), 85% de cobertura, 20+ falhas críticas, UX melhorada em 25% (feedback), validações 35% mais rápidas.",
       },
       {
         company: "UNICEPLAC",
@@ -655,7 +657,7 @@ export const translations = {
         title: "Hackathon Brasília +TI 2025",
         result: "4º lugar",
         description:
-          "Solução de agendamento inteligente para o Sandbox da Caixa Econômica Federal, integrando ferramentas IBM (watsonx) com agentes de IA conversacional e fluxos orientados a UX. Competição com equipes de todo o Brasil — 4º lugar geral.",
+          "Solução de agendamento inteligente para o Sandbox da Caixa Econômica Federal, integrando ferramentas IBM (watsonx) com agentes de IA conversacional e fluxos orientados a UX. Competição com equipes de todo o Brasil, 4º lugar geral.",
       },
       {
         title: "Formação",
@@ -718,7 +720,7 @@ export const translations = {
       institution: "Centro Universitário UNICEPLAC",
       period: "Jan 2020 – Jun 2024",
       location: "Brasília/DF",
-      description: "Ênfase em desenvolvimento de software, UX design e arquitetura de sistemas. Projeto de conclusão aplicado em startup acadêmica — combinando desenvolvimento front-end, infraestrutura e garantia de qualidade.",
+      description: "Ênfase em desenvolvimento de software, UX design e arquitetura de sistemas. Projeto de conclusão aplicado em startup acadêmica, combinando desenvolvimento front-end, infraestrutura e garantia de qualidade.",
     },
     certifications: [
       { title: "ITIL® Foundation Certificate in IT Service Management", issuer: "PeopleCert" },
@@ -727,7 +729,9 @@ export const translations = {
       { title: "Início em Teste e QA", issuer: "Alura" },
     ],
     contact: {
-      headline: "Disponível para oportunidades remotas — CLT ou freelance.",
+      headline: "Disponível para oportunidades remotas, CLT ou freelance.",
+      cv_label: "Baixar CV",
+      email_label: "Enviar Email",
     },
     footer: {
       copy: "© 2026 Vinicios Ferreira",

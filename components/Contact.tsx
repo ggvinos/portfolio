@@ -43,6 +43,23 @@ export default function Contact() {
             {t.contact.headline}
           </p>
 
+          <div className="flex flex-wrap items-center gap-4 mb-10">
+            <a
+              href="https://www.linkedin.com/in/ggvinos/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className={`px-6 py-3 bg-[var(--text)] text-[var(--bg)] text-sm font-medium hover:opacity-85 transition-opacity ${inView ? "opacity-100" : "opacity-0"}`}
+            >
+              {(t as any).contact?.cv_label ?? "Download CV"}
+            </a>
+            <a
+              href="mailto:viniciosferreira.ti@gmail.com"
+              className={`px-6 py-3 border border-[var(--border)] text-muted text-sm font-medium hover:border-[var(--text)] hover:text-[var(--text)] transition-colors ${inView ? "opacity-100" : "opacity-0"}`}
+            >
+              {(t as any).contact?.email_label ?? "Send Email"}
+            </a>
+          </div>
+
           <div className="flex flex-wrap gap-6">
             {links.map(({ label, href }, i) => (
               <a
