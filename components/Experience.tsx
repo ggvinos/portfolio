@@ -100,7 +100,7 @@ export default function Experience() {
           }`}
         >
           <h3 className="font-mono text-xs text-muted uppercase tracking-widest mb-6">
-            ACHIEVEMENTS
+            {t.sections.achievements}
           </h3>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             {t.achievements.map((item, i) => (

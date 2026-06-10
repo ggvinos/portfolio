@@ -37,7 +37,7 @@ export default function Hero() {
       />
 
       {/* camada 1: partículas acima do fundo */}
-      <Particles className="absolute inset-0 z-[1]" quantity={200} />
+      <Particles className="absolute inset-0 z-[1]" quantity={380} staticity={40} />
 
       {/* camada 2: glow lines */}
       <div

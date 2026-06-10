@@ -19,7 +19,7 @@ export const translations = {
         { value: "20 → 2 min", label: "validation time per deploy" },
         { value: "47 bugs", label: "caught before production" },
         { value: "40%", label: "fewer regressions" },
-        { value: "2", label: "tools in production" },
+        { value: "500+", label: "critical incidents resolved" },
       ],
       cta_primary: "View Projects",
       cta_secondary: "Contact",
@@ -32,6 +32,7 @@ export const translations = {
       writing: "WRITING",
       contact: "CONTACT",
       personal: "SIDE PROJECTS",
+      achievements: "ACHIEVEMENTS",
     },
     about: {
       bio: "QA focused on automation, coverage, and the metrics that turn instinct into decisions. Background in front-end dev and UX design — it changes how I read a spec, where I look for defects, and how I translate quality to the business. Beyond testing, I build the tools the team doesn't have yet.",
@@ -61,9 +62,9 @@ export const translations = {
     projects: [
       {
         id: "ninadash",
-        title: "NinaDash",
+        title: "QA Metrics Dashboard",
         description:
-          "QA metrics lived in outdated spreadsheets. Built from scratch: Streamlit + Python pulling live data from Jira via REST, processing with Pandas, rendering 12+ interactive charts in real time. The composite Health Score defines the go/no-go for each release — used daily by the team.",
+          "QA metrics lived in outdated spreadsheets. Built from scratch: Streamlit + Python pulling live data from Jira via REST, processing with Pandas, rendering 12+ interactive charts in real time. The composite Quality Score defines the go/no-go for each release — used daily by the team.",
         detail: [
           "Role-based access control: 4 profiles (QA, Dev, Lead, Admin), each with different tab visibility",
           "10 tabs: Overview, QA, Dev, Governance, Product, Backlog, Clients, History, Leadership, Admin",
@@ -71,7 +72,7 @@ export const translations = {
           "JWT authentication via internal API with cookie-based session persistence",
         ],
         snapshot: [
-          { label: "Health Score", value: "78/100", up: true },
+          { label: "Quality Score", value: "78/100", up: true },
           { label: "Fator K", value: "3.4", up: true },
           { label: "FPY", value: "82%", up: true },
           { label: "Lead Time", value: "5.2d", up: false },
@@ -79,16 +80,16 @@ export const translations = {
           { label: "Bugs (sprint)", value: "4", up: false },
         ],
         metrics: null,
-        tags: ["Python", "Streamlit", "Jira API", "Pandas", "Plotly", "JWT"],
-        label: "LIVE",
-        link: "https://ninadash.streamlit.app/",
+        tags: ["Python", "Streamlit", "REST API", "Pandas", "Plotly", "JWT"],
+        label: "LIVE TOOL",
+        link: null,
         featured: true,
       },
       {
         id: "ninaflow",
-        title: "NinaFlow Generator",
+        title: "Flow CLI Generator",
         description:
-          "Node-by-node chatbot flow configuration took 30–60 minutes. NinaFlow Generator solves it: describe the flow in natural language, the CLI outputs the JSON ready to import. No templates, no manual configuration.",
+          "Node-by-node chatbot flow configuration took 30–60 minutes. Flow CLI Generator solves it: describe the flow in natural language, the CLI outputs the JSON ready to import. No templates, no manual configuration.",
         detail: [
           "Generates flows with random stable IDs, no template variables, accountId injection",
           "Supports conditional branches, API call nodes, and multi-turn dialogues",
@@ -196,7 +197,7 @@ export const translations = {
         snapshot: null,
         metrics: ["5 psychologists interviewed", "Cross-browser tested"],
         tags: ["HTML", "UX Research", "Usability", "Product"],
-        label: "SIDE PROJECT",
+        label: "IN PROGRESS",
         link: "https://github.com/ggvinos/hub-psicologia",
         featured: false,
       },
@@ -233,7 +234,7 @@ export const translations = {
         role: "QA Engineer",
         period: "Dec 2025 – present",
         description:
-          "HealthTech ecosystem quality: Web, Mobile, APIs and conversational self-service. Automation, real-time metrics (NinaDash) and homologation of AI-driven conversational flows.",
+          "Quality engineering across a HealthTech ecosystem: NinaChat (WhatsApp/chatbot), ConfirmationCall (scheduling), NinaFlow (conversational flows), Check-in/Kiosk, Patient App and HUB. Cypress automation, real-time QA metrics via an internal dashboard, and homologation of AI-driven conversational flows. Integrations validated across 5 ERPs (Tasy, MV, Feegow, NetPacs, MKData).",
       },
       {
         company: "Pipoca Ágil",
@@ -269,12 +270,12 @@ export const translations = {
         title: "Hackathon Brasília +TI 2025",
         result: "4th place",
         description:
-          "4th place with a solution for the CAIXA Sandbox using IBM tools, focusing on user experience and AI agents.",
+          "Built a smart scheduling solution for Caixa Econômica Federal's Sandbox, integrating IBM watsonx tools with conversational AI agents and UX-first flows. Competed against teams from all over Brazil — ranked 4th overall.",
       },
       {
         title: "Education",
         result: "B.Sc. Software Engineering",
-        description: "Centro Universitário UNICEPLAC",
+        description: "Centro Universitário UNICEPLAC, Brasília/DF (2020–2024). Emphasis on software development and UX design. Final project applied in an academic startup — recognized by the institution.",
       },
     ],
     articles: [
@@ -336,7 +337,7 @@ export const translations = {
         { value: "20 → 2 min", label: "tempo de validação por deploy" },
         { value: "47 bugs", label: "capturados antes da produção" },
         { value: "40%", label: "menos regressões" },
-        { value: "2", label: "ferramentas em produção" },
+        { value: "500+", label: "incidentes críticos resolvidos" },
       ],
       cta_primary: "Ver Projetos",
       cta_secondary: "Contato",
@@ -349,6 +350,7 @@ export const translations = {
       writing: "ARTIGOS",
       contact: "CONTATO",
       personal: "PROJETOS PESSOAIS",
+      achievements: "CONQUISTAS",
     },
     about: {
       bio: "QA com foco em automação, cobertura e nas métricas que transformam instinto em decisão. Background em dev front-end e UX design — muda como leio uma spec, onde procuro falhas e como traduzo qualidade para o negócio. Além de testar, construo as ferramentas que o time ainda não tem.",
@@ -378,9 +380,9 @@ export const translations = {
     projects: [
       {
         id: "ninadash",
-        title: "NinaDash",
+        title: "QA Metrics Dashboard",
         description:
-          "Métricas de qualidade viviam em planilhas desatualizadas. Construí do zero: Streamlit + Python consumindo o Jira via REST, processando com Pandas, exibindo 12+ gráficos em tempo real. O Health Score composto define o go/no-go de cada release — usado diariamente pelo time.",
+          "Métricas de qualidade viviam em planilhas desatualizadas. Construí do zero: Streamlit + Python consumindo o Jira via REST, processando com Pandas, exibindo 12+ gráficos em tempo real. O Quality Score composto define o go/no-go de cada release — usado diariamente pelo time.",
         detail: [
           "4 perfis de acesso com visibilidade distinta: cada colaborador vê só o que precisa",
           "10 abas cobrindo todo o ciclo: qualidade, backlog, clientes, histórico e painel de liderança",
@@ -388,7 +390,7 @@ export const translations = {
           "Autenticação JWT integrada à API interna, sessão persistida em cookie",
         ],
         snapshot: [
-          { label: "Health Score", value: "78/100", up: true },
+          { label: "Quality Score", value: "78/100", up: true },
           { label: "Fator K", value: "3.4", up: true },
           { label: "FPY", value: "82%", up: true },
           { label: "Lead Time", value: "5.2d", up: false },
@@ -396,16 +398,16 @@ export const translations = {
           { label: "Bugs (sprint)", value: "4", up: false },
         ],
         metrics: null,
-        tags: ["Python", "Streamlit", "Jira API", "Pandas", "Plotly", "JWT"],
-        label: "LIVE",
-        link: "https://ninadash.streamlit.app/",
+        tags: ["Python", "Streamlit", "REST API", "Pandas", "Plotly", "JWT"],
+        label: "LIVE TOOL",
+        link: null,
         featured: true,
       },
       {
         id: "ninaflow",
-        title: "NinaFlow Generator",
+        title: "Flow CLI Generator",
         description:
-          "Configurar um fluxo de chatbot nó por nó levava 30–60 minutos. O NinaFlow Generator resolve: descreva o fluxo em linguagem natural, a CLI gera o JSON pronto para importar. Sem template, sem configuração manual.",
+          "Configurar um fluxo de chatbot nó por nó levava 30–60 minutos. O Flow CLI Generator resolve: descreva o fluxo em linguagem natural, a CLI gera o JSON pronto para importar. Sem template, sem configuração manual.",
         detail: [
           "IDs aleatórios, accountId injetado automaticamente — pronto para produção sem ajustes",
           "Suporta fluxos complexos: branches condicionais, chamadas de API e diálogos multi-turno",
@@ -513,7 +515,7 @@ export const translations = {
         snapshot: null,
         metrics: ["5 psicólogos entrevistados", "Testado cross-browser"],
         tags: ["HTML", "UX Research", "Usabilidade", "Produto"],
-        label: "PROJETO PESSOAL",
+        label: "EM DESENVOLVIMENTO",
         link: "https://github.com/ggvinos/hub-psicologia",
         featured: false,
       },
@@ -550,7 +552,7 @@ export const translations = {
         role: "QA Engineer",
         period: "Dez 2025 – presente",
         description:
-          "Qualidade de ecossistema HealthTech: Web, Mobile, APIs e autoatendimento. Automação, métricas em tempo real (NinaDash) e homologação de fluxos conversacionais com IA.",
+          "Engenharia de qualidade em ecossistema HealthTech: NinaChat (WhatsApp/chatbot), ConfirmationCall (agendamentos), NinaFlow (fluxos conversacionais), Check-in/Totem, App Paciente e HUB. Automação Cypress, métricas de QA em tempo real via dashboard interno e homologação de fluxos conversacionais com IA. Integrações validadas em 5 ERPs (Tasy, MV, Feegow, NetPacs, MKData).",
       },
       {
         company: "Pipoca Ágil",
@@ -586,12 +588,12 @@ export const translations = {
         title: "Hackathon Brasília +TI 2025",
         result: "4º lugar",
         description:
-          "Solução para o Sandbox CAIXA usando ferramentas IBM, com foco em UX e agentes de IA. Competição com equipes de todo o Brasil.",
+          "Solução de agendamento inteligente para o Sandbox da Caixa Econômica Federal, integrando ferramentas IBM (watsonx) com agentes de IA conversacional e fluxos orientados a UX. Competição com equipes de todo o Brasil — 4º lugar geral.",
       },
       {
         title: "Formação",
         result: "Bacharelado em Eng. de Software",
-        description: "Centro Universitário UNICEPLAC",
+        description: "Centro Universitário UNICEPLAC, Brasília/DF (2020–2024). Ênfase em desenvolvimento de software e UX design. Projeto de conclusão aplicado em startup acadêmica — reconhecido pela instituição.",
       },
     ],
     articles: [
