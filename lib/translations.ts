@@ -6,6 +6,7 @@ export const translations = {
       about: "About",
       projects: "Projects",
       experience: "Experience",
+      education: "Education",
       skills: "Skills",
       writing: "Writing",
       contact: "Contact",
@@ -19,7 +20,7 @@ export const translations = {
         { value: "20 → 2 min", label: "validation time per deploy" },
         { value: "47 bugs", label: "caught before production" },
         { value: "40%", label: "fewer regressions" },
-        { value: "500+", label: "critical incidents resolved" },
+        { value: "95%", label: "delivery efficiency gain" },
       ],
       cta_primary: "View Projects",
       cta_secondary: "Contact",
@@ -28,6 +29,7 @@ export const translations = {
       about: "ABOUT",
       projects: "PROJECTS",
       experience: "EXPERIENCE",
+      education: "Education",
       skills: "SKILLS",
       writing: "WRITING",
       contact: "CONTACT",
@@ -45,7 +47,7 @@ export const translations = {
         {
           label: "Builder",
           value: "2 tools shipped",
-          note: "Two tools in production: NinaDash, which turns Jira data into a go/no-go criterion per release, and NinaFlow Generator, a CLI that eliminates 60 minutes of manual configuration. I build because it's faster than waiting.",
+          note: "Two internal tools in production: a metrics dashboard that turns issue tracker data into a go/no-go criterion per release, and a flow CLI that eliminates 60 minutes of manual configuration. I build because it's faster than waiting.",
         },
         {
           label: "User-first",
@@ -55,7 +57,7 @@ export const translations = {
         {
           label: "AI-augmented",
           value: "AI in every stage",
-          note: "I use AI across the entire QA cycle: generating test cases from requirements, analyzing logs for bug triage, automating documentation, and building internal tools. NinaFlow Generator came from this — AI as a capacity multiplier, not a buzzword.",
+          note: "I use AI across the entire QA cycle: generating test cases from requirements, analyzing logs for bug triage, automating documentation, and building internal tools. Our internal flow CLI was born from this — AI as a capacity multiplier, not a buzzword.",
         },
       ],
     },
@@ -108,7 +110,12 @@ export const translations = {
         title: "Cypress E2E Automation",
         description:
           "Manual validation took 20 minutes per deploy. The E2E suite cut it to 2 minutes, runs on CI at every push, and caught 47 bugs before they reached production.",
-        detail: null,
+        detail: [
+          "Page Object Model pattern — maintainable selectors decoupled from test logic",
+          "Custom commands for repeated flows (login, form fill, API intercept)",
+          "GitHub Actions pipeline: runs on every push to main, fails fast on regression",
+          "Viewport tests across desktop, tablet and mobile breakpoints",
+        ],
         snapshot: null,
         metrics: ["85% E2E coverage", "47 bugs caught pre-prod", "CI run: 4 min"],
         tags: ["Cypress", "JavaScript", "GitHub Actions", "CI"],
@@ -139,7 +146,12 @@ export const translations = {
         title: "CRUD API Test Suite",
         description:
           "120 cases covering all CRUD operations of a critical system — happy paths, edge cases, and integration failures. Result: 40% fewer regressions and 30% faster deploy cycles.",
-        detail: null,
+        detail: [
+          "Full CRUD coverage: create, read, update, delete with valid and invalid payloads",
+          "Edge cases: empty fields, boundary values, duplicate entries, unauthorized access",
+          "Integration layer: tested service-to-service calls across the critical path",
+          "Postman collection exported and version-controlled — runnable by any team member",
+        ],
         snapshot: null,
         metrics: ["120 test cases", "40% fewer regressions", "30% faster deploys"],
         tags: ["Cypress", "Postman", "API Testing"],
@@ -331,6 +343,23 @@ export const translations = {
         "Root Cause Analysis",
       ],
     },
+    sections_education: {
+      education: "EDUCATION",
+      certifications: "CERTIFICATIONS",
+    },
+    education: {
+      degree: "Bachelor of Software Engineering",
+      institution: "Centro Universitário UNICEPLAC",
+      period: "Jan 2020 – Jun 2024",
+      location: "Brasília/DF",
+      description: "Emphasis on software development, UX design and systems architecture. Final applied project in an academic startup — combining front-end development, infrastructure and quality assurance.",
+    },
+    certifications: [
+      { title: "ITIL® Foundation Certificate in IT Service Management", issuer: "PeopleCert" },
+      { title: "HDI Support Center Analyst (HDI-SCA)", issuer: "HDI" },
+      { title: "Exam MD-100: Windows Client", issuer: "Microsoft" },
+      { title: "Introduction to Software Testing & QA", issuer: "Coursera" },
+    ],
     contact: {
       headline: "Open to remote opportunities — full-time or freelance.",
     },
@@ -343,6 +372,7 @@ export const translations = {
       about: "Sobre",
       projects: "Projetos",
       experience: "Experiência",
+      education: "Formação",
       skills: "Skills",
       writing: "Artigos",
       contact: "Contato",
@@ -356,7 +386,7 @@ export const translations = {
         { value: "20 → 2 min", label: "tempo de validação por deploy" },
         { value: "47 bugs", label: "capturados antes da produção" },
         { value: "40%", label: "menos regressões" },
-        { value: "500+", label: "incidentes críticos resolvidos" },
+        { value: "95%", label: "ganho em eficiência de entregas" },
       ],
       cta_primary: "Ver Projetos",
       cta_secondary: "Contato",
@@ -365,6 +395,7 @@ export const translations = {
       about: "SOBRE",
       projects: "PROJETOS",
       experience: "EXPERIÊNCIA",
+      education: "Formação",
       skills: "SKILLS",
       writing: "ARTIGOS",
       contact: "CONTATO",
@@ -382,7 +413,7 @@ export const translations = {
         {
           label: "Builder",
           value: "2 ferramentas em produção",
-          note: "Dois projetos em produção: NinaDash, que transforma dados do Jira em critério de go/no-go por release, e NinaFlow Generator, CLI que elimina 60 minutos de configuração manual. Construo porque é mais rápido que esperar.",
+          note: "Duas ferramentas internas em produção: um dashboard de métricas que transforma dados do issue tracker em critério de go/no-go por release, e uma CLI de fluxos que elimina 60 minutos de configuração manual. Construo porque é mais rápido que esperar.",
         },
         {
           label: "User-first",
@@ -392,7 +423,7 @@ export const translations = {
         {
           label: "AI-augmented",
           value: "IA em todo o processo",
-          note: "Uso IA em praticamente todo o ciclo de QA: geração de casos de teste a partir de requisitos, análise de logs para triagem de bugs, automação de documentação e criação de ferramentas internas. O NinaFlow Generator nasceu disso — IA como multiplicador de capacidade, não como buzzword.",
+          note: "Uso IA em praticamente todo o ciclo de QA: geração de casos de teste a partir de requisitos, análise de logs para triagem de bugs, automação de documentação e criação de ferramentas internas. Nossa CLI de fluxos nasceu disso — IA como multiplicador de capacidade, não como buzzword.",
         },
       ],
     },
@@ -445,7 +476,12 @@ export const translations = {
         title: "Cypress E2E Automation",
         description:
           "Validação manual levava 20 minutos por deploy. A suite E2E reduziu para 2 minutos, roda no CI a cada push e capturou 47 bugs antes de chegarem em produção.",
-        detail: null,
+        detail: [
+          "Padrão Page Object Model — seletores desacoplados da lógica de teste",
+          "Comandos customizados para fluxos repetidos (login, preenchimento, interceptação de API)",
+          "Pipeline GitHub Actions: roda a cada push para main, falha rápido em regressão",
+          "Testes de viewport em desktop, tablet e mobile",
+        ],
         snapshot: null,
         metrics: ["85% cobertura E2E", "47 bugs pré-prod", "CI: 4 min/run"],
         tags: ["Cypress", "JavaScript", "GitHub Actions", "CI"],
@@ -476,7 +512,12 @@ export const translations = {
         title: "CRUD API Test Suite",
         description:
           "120 casos cobrindo todas as operações CRUD de um sistema crítico — happy paths, edge cases e falhas de integração. Resultado: 40% menos regressões e ciclo de deploy 30% mais rápido.",
-        detail: null,
+        detail: [
+          "Cobertura CRUD completa: create, read, update, delete com payloads válidos e inválidos",
+          "Edge cases: campos vazios, valores limite, entradas duplicadas, acesso não autorizado",
+          "Camada de integração: chamadas entre serviços validadas em toda a jornada crítica",
+          "Collection Postman exportada e versionada no Git — executável por qualquer membro do time",
+        ],
         snapshot: null,
         metrics: ["120 casos de teste", "40% menos regressões", "30% deploys mais rápidos"],
         tags: ["Cypress", "Postman", "API Testing"],
@@ -668,6 +709,23 @@ export const translations = {
         "Análise de Causa Raiz",
       ],
     },
+    sections_education: {
+      education: "FORMAÇÃO",
+      certifications: "CERTIFICAÇÕES",
+    },
+    education: {
+      degree: "Bacharelado em Engenharia de Software",
+      institution: "Centro Universitário UNICEPLAC",
+      period: "Jan 2020 – Jun 2024",
+      location: "Brasília/DF",
+      description: "Ênfase em desenvolvimento de software, UX design e arquitetura de sistemas. Projeto de conclusão aplicado em startup acadêmica — combinando desenvolvimento front-end, infraestrutura e garantia de qualidade.",
+    },
+    certifications: [
+      { title: "ITIL® Foundation Certificate in IT Service Management", issuer: "PeopleCert" },
+      { title: "HDI Support Center Analyst (HDI-SCA)", issuer: "HDI" },
+      { title: "Exam MD-100: Windows Client", issuer: "Microsoft" },
+      { title: "Início em Teste e QA", issuer: "Alura" },
+    ],
     contact: {
       headline: "Disponível para oportunidades remotas — CLT ou freelance.",
     },

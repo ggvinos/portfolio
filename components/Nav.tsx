@@ -17,6 +17,7 @@ export default function Nav() {
               ["about", "#about"],
               ["projects", "#projects"],
               ["experience", "#experience"],
+              ["education", "#education"],
               ["skills", "#skills"],
               ["writing", "#writing"],
               ["contact", "#contact"],
