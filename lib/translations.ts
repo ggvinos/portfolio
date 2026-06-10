@@ -14,7 +14,7 @@ export const translations = {
     hero: {
       label: "// software engineer in test",
       name: "VINICIOS FERREIRA",
-      subtitle: "Software Engineer in Test · Builder · 6+ years in tech",
+      subtitle: "QA Engineer · Builder · 6+ years in tech",
       tagline: "QA who automates, measures, and delivers what the team doesn't have yet.",
       metrics: [
         { value: "20 → 2 min", label: "validation time per deploy" },
@@ -419,7 +419,7 @@ export const translations = {
     hero: {
       label: "// software engineer in test",
       name: "VINICIOS FERREIRA",
-      subtitle: "Software Engineer in Test · Builder · 6+ anos em tecnologia",
+      subtitle: "QA Engineer · Builder · 6+ anos em tecnologia",
       tagline: "QA que automatiza, mede e entrega o que o time ainda não tem.",
       metrics: [
         { value: "20 → 2 min", label: "tempo de validação por deploy" },
