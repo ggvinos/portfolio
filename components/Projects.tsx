@@ -157,6 +157,17 @@ export default function Projects() {
                       </span>
                     ))}
                   </div>
+
+                  {project.link && (
+                    <a
+                      href={project.link}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="font-mono text-xs text-accent hover:underline mt-4 inline-block"
+                    >
+                      {project.link.includes("github.com") ? "github ↗" : project.link.replace("https://", "")}
+                    </a>
+                  )}
                 </div>
               </SpotlightCard>
             ))}

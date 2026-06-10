@@ -143,7 +143,7 @@ export const translations = {
         metrics: ["120 test cases", "40% fewer regressions", "30% faster deploys"],
         tags: ["Cypress", "Postman", "API Testing"],
         label: null,
-        link: null,
+        link: "https://github.com/ggvinos/desafio-coco-bambu",
         featured: false,
       },
       {
@@ -179,7 +179,25 @@ export const translations = {
         metrics: ["35% fewer reported errors after fixes", "Coverage: main flows + cross-platform"],
         tags: ["UX Testing", "Usability", "Mobile", "Web", "Bug Report"],
         label: "UX TESTING",
-        link: null,
+        link: "https://github.com/ggvinos/ggvinos-teste-pratico-kukac-Kanban-E2E",
+        featured: false,
+      },
+      {
+        id: "hub-psicologia",
+        title: "Hub de Psicologia",
+        description:
+          "Platform connecting patients to psychologists in Florianópolis. Designed and built the landing page and system architecture from scratch — validating the product with real users before investing in full development.",
+        detail: [
+          "User research: interviews with psychologists to validate pain points before building",
+          "Landing page built with semantic HTML and accessibility best practices",
+          "Form flow tested across browsers and devices — zero broken submissions",
+          "Architecture designed to scale from landing page to full booking system",
+        ],
+        snapshot: null,
+        metrics: ["5 psychologists interviewed", "Cross-browser tested"],
+        tags: ["HTML", "UX Research", "Usability", "Product"],
+        label: "SIDE PROJECT",
+        link: "https://github.com/ggvinos/hub-psicologia",
         featured: false,
       },
     ],
@@ -279,7 +297,7 @@ export const translations = {
     skills: {
       Testing: ["Cypress", "Playwright", "Postman", "Appium", "JMeter", "pytest"],
       Languages: ["Python", "JavaScript", "TypeScript"],
-      Tools: ["Git", "GitHub Actions", "Streamlit", "Claude API", "Figma", "Jira"],
+      Tools: ["Git", "GitHub Actions", "Streamlit", "Claude API", "Figma", "Jira", "ITIL 4"],
       Methodologies: [
         "E2E Testing",
         "API Testing",
@@ -442,7 +460,7 @@ export const translations = {
         metrics: ["120 casos de teste", "40% menos regressões", "30% deploys mais rápidos"],
         tags: ["Cypress", "Postman", "API Testing"],
         label: null,
-        link: null,
+        link: "https://github.com/ggvinos/desafio-coco-bambu",
         featured: false,
       },
       {
@@ -478,7 +496,25 @@ export const translations = {
         metrics: ["35% redução em erros reportados após correções", "Cobertura: fluxos principais + multiplataforma"],
         tags: ["UX Testing", "Usability", "Mobile", "Web", "Bug Report"],
         label: "UX TESTING",
-        link: null,
+        link: "https://github.com/ggvinos/ggvinos-teste-pratico-kukac-Kanban-E2E",
+        featured: false,
+      },
+      {
+        id: "hub-psicologia",
+        title: "Hub de Psicologia",
+        description:
+          "Plataforma conectando pacientes a psicólogos da Grande Florianópolis. Desenvolvi a landing page e a arquitetura do sistema do zero — validando o produto com usuários reais antes de investir no desenvolvimento completo.",
+        detail: [
+          "Pesquisa com usuários: entrevistas com psicólogos para validar dores antes de construir",
+          "Landing page com HTML semântico e boas práticas de acessibilidade",
+          "Fluxo de formulário testado em múltiplos browsers e dispositivos",
+          "Arquitetura projetada para escalar de landing page para sistema completo de agendamento",
+        ],
+        snapshot: null,
+        metrics: ["5 psicólogos entrevistados", "Testado cross-browser"],
+        tags: ["HTML", "UX Research", "Usabilidade", "Produto"],
+        label: "PROJETO PESSOAL",
+        link: "https://github.com/ggvinos/hub-psicologia",
         featured: false,
       },
     ],
@@ -578,7 +614,7 @@ export const translations = {
     skills: {
       Testing: ["Cypress", "Playwright", "Postman", "Appium", "JMeter", "pytest"],
       Languages: ["Python", "JavaScript", "TypeScript"],
-      Tools: ["Git", "GitHub Actions", "Streamlit", "Claude API", "Figma", "Jira"],
+      Tools: ["Git", "GitHub Actions", "Streamlit", "Claude API", "Figma", "Jira", "ITIL 4"],
       Methodologies: [
         "Testes E2E",
         "Testes de API",

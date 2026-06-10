@@ -16,8 +16,11 @@ export default function Articles() {
 
         <div ref={ref} className="grid grid-cols-1 md:grid-cols-3 gap-4">
           {t.articles.map((article, i) => (
-            <div
+            <a
               key={i}
+              href={article.link}
+              target="_blank"
+              rel="noopener noreferrer"
               style={{ transitionDelay: `${i * 80}ms` }}
               className={`border border-[var(--border)] bg-surface p-6 flex flex-col justify-between transition-all duration-300 ease-out cursor-pointer hover:border-[#334155] hover:-translate-y-1 hover:bg-[#080c14] group ${
                 inView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
@@ -35,7 +38,7 @@ export default function Articles() {
                 <span>Read</span>
                 <span aria-hidden="true" className="transition-transform duration-300 group-hover:translate-x-1">→</span>
               </div>
-            </div>
+            </a>
           ))}
         </div>
       </div>
