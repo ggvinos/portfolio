@@ -397,7 +397,7 @@ export const translations = {
       { title: "Introduction to Software Testing & QA", issuer: "Coursera" },
     ],
     contact: {
-      headline: "Open to remote opportunities, full-time or freelance.",
+      headline: "Open to connecting, collaborating or just talking about QA.",
       cv_label: "Download CV",
       email_label: "Send Email",
     },
@@ -801,7 +801,7 @@ export const translations = {
       { title: "Início em Teste e QA", issuer: "Alura" },
     ],
     contact: {
-      headline: "Disponível para oportunidades remotas, CLT ou freelance.",
+      headline: "Aberto a conexões, colaborações ou só uma boa conversa sobre QA.",
       cv_label: "Baixar CV",
       email_label: "Enviar Email",
     },
