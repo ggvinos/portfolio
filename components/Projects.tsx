@@ -20,8 +20,8 @@ export default function Projects() {
         </h2>
         <p className="text-muted text-sm mb-10">
           {lang === "en"
-            ? "Tools I built and test suites I shipped."
-            : "Ferramentas que construí e suites de teste que entreguei."}
+            ? "A live product, internal tools and test suites I shipped."
+            : "Um produto no ar, ferramentas internas e suites de teste que entreguei."}
         </p>
 
         <div
@@ -49,7 +49,7 @@ export default function Projects() {
                         rel="noopener noreferrer"
                         className="ml-auto font-mono text-xs text-accent hover:underline whitespace-nowrap"
                       >
-                        ninadash.streamlit.app ↗
+                        {featured.link.replace("https://", "")} ↗
                       </a>
                     )}
                   </div>
@@ -79,7 +79,7 @@ export default function Projects() {
                 {featured.snapshot && (
                   <div className="lg:w-60 shrink-0">
                     <p className="font-mono text-[10px] text-muted uppercase tracking-widest mb-3">
-                      // demo snapshot
+                      // snapshot
                     </p>
                     <div className="border border-[var(--border)] divide-y divide-[var(--border)]">
                       {featured.snapshot.map((m) => (
@@ -96,7 +96,6 @@ export default function Projects() {
                         </div>
                       ))}
                     </div>
-                    <p className="font-mono text-[9px] text-muted mt-2 opacity-40">* illustrative data</p>
                   </div>
                 )}
               </div>
@@ -105,7 +104,9 @@ export default function Projects() {
 
           {/* GRID */}
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-            {rest.map((project, i) => (
+            {rest.map((project, i) => {
+              const link = project.link as string | null;
+              return (
               <SpotlightCard key={project.id}>
                 <div
                   className="p-6 flex flex-col h-full"
@@ -158,19 +159,20 @@ export default function Projects() {
                     ))}
                   </div>
 
-                  {project.link && (
+                  {link && (
                     <a
-                      href={project.link}
+                      href={link}
                       target="_blank"
                       rel="noopener noreferrer"
                       className="font-mono text-xs text-accent hover:underline mt-4 inline-block"
                     >
-                      {project.link.includes("github.com") ? "github ↗" : project.link.replace("https://", "")}
+                      {link.includes("github.com") ? "github ↗" : link.replace("https://", "")}
                     </a>
                   )}
                 </div>
               </SpotlightCard>
-            ))}
+              );
+            })}
           </div>
         </div>
 

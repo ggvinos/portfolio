@@ -59,7 +59,7 @@ style={{ animationDelay: "0.6s", animationFillMode: "both" }}
 | `Nav.tsx` | Nav fixa com toggle de tema e idioma |
 | `Hero.tsx` | Tela inicial: partículas canvas, glow lines, animate-title, marquee de tools, métricas, CTAs |
 | `About.tsx` | Bio + 3 diferenciais (cards animados) |
-| `Projects.tsx` | Featured card (NinaDash) + grid 3 colunas + seção pessoal |
+| `Projects.tsx` | Featured card (Acorde) + grid 3 colunas + seção pessoal |
 | `Experience.tsx` | Timeline vertical + achievements com SpotlightCard |
 | `Articles.tsx` | 3 artigos com badges de plataforma |
 | `Skills.tsx` | Grid de categorias com pills |
@@ -82,7 +82,7 @@ Cada projeto tem:
 {
   id, title, description,
   detail: string[] | null,       // bullets técnicos
-  snapshot: { label, value, up? }[] | null,  // mini-dashboard (só NinaDash)
+  snapshot: { label, value, up? }[] | null,  // mini-dashboard (só o featured)
   metrics: string[] | null,      // badges de impacto (acento vermelho)
   tags: string[],                // tech stack (border cinza)
   label: string | null,          // "LIVE", "FERRAMENTA INTERNA" etc
@@ -110,7 +110,7 @@ Projetos pessoais (`t.personal`):
 - [ ] Adicionar links reais dos artigos quando publicados
 - [ ] Adicionar foto/avatar opcional na seção About
 - [ ] Versão mobile: revisar o Hero (marquee pode precisar de ajuste no padding)
-- [ ] Página de projeto individual para o NinaDash (rota `/projects/ninadash`)
+- [ ] Página de projeto individual para o Acorde (rota `/projects/acorde`)
 - [ ] OG tags / meta description para SEO
 - [ ] Contador de views por projeto (feature do chronark — Upstash Redis + Vercel)
 

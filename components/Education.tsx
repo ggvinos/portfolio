@@ -13,7 +13,7 @@ export default function Education() {
     degree: string; institution: string; period: string; location: string; description: string;
   };
   const certs = (t as any).certifications as { title: string; issuer: string }[];
-  const sectionLabel = (t as any).sections_education as { education: string; certifications: string };
+  const sectionLabel = (t as any).sections_education as { education: string; certifications: string; degree_badge: string };
 
   if (!edu) return null;
 
