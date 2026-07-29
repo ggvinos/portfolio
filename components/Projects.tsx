@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useLanguage } from "@/lib/context";
 import { useInView } from "@/hooks/useInView";
 import SpotlightCard from "@/components/SpotlightCard";
+import ProjectShots from "@/components/ProjectShots";
 
 export default function Projects() {
   const { t, lang } = useLanguage();
@@ -107,6 +108,8 @@ export default function Projects() {
                   </div>
                 )}
               </div>
+
+              <ProjectShots alt={featured.title} />
             </SpotlightCard>
           )}
 

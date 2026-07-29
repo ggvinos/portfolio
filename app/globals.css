@@ -153,3 +153,22 @@ body::after {
   0%   { transform: translateX(-50%); }
   100% { transform: translateX(0); }
 }
+
+/* fade lento e ambiente: usado pelo fundo do hero, que chega por último */
+@keyframes fade-in-ambient {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+/* ── Acessibilidade: quem pediu menos movimento recebe a página pronta ── */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-delay: 0ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

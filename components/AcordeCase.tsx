@@ -4,6 +4,7 @@ import { useLanguage } from "@/lib/context";
 import { useInView } from "@/hooks/useInView";
 import SpotlightCard from "@/components/SpotlightCard";
 import PhoneShot from "@/components/PhoneShot";
+import { useParallax } from "@/hooks/useScrollFx";
 
 function Eyebrow({ children }: { children: React.ReactNode }) {
   return (
@@ -33,6 +34,22 @@ function Reveal({
         transition: `opacity 0.6s ease ${delay}ms, transform 0.6s ease ${delay}ms`,
       }}
     >
+      {children}
+    </div>
+  );
+}
+
+/** Camada de deriva no scroll. Fica dentro do Reveal para não disputar o transform. */
+function Parallax({
+  speed,
+  children,
+}: {
+  speed: number;
+  children: React.ReactNode;
+}) {
+  const ref = useParallax<HTMLDivElement>(speed);
+  return (
+    <div ref={ref} className="will-change-transform">
       {children}
     </div>
   );
@@ -96,11 +113,13 @@ export default function AcordeCase() {
         </div>
 
         <Reveal className="mt-20">
-          <PhoneShot
-            srcs={["/acorde/home.webp", "/acorde/letra.webp", "/acorde/fala.webp"]}
-            alt={c.title}
-            width={280}
-          />
+          <Parallax speed={0.08}>
+            <PhoneShot
+              srcs={["/acorde/home.webp", "/acorde/letra.webp", "/acorde/fala.webp"]}
+              alt={c.title}
+              width={280}
+            />
+          </Parallax>
         </Reveal>
       </section>
 
@@ -139,11 +158,13 @@ export default function AcordeCase() {
                 }`}
               >
                 <div className="lg:w-1/2">
-                  <PhoneShot
-                    srcs={[...f.shots]}
-                    alt={f.alt}
-                    width={f.shots.length > 1 ? 240 : 270}
-                  />
+                  <Parallax speed={i % 2 === 0 ? 0.1 : -0.1}>
+                    <PhoneShot
+                      srcs={[...f.shots]}
+                      alt={f.alt}
+                      width={f.shots.length > 1 ? 240 : 270}
+                    />
+                  </Parallax>
                 </div>
                 <div className="lg:w-1/2">
                   <span className="font-mono text-xs text-muted">
