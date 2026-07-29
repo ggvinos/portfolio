@@ -69,6 +69,18 @@ style={{ animationDelay: "0.6s", animationFillMode: "both" }}
 | `SpotlightCard.tsx` | Card com radial gradient vermelho que segue o cursor |
 | `CustomCursor.tsx` | Cursor customizado: ponto vermelho + anel (lerp via rAF) |
 | `TechStack.tsx` | Marquee duplo (componente legado — não está em page.tsx, o marquee ativo está dentro do Hero.tsx) |
+| `CaseNav.tsx` | Nav slim das páginas de case: voltar + toggle de idioma |
+| `AcordeCase.tsx` | Conteúdo do estudo de caso do Acorde (`/projetos/acorde`) |
+| `PhoneShot.tsx` | Grupo de telas em moldura de celular; com mais de um src os aparelhos ficam escalonados |
+
+## Rotas
+
+- `/` — home (page.tsx)
+- `/projetos/acorde` — estudo de caso do Acorde
+
+## Imagens do Acorde
+
+Telas em `public/acorde/*.webp` (590×1278, ~35 KB cada). Origem: `~/Documentos/acorde-carrosseis/telas/*.png` (1179×2556), convertidas com PIL para webp q82. Para atualizar uma tela, recapture no projeto de carrosséis e reconverta mantendo as dimensões.
 
 ## Hooks
 

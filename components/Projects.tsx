@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { useLanguage } from "@/lib/context";
 import { useInView } from "@/hooks/useInView";
 import SpotlightCard from "@/components/SpotlightCard";
@@ -74,6 +75,13 @@ export default function Projects() {
                       </span>
                     ))}
                   </div>
+
+                  <Link
+                    href="/projetos/acorde"
+                    className="inline-block mt-6 font-mono text-xs border border-[var(--border)] px-4 py-2 text-primary hover:border-accent hover:text-accent transition-colors duration-150"
+                  >
+                    {lang === "en" ? "Read the full case study" : "Ver o estudo de caso completo"} →
+                  </Link>
                 </div>
 
                 {featured.snapshot && (

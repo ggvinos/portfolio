@@ -287,6 +287,146 @@ export const translations = {
         "Root Cause Analysis",
       ],
     },
+    acordeCase: {
+      back: "Back to portfolio",
+      eyebrow: "CASE STUDY",
+      title: "Acorde",
+      tagline: "Learning English with the songs you already listen to.",
+      intro:
+        "A live product I researched, designed, built, tested and operate on my own. Acorde turns music into an English lesson: real-time synced lyrics, line-by-line translation, vocabulary at your level and pronunciation practice with word-by-word feedback.",
+      link: "https://acorde.club",
+      linkLabel: "Open acorde.club",
+      meta: [
+        { label: "Role", value: "Solo: product, design, dev and QA" },
+        { label: "Timeline", value: "2026 — in operation" },
+        { label: "Status", value: "Live with real users" },
+        { label: "Stack", value: "React · Supabase · Whisper · Claude API" },
+      ],
+      problem: {
+        eyebrow: "THE PROBLEM",
+        title: "Apps teach vocabulary nobody wanted to learn",
+        body: [
+          "Traditional language apps hand you a fixed word list and ask for daily discipline. That works while motivation lasts, and motivation is exactly what runs out first.",
+          "Music is the opposite: people already listen every day, already repeat the lines, already want to understand what is being said. The intent is there before the app exists.",
+          "Acorde starts from that intent. The lesson is the song you already chose.",
+        ],
+      },
+      product: {
+        eyebrow: "THE PRODUCT",
+        title: "Four decisions that define the experience",
+        features: [
+          {
+            title: "Synced lyrics with line-by-line translation",
+            body: "The lyric follows the audio in real time. Each line can be opened for translation without losing the song's rhythm, so reading never breaks listening.",
+            shots: ["/acorde/letra.webp"],
+            alt: "Acorde player with synced lyrics",
+          },
+          {
+            title: "Speaking practice with word-by-word scoring",
+            body: "You sing or read the line out loud and get a per-word score. Transcription runs on Whisper, with automatic fallback to the browser engine when the API fails.",
+            shots: ["/acorde/fala.webp"],
+            alt: "Speaking practice screen with per-word feedback",
+          },
+          {
+            title: "Vocabulary at your level, not at the app's level",
+            body: "Words are classified by CEFR level and saved to a personal deck. Spaced repetition (SM-2) decides what comes back and when.",
+            shots: ["/acorde/vocabulario.webp", "/acorde/revisao.webp"],
+            alt: "Vocabulary screen with CEFR levels",
+          },
+          {
+            title: "Retention by design",
+            body: "Daily challenge, streak and push reminders. Not gamification for its own sake: each one exists to bring the user back to a practice session that already works.",
+            shots: ["/acorde/progresso.webp"],
+            alt: "Daily review and streak screen",
+          },
+        ],
+      },
+      quality: {
+        eyebrow: "QUALITY ENGINEERING",
+        title: "How I applied QA to my own product",
+        lead: "This is the part that usually gets skipped in a side project. It is the part I care about most: Acorde is where I run the quality practices I bring to a team, without anyone forcing me to.",
+        pillars: [
+          {
+            tag: "01",
+            title: "Instrument before scaling",
+            body: "No acquisition spend before the activation funnel was instrumented. Named events on every critical step, so growth decisions come from data instead of instinct.",
+          },
+          {
+            tag: "02",
+            title: "Hypothesis, metric, deadline",
+            body: "Every discovery test is written as an experiment: measured baseline, target number and a date to decide. The microphone discovery test shipped with an 18.5% baseline and a 30% target, with a window to confirm or kill it.",
+          },
+          {
+            tag: "03",
+            title: "Failure is a requirement, not an exception",
+            body: "The speech API can be down, slow or rate-limited. Instead of surfacing an error, the app degrades gracefully to the browser engine. The failure path was specified alongside the happy path.",
+          },
+          {
+            tag: "04",
+            title: "Offline-first as an acceptance criterion",
+            body: "Search, play, read and save a word work without depending on the backend. The PWA core was validated under a degraded connection, not only on a healthy one.",
+          },
+          {
+            tag: "05",
+            title: "Regression where it hurts",
+            body: "The critical path (find a song → play → read → save a word) is verified on every deploy. Coverage concentrated where a defect costs the user the session.",
+          },
+          {
+            tag: "06",
+            title: "Traceability per release",
+            body: "Every deploy gets a changelog entry. When a metric moves, there is a record of what changed and when, which turns a mystery into an investigation.",
+          },
+        ],
+      },
+      decisions: {
+        eyebrow: "TECHNICAL DECISIONS",
+        title: "Trade-offs worth explaining",
+        items: [
+          {
+            title: "Whisper with browser fallback",
+            body: "Whisper gives far better accuracy for non-native speakers, at the cost of latency and an external dependency. The browser engine is worse but always available. Running both means the feature never fully goes down.",
+          },
+          {
+            title: "PWA instead of native app",
+            body: "Installable straight from the browser, no store review, deploy under my control. Being outside the stores is not a real growth blocker at this stage.",
+          },
+          {
+            title: "SM-2 instead of a custom algorithm",
+            body: "A well-documented, auditable spaced repetition algorithm. Inventing my own scheduler would add risk with no user-visible gain.",
+          },
+          {
+            title: "Living catalogue via scheduled job",
+            body: "A nightly job refreshes what is popular from external sources. The curated catalogue stays as a stable base, and the fresh content is additive instead of replacing it.",
+          },
+        ],
+      },
+      results: {
+        eyebrow: "WHERE IT STANDS",
+        title: "Current state",
+        items: [
+          { value: "Live", label: "in production at acorde.club" },
+          { value: "Jun 2026", label: "first real external users" },
+          { value: "18.5% → 30%", label: "speaking activation, measured target" },
+          { value: "SM-2", label: "review engine in production" },
+        ],
+        note: "Numbers reflect the product at the time of writing. The focus right now is retention, not acquisition.",
+      },
+      learnings: {
+        eyebrow: "WHAT I TOOK FROM IT",
+        title: "Lessons",
+        body: [
+          "Shipping a feature is the cheap part. Knowing whether it worked is what costs, and that only exists if the instrumentation went in first.",
+          "Being QA and developer on the same product exposes how often 'it works' and 'it works for the user' are different statements.",
+          "Deciding to kill a feature is easier when the number and the deadline were written down before the work started.",
+        ],
+      },
+      cta: {
+        title: "Want to see it running?",
+        body: "Acorde is live and free to try. No install required.",
+        primary: "Open acorde.club",
+        secondary: "Get in touch",
+      },
+    },
     sections_education: {
       education: "EDUCATION",
       certifications: "CERTIFICATIONS",
@@ -599,6 +739,146 @@ export const translations = {
         "Acessibilidade WCAG",
         "Análise de Causa Raiz",
       ],
+    },
+    acordeCase: {
+      back: "Voltar ao portfólio",
+      eyebrow: "ESTUDO DE CASO",
+      title: "Acorde",
+      tagline: "Aprender inglês com as músicas que você já ouve.",
+      intro:
+        "Um produto no ar que pesquisei, desenhei, construí, testei e opero sozinho. O Acorde transforma música em aula de inglês: letra sincronizada em tempo real, tradução linha a linha, vocabulário no seu nível e prática de pronúncia com feedback palavra a palavra.",
+      link: "https://acorde.club",
+      linkLabel: "Abrir acorde.club",
+      meta: [
+        { label: "Papel", value: "Solo: produto, design, dev e QA" },
+        { label: "Período", value: "2026 — em operação" },
+        { label: "Status", value: "No ar com usuários reais" },
+        { label: "Stack", value: "React · Supabase · Whisper · Claude API" },
+      ],
+      problem: {
+        eyebrow: "O PROBLEMA",
+        title: "Apps ensinam um vocabulário que ninguém pediu para aprender",
+        body: [
+          "App de idioma tradicional entrega uma lista fixa de palavras e cobra disciplina diária. Funciona enquanto a motivação dura, e motivação é exatamente o que acaba primeiro.",
+          "Música é o oposto: a pessoa já escuta todo dia, já repete os trechos, já quer entender o que está sendo dito. A intenção existe antes do app existir.",
+          "O Acorde parte dessa intenção. A aula é a música que você já escolheu.",
+        ],
+      },
+      product: {
+        eyebrow: "O PRODUTO",
+        title: "Quatro decisões que definem a experiência",
+        features: [
+          {
+            title: "Letra sincronizada com tradução linha a linha",
+            body: "A letra acompanha o áudio em tempo real. Cada linha pode ser aberta para tradução sem perder o ritmo da música, então ler nunca interrompe ouvir.",
+            shots: ["/acorde/letra.webp"],
+            alt: "Player do Acorde com letra sincronizada",
+          },
+          {
+            title: "Prática de fala com nota palavra a palavra",
+            body: "Você canta ou lê a linha em voz alta e recebe uma nota por palavra. A transcrição roda no Whisper, com fallback automático para o motor do navegador quando a API falha.",
+            shots: ["/acorde/fala.webp"],
+            alt: "Tela de prática de fala com feedback por palavra",
+          },
+          {
+            title: "Vocabulário no seu nível, não no nível do app",
+            body: "As palavras são classificadas por nível CEFR e salvas em um baralho pessoal. A revisão espaçada (SM-2) decide o que volta e quando.",
+            shots: ["/acorde/vocabulario.webp", "/acorde/revisao.webp"],
+            alt: "Tela de vocabulário com níveis CEFR",
+          },
+          {
+            title: "Retenção por design",
+            body: "Desafio diário, streak e lembretes push. Não é gamificação por gamificação: cada um existe para trazer o usuário de volta a uma sessão de prática que já funciona.",
+            shots: ["/acorde/progresso.webp"],
+            alt: "Tela de revisão diária e streak",
+          },
+        ],
+      },
+      quality: {
+        eyebrow: "ENGENHARIA DE QUALIDADE",
+        title: "Como apliquei QA no meu próprio produto",
+        lead: "Essa é a parte que normalmente se pula num projeto pessoal. É a que mais me importa: o Acorde é onde eu rodo as práticas de qualidade que levo para um time, sem ninguém me obrigar.",
+        pillars: [
+          {
+            tag: "01",
+            title: "Instrumentar antes de escalar",
+            body: "Nenhum investimento em aquisição antes do funil de ativação estar instrumentado. Eventos nomeados em cada passo crítico, para que a decisão de crescimento venha de dado e não de instinto.",
+          },
+          {
+            tag: "02",
+            title: "Hipótese, métrica, prazo",
+            body: "Todo teste de descoberta é escrito como experimento: baseline medido, número alvo e uma data para decidir. O teste do microfone entrou no ar com baseline de 18,5% e meta de 30%, com janela para confirmar ou matar.",
+          },
+          {
+            tag: "03",
+            title: "Falha é requisito, não exceção",
+            body: "A API de fala pode cair, ficar lenta ou estourar limite. Em vez de mostrar erro, o app degrada com elegância para o motor do navegador. O caminho de falha foi especificado junto com o caminho feliz.",
+          },
+          {
+            tag: "04",
+            title: "Offline-first como critério de aceite",
+            body: "Buscar, tocar, ler e salvar palavra funcionam sem depender do backend. O núcleo do PWA foi validado em conexão degradada, não só em conexão saudável.",
+          },
+          {
+            tag: "05",
+            title: "Regressão onde dói",
+            body: "O caminho crítico (achar música → tocar → ler → salvar palavra) é verificado a cada deploy. Cobertura concentrada onde o defeito custa a sessão do usuário.",
+          },
+          {
+            tag: "06",
+            title: "Rastreabilidade por release",
+            body: "Todo deploy gera entrada no changelog. Quando uma métrica se mexe, existe registro do que mudou e quando, o que transforma mistério em investigação.",
+          },
+        ],
+      },
+      decisions: {
+        eyebrow: "DECISÕES TÉCNICAS",
+        title: "Trade-offs que valem explicação",
+        items: [
+          {
+            title: "Whisper com fallback do navegador",
+            body: "O Whisper entrega precisão muito melhor para quem não é nativo, ao custo de latência e de uma dependência externa. O motor do navegador é pior, mas está sempre disponível. Rodar os dois significa que a feature nunca cai por completo.",
+          },
+          {
+            title: "PWA em vez de app nativo",
+            body: "Instalável direto do navegador, sem revisão de loja, deploy sob meu controle. Estar fora das lojas não é um bloqueador real de crescimento neste estágio.",
+          },
+          {
+            title: "SM-2 em vez de algoritmo próprio",
+            body: "Algoritmo de revisão espaçada documentado e auditável. Inventar um agendador próprio adicionaria risco sem ganho visível para o usuário.",
+          },
+          {
+            title: "Catálogo vivo via job agendado",
+            body: "Um job de madrugada atualiza o que está popular a partir de fontes externas. O catálogo curado continua como base estável, e o conteúdo novo é aditivo em vez de substituir.",
+          },
+        ],
+      },
+      results: {
+        eyebrow: "ONDE ESTÁ HOJE",
+        title: "Estado atual",
+        items: [
+          { value: "No ar", label: "em produção em acorde.club" },
+          { value: "jun/2026", label: "primeiros usuários externos reais" },
+          { value: "18,5% → 30%", label: "ativação de fala, meta medida" },
+          { value: "SM-2", label: "motor de revisão em produção" },
+        ],
+        note: "Os números refletem o produto no momento em que este case foi escrito. O foco agora é retenção, não aquisição.",
+      },
+      learnings: {
+        eyebrow: "O QUE EU TIREI DISSO",
+        title: "Aprendizados",
+        body: [
+          "Entregar uma feature é a parte barata. Saber se ela funcionou é o que custa, e isso só existe se a instrumentação entrou antes.",
+          "Ser QA e desenvolvedor do mesmo produto escancara com que frequência 'funciona' e 'funciona para o usuário' são frases diferentes.",
+          "Decidir matar uma feature fica mais fácil quando o número e o prazo foram escritos antes do trabalho começar.",
+        ],
+      },
+      cta: {
+        title: "Quer ver rodando?",
+        body: "O Acorde está no ar e é gratuito para testar. Não precisa instalar.",
+        primary: "Abrir acorde.club",
+        secondary: "Falar comigo",
+      },
     },
     sections_education: {
       education: "FORMAÇÃO",
