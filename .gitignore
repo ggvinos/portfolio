@@ -38,3 +38,5 @@ next-env.d.ts
 
 # lixo de CLI que nao pertence a este projeto
 supabase/
+
+.next-build
