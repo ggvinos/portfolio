@@ -106,14 +106,14 @@ function HorizontalTrack({ panels, closing }: { panels: PanelData[]; closing: Cl
             <div
               key={p.n}
               className="h-full shrink-0"
-              style={{ width: `${100 / total}%`, perspective: 1400 }}
+              style={{ width: `${100 / total}%` }}
             >
               <Panel {...p} index={i} total={total} progress={scrollYProgress} />
             </div>
           ))}
           <div
             className="h-full shrink-0"
-            style={{ width: `${100 / total}%`, perspective: 1400 }}
+            style={{ width: `${100 / total}%` }}
           >
             <ClosingPanel
               closing={closing}
@@ -246,10 +246,12 @@ function No({
   return (
     <motion.span
       aria-hidden="true"
-      className="pointer-events-none absolute z-0 block h-2 w-2 -translate-x-1/2 -translate-y-1/2 rounded-full"
+      className="pointer-events-none absolute z-0 block h-2 w-2 rounded-full"
       style={{
         left: `${(left / (total * 100)) * 100}%`,
         top: `${top}%`,
+        marginLeft: -4,
+        marginTop: -4,
         opacity: acende,
         scale: escala,
         background: CORAL,
@@ -273,25 +275,23 @@ function Panel({
 
   // o painel do centro fica nítido; os vizinhos recuam e apagam
   const opacity = useTransform(local, [-1, -0.45, 0, 0.45, 1], [0, 0.5, 1, 0.5, 0]);
-  const scale = useTransform(local, [-1, 0, 1], [0.94, 1, 0.94]);
+  const escalaTexto = useTransform(local, [-1, 0, 1], [0.92, 1, 0.92]);
 
   // parallax interno: aparelho e texto viajam em ritmos diferentes
   const telaX = useTransform(local, [-1, 0, 1], [70, 0, -70]);
-  const telaRot = useTransform(local, [-1, 0, 1], [12, 0, -12]);
   const textoX = useTransform(local, [-1, 0, 1], [190, 0, -190]);
   const numeroX = useTransform(local, [-1, 0, 1], [320, 0, -320]);
   const brilho = useTransform(local, [-1, 0, 1], [0, 1, 0]);
 
   return (
     <motion.div
-      // willChange so de opacity: incluir transform fixa a camada rasterizada
-      // no menor tamanho da escala e a imagem sobe borrada.
-      style={{ opacity, scale, willChange: "opacity" }}
+      style={{ opacity, willChange: "opacity" }}
       className="relative z-10 flex h-full w-full items-center justify-center px-16"
     >
       <div className="flex max-w-4xl items-center gap-16">
         <motion.div
-          style={{ x: telaX, rotateY: telaRot }}
+          // so translate: escala e rotacao 3D reamostram a textura e borram
+          style={{ x: telaX }}
           className="relative shrink-0"
         >
           <motion.div
@@ -325,7 +325,7 @@ function Panel({
             {n}
           </motion.span>
 
-          <motion.div style={{ x: textoX, willChange: "transform" }}>
+          <motion.div style={{ x: textoX, scale: escalaTexto, willChange: "transform" }}>
             <span className="font-mono text-xs" style={{ color: CORAL }}>
               {n}
             </span>
@@ -402,12 +402,11 @@ function AnimatedClosing({
 }) {
   const local = useLocal(progress, index, total);
   const opacity = useTransform(local, [-1, -0.45, 0], [0, 0.5, 1]);
-  const scale = useTransform(local, [-1, 0], [0.94, 1]);
   const y = useTransform(local, [-1, 0], [40, 0]);
 
   return (
     <motion.div
-      style={{ opacity, scale, y, willChange: "opacity" }}
+      style={{ opacity, y, willChange: "opacity" }}
       className="flex h-full w-full flex-col items-center justify-center px-16 text-center"
     >
       {conteudo}

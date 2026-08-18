@@ -1,6 +1,5 @@
 "use client";
 
-import Link from "next/link";
 import { useLanguage } from "@/lib/context";
 import { useInView } from "@/hooks/useInView";
 import SpotlightCard from "@/components/SpotlightCard";
@@ -10,7 +9,7 @@ export default function Projects() {
   const [ref, inView] = useInView();
   const [refPersonal, inViewPersonal] = useInView();
 
-  const featured = t.projects.find((p) => p.featured);
+  // o Acorde (featured) vive na faixa horizontal propria, acima desta secao
   const rest = t.projects.filter((p) => !p.featured);
 
   return (
@@ -21,8 +20,8 @@ export default function Projects() {
         </h2>
         <p className="text-muted text-sm mb-10">
           {lang === "en"
-            ? "A live product, internal tools and test suites I shipped."
-            : "Um produto no ar, ferramentas internas e suites de teste que entreguei."}
+            ? "Internal tools and test suites I shipped."
+            : "Ferramentas internas e suites de teste que entreguei."}
         </p>
 
         <div
@@ -31,52 +30,6 @@ export default function Projects() {
             inView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"
           }`}
         >
-          {/* FEATURED */}
-          {featured && (
-            <SpotlightCard className="mb-4">
-              <div className="p-8">
-                <div className="min-w-0">
-                  <div className="flex flex-wrap items-center gap-3 mb-4">
-                    <h3 className="text-xl font-semibold text-primary">{featured.title}</h3>
-                    {featured.label && (
-                      <span className="font-mono text-[10px] px-2 py-0.5 border border-accent text-accent tracking-widest">
-                        {featured.label}
-                      </span>
-                    )}
-                    {featured.link && (
-                      <a
-                        href={featured.link}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="ml-auto font-mono text-xs text-accent hover:underline whitespace-nowrap"
-                      >
-                        {featured.link.replace("https://", "")} ↗
-                      </a>
-                    )}
-                  </div>
-
-                  <p className="text-muted leading-relaxed mb-5">{featured.description}</p>
-
-
-                  <div className="flex flex-wrap gap-2">
-                    {featured.tags.map((tag) => (
-                      <span key={tag} className="font-mono text-[11px] px-2 py-1 border border-[var(--border)] text-muted">
-                        {tag}
-                      </span>
-                    ))}
-                  </div>
-
-                  <Link
-                    href="/projetos/acorde"
-                    className="inline-block mt-6 font-mono text-xs border border-[var(--border)] px-4 py-2 text-primary hover:border-accent hover:text-accent transition-colors duration-150"
-                  >
-                    {lang === "en" ? "Read the full case study" : "Ver o estudo de caso completo"} →
-                  </Link>
-                </div>
-              </div>
-            </SpotlightCard>
-          )}
-
           {/* GRID */}
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
             {rest.map((project, i) => {
