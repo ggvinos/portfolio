@@ -100,6 +100,8 @@ function HorizontalTrack({ panels, closing }: { panels: PanelData[]; closing: Cl
           style={{ x, width: `${total * 100}%` }}
           className="relative flex h-full will-change-transform"
         >
+          <LinhaGuia total={total} progress={scrollYProgress} />
+
           {panels.map((p, i) => (
             <div
               key={p.n}
@@ -163,6 +165,100 @@ function AuroraFundo({ progress, total }: { progress: MotionValue<number>; total
   );
 }
 
+
+/**
+ * Curva-guia que atravessa a faixa inteira e se desenha conforme o scroll.
+ *
+ * O SVG e esticado (preserveAspectRatio="none"), o que distorce formas — por
+ * isso so a curva mora aqui, com vectorEffect para a espessura nao esticar.
+ * Os nos sao HTML posicionado em porcentagem, senao virariam elipses.
+ */
+function curva(total: number) {
+  const pts = Array.from({ length: total }, (_, i) => ({
+    x: i * 100 + 50,
+    y: 82 + 7 * Math.sin(i * 1.25),
+  }));
+  let d = `M ${pts[0].x} ${pts[0].y.toFixed(2)}`;
+  for (let i = 1; i < pts.length; i++) {
+    const a = pts[i - 1];
+    const b = pts[i];
+    const dx = (b.x - a.x) / 2;
+    d += ` C ${a.x + dx} ${a.y.toFixed(2)}, ${b.x - dx} ${b.y.toFixed(2)}, ${b.x} ${b.y.toFixed(2)}`;
+  }
+  return { d, pts };
+}
+
+function LinhaGuia({ total, progress }: { total: number; progress: MotionValue<number> }) {
+  const { d, pts } = curva(total);
+
+  return (
+    <>
+      <svg
+        aria-hidden="true"
+        className="pointer-events-none absolute inset-0 z-0 h-full w-full"
+        viewBox={`0 0 ${total * 100} 100`}
+        preserveAspectRatio="none"
+      >
+        {/* trilho apagado: mostra o caminho inteiro desde o inicio */}
+        <path
+          d={d}
+          fill="none"
+          stroke="var(--border)"
+          strokeWidth={1}
+          vectorEffect="non-scaling-stroke"
+        />
+        {/* traco que se desenha com o progresso */}
+        <motion.path
+          d={d}
+          fill="none"
+          stroke={CORAL}
+          strokeWidth={1.5}
+          strokeLinecap="round"
+          vectorEffect="non-scaling-stroke"
+          style={{ pathLength: progress, filter: `drop-shadow(0 0 6px ${CORAL}88)` }}
+        />
+      </svg>
+
+      {pts.map((pt, i) => (
+        <No key={i} index={i} total={total} progress={progress} left={pt.x} top={pt.y} />
+      ))}
+    </>
+  );
+}
+
+function No({
+  index,
+  total,
+  progress,
+  left,
+  top,
+}: {
+  index: number;
+  total: number;
+  progress: MotionValue<number>;
+  left: number;
+  top: number;
+}) {
+  const local = useLocal(progress, index, total);
+  const acende = useTransform(local, [-1, -0.35, 0, 0.35, 1], [0.25, 0.6, 1, 0.6, 0.25]);
+  const escala = useTransform(local, [-1, 0, 1], [0.7, 1.6, 0.7]);
+
+  return (
+    <motion.span
+      aria-hidden="true"
+      className="pointer-events-none absolute z-0 block h-2 w-2 -translate-x-1/2 -translate-y-1/2 rounded-full"
+      style={{
+        left: `${(left / (total * 100)) * 100}%`,
+        top: `${top}%`,
+        opacity: acende,
+        scale: escala,
+        background: CORAL,
+        boxShadow: `0 0 12px ${CORAL}`,
+      }}
+    />
+  );
+}
+
 function Panel({
   n,
   title,
@@ -177,23 +273,25 @@ function Panel({
 
   // o painel do centro fica nítido; os vizinhos recuam e apagam
   const opacity = useTransform(local, [-1, -0.45, 0, 0.45, 1], [0, 0.5, 1, 0.5, 0]);
-  const scale = useTransform(local, [-1, 0, 1], [0.82, 1, 0.82]);
+  const scale = useTransform(local, [-1, 0, 1], [0.94, 1, 0.94]);
 
   // parallax interno: aparelho e texto viajam em ritmos diferentes
   const telaX = useTransform(local, [-1, 0, 1], [70, 0, -70]);
-  const telaRot = useTransform(local, [-1, 0, 1], [18, 0, -18]);
+  const telaRot = useTransform(local, [-1, 0, 1], [12, 0, -12]);
   const textoX = useTransform(local, [-1, 0, 1], [190, 0, -190]);
   const numeroX = useTransform(local, [-1, 0, 1], [320, 0, -320]);
   const brilho = useTransform(local, [-1, 0, 1], [0, 1, 0]);
 
   return (
     <motion.div
-      style={{ opacity, scale, willChange: "transform, opacity" }}
-      className="relative flex h-full w-full items-center justify-center px-16"
+      // willChange so de opacity: incluir transform fixa a camada rasterizada
+      // no menor tamanho da escala e a imagem sobe borrada.
+      style={{ opacity, scale, willChange: "opacity" }}
+      className="relative z-10 flex h-full w-full items-center justify-center px-16"
     >
       <div className="flex max-w-4xl items-center gap-16">
         <motion.div
-          style={{ x: telaX, rotateY: telaRot, willChange: "transform" }}
+          style={{ x: telaX, rotateY: telaRot }}
           className="relative shrink-0"
         >
           <motion.div
@@ -209,8 +307,8 @@ function Panel({
             <img
               src={shot}
               alt={alt}
-              width={590}
-              height={1278}
+              width={900}
+              height={1951}
               loading="lazy"
               className="block rounded-[1.35rem]"
               style={{ width: 250 }}
@@ -304,12 +402,12 @@ function AnimatedClosing({
 }) {
   const local = useLocal(progress, index, total);
   const opacity = useTransform(local, [-1, -0.45, 0], [0, 0.5, 1]);
-  const scale = useTransform(local, [-1, 0], [0.82, 1]);
+  const scale = useTransform(local, [-1, 0], [0.94, 1]);
   const y = useTransform(local, [-1, 0], [40, 0]);
 
   return (
     <motion.div
-      style={{ opacity, scale, y, willChange: "transform, opacity" }}
+      style={{ opacity, scale, y, willChange: "opacity" }}
       className="flex h-full w-full flex-col items-center justify-center px-16 text-center"
     >
       {conteudo}
@@ -326,8 +424,8 @@ function StaticPanel({ n, title, body, shot, alt }: PanelData) {
         <img
           src={shot}
           alt={alt}
-          width={590}
-          height={1278}
+          width={900}
+          height={1951}
           loading="lazy"
           className="block rounded-[1.35rem]"
           style={{ width: 200 }}
