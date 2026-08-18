@@ -53,18 +53,90 @@ export default function AcordeShowcase() {
       {horizontal ? (
         <HorizontalTrack panels={s.panels as unknown as PanelData[]} closing={s.closing} />
       ) : (
-        <div className="flex snap-x snap-mandatory gap-4 overflow-x-auto px-6 pb-16 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
-          {s.panels.map((p) => (
-            <div key={p.n} className="w-[85vw] shrink-0 snap-center">
-              <StaticPanel {...p} />
-            </div>
-          ))}
-          <div className="w-[85vw] shrink-0 snap-center">
-            <ClosingPanel closing={s.closing} compact />
-          </div>
-        </div>
+        <Carrossel panels={s.panels as unknown as PanelData[]} closing={s.closing} />
       )}
     </section>
+  );
+}
+
+/**
+ * Celular: carrossel de arrastar. A mesma linha-guia do desktop existe aqui,
+ * mas movida pelo scroll horizontal do proprio carrossel em vez do vertical
+ * da pagina — e desenhada abaixo dos cards, onde nao fica escondida atras
+ * deles. Serve de animacao e de indicador de quantos passos faltam.
+ */
+function Carrossel({ panels, closing }: { panels: PanelData[]; closing: Closing }) {
+  const ref = useRef<HTMLDivElement>(null);
+  const { scrollXProgress } = useScroll({ container: ref, axis: "x" });
+  const total = panels.length + 1;
+
+  return (
+    <div className="pb-16">
+      <div
+        ref={ref}
+        className="flex snap-x snap-mandatory gap-4 overflow-x-auto px-6 pb-6 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
+      >
+        {panels.map((p) => (
+          <div key={p.n} className="w-[85vw] shrink-0 snap-center">
+            <StaticPanel {...p} />
+          </div>
+        ))}
+        <div className="w-[85vw] shrink-0 snap-center">
+          <ClosingPanel closing={closing} compact />
+        </div>
+      </div>
+
+      <TrilhoMobile total={total} progress={scrollXProgress} />
+    </div>
+  );
+}
+
+/** Linha reta com um no por painel, desenhada conforme o dedo arrasta. */
+function TrilhoMobile({ total, progress }: { total: number; progress: MotionValue<number> }) {
+  const largura = useTransform(progress, [0, 1], ["0%", "100%"]);
+
+  return (
+    <div className="mt-2 flex items-center px-6">
+      <div className="relative h-px flex-1 bg-[var(--border)]">
+        <motion.div
+          className="absolute inset-y-0 left-0"
+          style={{ width: largura, background: CORAL, boxShadow: `0 0 8px ${CORAL}` }}
+        />
+        {Array.from({ length: total }, (_, i) => (
+          <NoMobile key={i} index={i} total={total} progress={progress} />
+        ))}
+      </div>
+    </div>
+  );
+}
+
+function NoMobile({
+  index,
+  total,
+  progress,
+}: {
+  index: number;
+  total: number;
+  progress: MotionValue<number>;
+}) {
+  const local = useLocal(progress, index, total);
+  const acende = useTransform(local, [-1, -0.4, 0, 0.4, 1], [0.25, 0.6, 1, 0.6, 0.25]);
+  const escala = useTransform(local, [-1, 0, 1], [0.8, 1.7, 0.8]);
+
+  return (
+    <motion.span
+      aria-hidden="true"
+      className="absolute block h-1.5 w-1.5 rounded-full"
+      style={{
+        left: `${(index / (total - 1)) * 100}%`,
+        top: "50%",
+        marginLeft: -3,
+        marginTop: -3,
+        opacity: acende,
+        scale: escala,
+        background: CORAL,
+      }}
+    />
   );
 }
 
