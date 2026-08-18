@@ -15,7 +15,7 @@ npx tsc --noEmit # verificar tipos sem compilar
 - **Next.js 14** App Router (sem pages/)
 - **Tailwind CSS** com tema via CSS variables (não classes zinc/gray)
 - **TypeScript** strict
-- **Sem bibliotecas de animação** — tudo CSS puro + Canvas API
+- **`motion`** (Framer Motion) para animação ligada ao scroll — adicionada em ago/2026 pela faixa horizontal do Acorde. Custo real medido: home foi de 118 kB para 164 kB de First Load JS. O resto do site segue em CSS puro + Canvas API; só use `motion` quando precisar de scroll-linked de verdade.
 
 ## Arquitetura
 
@@ -72,6 +72,8 @@ style={{ animationDelay: "0.6s", animationFillMode: "both" }}
 | `CaseNav.tsx` | Nav slim das páginas de case: voltar + toggle de idioma |
 | `AcordeCase.tsx` | Conteúdo do estudo de caso do Acorde (`/projetos/acorde`) |
 | `PhoneShot.tsx` | Grupo de telas em moldura de celular; com mais de um src os aparelhos ficam escalonados |
+| `AcordeShowcase.tsx` | Faixa horizontal do Acorde na home: 6 painéis de narrativa + 1 de fechamento |
+| `ScrollProgress.tsx` | Barra fina de progresso de leitura no topo |
 
 ## Rotas
 
@@ -80,7 +82,19 @@ style={{ animationDelay: "0.6s", animationFillMode: "both" }}
 
 ## Imagens do Acorde
 
-Telas em `public/acorde/*.webp` (590×1278, ~35 KB cada). Origem: `~/Documentos/acorde-carrosseis/telas/*.png` (1179×2556), convertidas com PIL para webp q82. Para atualizar uma tela, recapture no projeto de carrosséis e reconverta mantendo as dimensões.
+Telas em `public/acorde/*.webp` (590×1278, 339 KB no total). Origem: `~/Documentos/acorde-carrosseis/telas/*.png` (1179×2556), convertidas com PIL para webp q82.
+
+Para atualizar: `cd ~/Documentos/lyriclearn && npm run dev`, depois `cd ~/Documentos/acorde-carrosseis && node capturar.mjs`, e reconverter mantendo 590×1278.
+
+**A identidade do Acorde mudou em ago/2026** (roxo → coral `#ff7a59` + serifa Fraunces, roxo `#8c30ff` só no logo). Se as telas parecerem todas roxas, estão velhas.
+
+## Faixa horizontal (AcordeShowcase)
+
+Container alto (`total * 80vh`) com miolo `sticky`; `useScroll` + `useTransform` viram `translateX` no trilho.
+
+Regra que não pode quebrar: o trilho usa **porcentagem de si mesmo**, nunca `vw`. `100vw` inclui a barra de rolagem e o último painel fica cortado pela largura dela. Trilho = `total * 100%`, painel = `100 / total %`, deslocamento = `-((total - 1) / total) * 100%`.
+
+Abaixo de 1024px, ou com `prefers-reduced-motion`, vira carrossel de arrastar com snap. Scroll-jack em touch é hostil.
 
 ## Hooks
 

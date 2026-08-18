@@ -287,6 +287,25 @@ export const translations = {
         "Root Cause Analysis",
       ],
     },
+    acordeShowcase: {
+      eyebrow: "LIVE PRODUCT",
+      title: "One study session, start to finish",
+      lead: "Acorde turns a song you already listen to into an English lesson. This is what a single session looks like.",
+      panels: [
+        { n: "01", title: "You pick the song", body: "No fixed word list. The lesson starts from something you already wanted to hear.", shot: "/acorde/home.webp", alt: "Acorde home screen" },
+        { n: "02", title: "The lyric follows the audio", body: "Synced line by line, with translation one tap away. Reading never interrupts listening.", shot: "/acorde/letra.webp", alt: "Synced lyrics with translation" },
+        { n: "03", title: "Focus mode: one line at a time", body: "Everything else blurs out. The cognitive load drops to a single sentence.", shot: "/acorde/foco.webp", alt: "Focus mode, one line at a time" },
+        { n: "04", title: "You sing it, you get a score", body: "Whisper transcribes and grades word by word. When the API fails, the browser engine takes over.", shot: "/acorde/fala.webp", alt: "Speaking practice with per-word score" },
+        { n: "05", title: "The hard word becomes a flashcard", body: "What you missed goes into spaced repetition (SM-2) and comes back exactly when you are about to forget.", shot: "/acorde/revisao.webp", alt: "Spaced repetition flashcard" },
+        { n: "06", title: "The streak holds the routine", body: "Daily challenge, XP and push reminders. Each one exists to bring you back to a session that already works.", shot: "/acorde/progresso.webp", alt: "Progress and streak screen" },
+      ],
+      closing: {
+        title: "Built, tested and operated end to end",
+        body: "Same standards I use as a QA: instrumented activation funnel, tested critical paths and every feature measured in production before scaling.",
+        cta: "Read the full case study",
+        visit: "Open acorde.club",
+      },
+    },
     acordeCase: {
       back: "Back to portfolio",
       eyebrow: "CASE STUDY",
@@ -739,6 +758,25 @@ export const translations = {
         "Acessibilidade WCAG",
         "Análise de Causa Raiz",
       ],
+    },
+    acordeShowcase: {
+      eyebrow: "PRODUTO NO AR",
+      title: "Uma sessão de estudo, do início ao fim",
+      lead: "O Acorde transforma uma música que você já ouve em aula de inglês. É assim que uma sessão acontece.",
+      panels: [
+        { n: "01", title: "Você escolhe a música", body: "Sem lista fixa de palavras. A aula começa por algo que você já queria ouvir.", shot: "/acorde/home.webp", alt: "Tela inicial do Acorde" },
+        { n: "02", title: "A letra acompanha o áudio", body: "Sincronizada linha a linha, com tradução a um toque. Ler nunca interrompe ouvir.", shot: "/acorde/letra.webp", alt: "Letra sincronizada com tradução" },
+        { n: "03", title: "Modo foco: uma linha por vez", body: "Todo o resto desfoca. A carga cognitiva cai para uma frase só.", shot: "/acorde/foco.webp", alt: "Modo foco, uma linha por vez" },
+        { n: "04", title: "Você canta e recebe a nota", body: "O Whisper transcreve e avalia palavra a palavra. Quando a API falha, o motor do navegador assume.", shot: "/acorde/fala.webp", alt: "Prática de fala com nota por palavra" },
+        { n: "05", title: "A palavra difícil vira flashcard", body: "O que você errou entra na revisão espaçada (SM-2) e volta na hora em que você ia esquecer.", shot: "/acorde/revisao.webp", alt: "Flashcard de revisão espaçada" },
+        { n: "06", title: "O streak segura a rotina", body: "Desafio diário, XP e lembretes push. Cada um existe para trazer você de volta a uma sessão que já funciona.", shot: "/acorde/progresso.webp", alt: "Tela de progresso e streak" },
+      ],
+      closing: {
+        title: "Construído, testado e operado de ponta a ponta",
+        body: "Os mesmos padrões que uso como QA: funil de ativação instrumentado, caminhos críticos testados e cada feature medida em produção antes de escalar.",
+        cta: "Ver o estudo de caso completo",
+        visit: "Abrir acorde.club",
+      },
     },
     acordeCase: {
       back: "Voltar ao portfólio",

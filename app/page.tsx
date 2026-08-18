@@ -3,6 +3,7 @@ import Grain from "@/components/Grain";
 import ScrollProgress from "@/components/ScrollProgress";
 import Hero from "@/components/Hero";
 import About from "@/components/About";
+import AcordeShowcase from "@/components/AcordeShowcase";
 import Projects from "@/components/Projects";
 import Experience from "@/components/Experience";
 import Education from "@/components/Education";
@@ -20,6 +21,7 @@ export default function Home() {
       <main>
         <Hero />
         <About />
+        <AcordeShowcase />
         <Projects />
         <Experience />
         <Education />

@@ -4,7 +4,6 @@ import Link from "next/link";
 import { useLanguage } from "@/lib/context";
 import { useInView } from "@/hooks/useInView";
 import SpotlightCard from "@/components/SpotlightCard";
-import ProjectShots from "@/components/ProjectShots";
 
 export default function Projects() {
   const { t, lang } = useLanguage();
@@ -35,8 +34,8 @@ export default function Projects() {
           {/* FEATURED */}
           {featured && (
             <SpotlightCard className="mb-4">
-              <div className="p-8 flex flex-col lg:flex-row gap-10">
-                <div className="flex-1 min-w-0">
+              <div className="p-8">
+                <div className="min-w-0">
                   <div className="flex flex-wrap items-center gap-3 mb-4">
                     <h3 className="text-xl font-semibold text-primary">{featured.title}</h3>
                     {featured.label && (
@@ -58,16 +57,6 @@ export default function Projects() {
 
                   <p className="text-muted leading-relaxed mb-5">{featured.description}</p>
 
-                  {featured.detail && (
-                    <ul className="space-y-2 mb-6">
-                      {featured.detail.map((item, i) => (
-                        <li key={i} className="flex gap-2 text-sm text-muted">
-                          <span className="text-accent font-mono mt-0.5 shrink-0">—</span>
-                          <span>{item}</span>
-                        </li>
-                      ))}
-                    </ul>
-                  )}
 
                   <div className="flex flex-wrap gap-2">
                     {featured.tags.map((tag) => (
@@ -84,32 +73,7 @@ export default function Projects() {
                     {lang === "en" ? "Read the full case study" : "Ver o estudo de caso completo"} →
                   </Link>
                 </div>
-
-                {featured.snapshot && (
-                  <div className="lg:w-60 shrink-0">
-                    <p className="font-mono text-[10px] text-muted uppercase tracking-widest mb-3">
-                      // snapshot
-                    </p>
-                    <div className="border border-[var(--border)] divide-y divide-[var(--border)]">
-                      {featured.snapshot.map((m) => (
-                        <div key={m.label} className="flex items-center justify-between px-4 py-3">
-                          <span className="text-xs text-muted">{m.label}</span>
-                          <div className="flex items-center gap-1.5">
-                            <span className="font-mono text-sm font-semibold text-primary">{m.value}</span>
-                            {"up" in m && m.up !== undefined && (
-                              <span className={`font-mono text-[10px] ${m.up ? "text-green-500" : "text-red-400"}`}>
-                                {m.up ? "▲" : "▼"}
-                              </span>
-                            )}
-                          </div>
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-                )}
               </div>
-
-              <ProjectShots alt={featured.title} />
             </SpotlightCard>
           )}
 
