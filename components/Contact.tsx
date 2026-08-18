@@ -68,7 +68,7 @@ export default function Contact() {
                 target={href.startsWith("mailto") ? undefined : "_blank"}
                 rel={href.startsWith("mailto") ? undefined : "noopener noreferrer"}
                 style={{ transitionDelay: `${i * 60}ms` }}
-                className={`font-mono text-sm text-muted hover:text-accent transition-colors duration-150 border-b border-transparent hover:border-accent pb-0.5 ${
+                className={`inline-block py-2 font-mono text-sm text-muted hover:text-accent transition-colors duration-150 border-b border-transparent hover:border-accent ${
                   inView ? "opacity-100" : "opacity-0"
                 }`}
               >

@@ -92,7 +92,7 @@ export default function Projects() {
                       href={link}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="font-mono text-xs text-accent hover:underline mt-4 inline-block"
+                      className="font-mono text-xs text-accent hover:underline mt-4 inline-block py-1.5"
                     >
                       {link.includes("github.com") ? "github ↗" : link.replace("https://", "")}
                     </a>
@@ -137,7 +137,7 @@ export default function Projects() {
                       href={p.link}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="font-mono text-xs text-accent hover:underline mt-4"
+                      className="font-mono text-xs text-accent hover:underline mt-4 inline-block py-1.5"
                     >
                       {p.link.replace("https://www.", "")} ↗
                     </a>

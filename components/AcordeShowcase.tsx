@@ -22,11 +22,14 @@ type Closing = { title: string; body: string; cta: string; visit: string };
 /**
  * Faixa horizontal do Acorde.
  *
- * Desktop: container alto com miolo sticky traduz scroll vertical em
- * translateX. Cada painel também reage ao próprio progresso — o do centro
- * fica nítido e em escala cheia, os vizinhos recuam.
+ * Um container alto com miolo sticky traduz o scroll vertical da página em
+ * translateX — em qualquer largura. O gesto do usuário nunca muda: continua
+ * sendo o scroll normal de cima para baixo, só que o conteúdo desliza de
+ * lado. Isso funciona igual em mouse, trackpad e touch, porque não depende
+ * de arrastar para os lados.
  *
- * Celular: carrossel de arrastar com snap. Scroll-jack em touch é hostil.
+ * Só foge disso quem pediu menos movimento (prefers-reduced-motion): aí vira
+ * um carrossel de arrastar comum, sem scroll-jack.
  */
 export default function AcordeShowcase() {
   const { t } = useLanguage();
@@ -34,7 +37,7 @@ export default function AcordeShowcase() {
   const [horizontal, setHorizontal] = useState(false);
 
   useEffect(() => {
-    const mq = window.matchMedia("(min-width: 1024px) and (prefers-reduced-motion: no-preference)");
+    const mq = window.matchMedia("(prefers-reduced-motion: no-preference)");
     const sync = () => setHorizontal(mq.matches);
     sync();
     mq.addEventListener("change", sync);
@@ -164,8 +167,8 @@ function HorizontalTrack({ panels, closing }: { panels: PanelData[]; closing: Cl
   const barra = useTransform(scrollYProgress, [0, 1], ["0%", "100%"]);
 
   return (
-    <div ref={ref} style={{ height: `${total * 85}vh` }}>
-      <div className="sticky top-0 h-screen overflow-hidden">
+    <div ref={ref} style={{ height: `${total * 85}dvh` }}>
+      <div className="sticky top-0 h-dvh overflow-hidden">
         <AuroraFundo progress={scrollYProgress} total={total} />
 
         <motion.div
@@ -358,9 +361,9 @@ function Panel({
   return (
     <motion.div
       style={{ opacity, willChange: "opacity" }}
-      className="relative z-10 flex h-full w-full items-center justify-center px-16"
+      className="relative z-10 flex h-full w-full items-center justify-center px-6 sm:px-16"
     >
-      <div className="flex max-w-4xl items-center gap-16">
+      <div className="flex max-w-4xl flex-col items-center gap-6 text-center sm:flex-row sm:gap-16 sm:text-left">
         <motion.div
           // so translate: escala e rotacao 3D reamostram a textura e borram
           style={{ x: telaX }}
@@ -383,16 +386,19 @@ function Panel({
               height={1951}
               loading="lazy"
               className="block rounded-[1.35rem]"
-              style={{ width: 250 }}
+              // clamp em vez de largura fixa: acompanha a tela sem precisar
+              // de um breakpoint por tamanho de aparelho
+              style={{ width: "clamp(130px, 32vw, 250px)" }}
             />
           </div>
         </motion.div>
 
         <div className="relative max-w-sm">
+          {/* numero fantasma: decorativo, ocupa altura que falta no mobile */}
           <motion.span
             aria-hidden="true"
             style={{ x: numeroX, willChange: "transform" }}
-            className="pointer-events-none absolute -left-4 -top-24 select-none font-mono text-[10rem] font-bold leading-none text-[var(--text)] opacity-[0.04]"
+            className="pointer-events-none absolute -left-4 -top-24 hidden select-none font-mono text-[10rem] font-bold leading-none text-[var(--text)] opacity-[0.04] sm:block"
           >
             {n}
           </motion.span>
@@ -401,10 +407,10 @@ function Panel({
             <span className="font-mono text-xs" style={{ color: CORAL }}>
               {n}
             </span>
-            <h3 className="mt-3 text-2xl font-semibold tracking-tight text-primary sm:text-3xl">
+            <h3 className="mt-3 text-xl font-semibold tracking-tight text-primary sm:text-3xl">
               {title}
             </h3>
-            <p className="mt-4 leading-relaxed text-muted">{body}</p>
+            <p className="mt-3 text-sm leading-relaxed text-muted sm:mt-4 sm:text-base">{body}</p>
           </motion.div>
         </div>
       </div>
@@ -479,7 +485,7 @@ function AnimatedClosing({
   return (
     <motion.div
       style={{ opacity, y, willChange: "opacity" }}
-      className="flex h-full w-full flex-col items-center justify-center px-16 text-center"
+      className="flex h-full w-full flex-col items-center justify-center px-6 text-center sm:px-16"
     >
       {conteudo}
     </motion.div>
