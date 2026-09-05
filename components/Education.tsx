@@ -60,7 +60,7 @@ export default function Education() {
                 <div
                   key={i}
                   style={{ transitionDelay: `${i * 60}ms`, opacity: inViewCerts ? 1 : 0, transform: inViewCerts ? "translateY(0)" : "translateY(8px)", transition: "opacity 0.4s ease, transform 0.4s ease" }}
-                  className="border border-[var(--border)] p-4 hover:border-[#334155] transition-colors duration-150"
+                  className="border border-[var(--border)] p-4 hover:border-[#404040] transition-colors duration-150"
                 >
                   <div className="text-sm font-semibold text-primary mb-1">{cert.title}</div>
                   <div className="font-mono text-[10px] text-muted">{cert.issuer}</div>

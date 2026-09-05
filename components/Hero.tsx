@@ -48,17 +48,16 @@ export default function Hero() {
         className="absolute inset-0 z-0"
         style={{ animation: "fade-in-ambient 2.2s ease both", animationDelay: T.world }}
       >
-        {/* fundo com nebulosas */}
+        {/* fundo: vinheta neutra, sem matiz — o planeta e os meteoros entram
+            numa etapa seguinte, isto aqui é só a base para não ficar colorido
+            enquanto isso não é decidido */}
         <div
           className="absolute inset-0 z-0"
           style={{
             background: `
-              radial-gradient(ellipse 65% 45% at 72% 18%, rgba(88, 28, 135, 0.32) 0%, transparent 55%),
-              radial-gradient(ellipse 55% 65% at 22% 78%, rgba(29, 78, 216, 0.22) 0%, transparent 52%),
-              radial-gradient(ellipse 40% 30% at 50% 48%, rgba(109, 40, 217, 0.11) 0%, transparent 50%),
-              radial-gradient(ellipse 30% 42% at 88% 62%, rgba(55, 48, 163, 0.13) 0%, transparent 42%),
-              radial-gradient(ellipse 45% 28% at 12% 22%, rgba(67, 56, 202, 0.09) 0%, transparent 48%),
-              #000000
+              radial-gradient(ellipse 65% 45% at 72% 18%, rgba(0, 0, 0, 0.05) 0%, transparent 55%),
+              radial-gradient(ellipse 55% 65% at 22% 78%, rgba(0, 0, 0, 0.04) 0%, transparent 52%),
+              #ffffff
             `,
           }}
         />
@@ -67,12 +66,12 @@ export default function Hero() {
 
         <div
           className="hidden md:block absolute top-[72px] left-0 right-0 h-px z-[2] animate-glow"
-          style={{ background: "linear-gradient(90deg, transparent 0%, rgba(148,163,184,0.35) 50%, transparent 100%)" }}
+          style={{ background: "linear-gradient(90deg, transparent 0%, rgba(0,0,0,0.25) 50%, transparent 100%)" }}
         />
         <div
           className="hidden md:block absolute bottom-0 left-0 right-0 h-px z-[2] animate-glow"
           style={{
-            background: "linear-gradient(90deg, transparent 0%, rgba(148,163,184,0.35) 50%, transparent 100%)",
+            background: "linear-gradient(90deg, transparent 0%, rgba(0,0,0,0.25) 50%, transparent 100%)",
             animationDelay: "0.4s",
           }}
         />

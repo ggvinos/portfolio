@@ -5,9 +5,13 @@ import Link from "next/link";
 import { motion, useScroll, useTransform, type MotionValue } from "motion/react";
 import { useLanguage } from "@/lib/context";
 
-/** Cores da marca do Acorde. O portfólio é monocromático; aqui o produto entra com a cara dele. */
-const CORAL = "#ff7a59";
-const ROXO = "#8c30ff";
+/**
+ * Cor do "cromo" da faixa (linha-guia, nós, glow, numeração): cinza puro,
+ * igual ao resto do portfólio. As TELAS do Acorde continuam com as cores
+ * reais do produto (coral/roxo) porque são screenshot, não decoração —
+ * só o que o portfólio desenha por cima é que segue preto e branco.
+ */
+const CROMO = "#1a1a1a";
 
 type PanelData = {
   n: string;
@@ -103,7 +107,7 @@ function TrilhoMobile({ total, progress }: { total: number; progress: MotionValu
       <div className="relative h-px flex-1 bg-[var(--border)]">
         <motion.div
           className="absolute inset-y-0 left-0"
-          style={{ width: largura, background: CORAL, boxShadow: `0 0 8px ${CORAL}` }}
+          style={{ width: largura, background: CROMO, boxShadow: `0 0 6px ${CROMO}66` }}
         />
         {Array.from({ length: total }, (_, i) => (
           <NoMobile key={i} index={i} total={total} progress={progress} />
@@ -137,7 +141,7 @@ function NoMobile({
         marginTop: -3,
         opacity: acende,
         scale: escala,
-        background: CORAL,
+        background: CROMO,
       }}
     />
   );
@@ -219,15 +223,15 @@ function useLocal(progress: MotionValue<number>, index: number, total: number) {
   });
 }
 
-/** Nebulosa de fundo que troca de cor conforme a faixa avança. */
+/**
+ * Vinheta de fundo que respira com a faixa. Antes trocava de matiz
+ * (coral -> roxo -> coral) para imitar a marca; em preto e branco isso não
+ * existe, sobra só o vai-e-vem sutil de opacidade e deriva.
+ */
 function AuroraFundo({ progress, total }: { progress: MotionValue<number>; total: number }) {
   const opacidade = useTransform(progress, [0, 0.1, 0.9, 1], [0, 1, 1, 0.35]);
   const desloca = useTransform(progress, [0, 1], ["-12%", "12%"]);
-  const matiz = useTransform(progress, [0, 0.5, 1], [CORAL, ROXO, CORAL]);
-  const fundo = useTransform(
-    matiz,
-    (c) => `radial-gradient(ellipse 50% 60% at 50% 45%, ${c}22 0%, transparent 65%)`,
-  );
+  const fundo = `radial-gradient(ellipse 50% 60% at 50% 45%, ${CROMO}14 0%, transparent 65%)`;
 
   return (
     <motion.div
@@ -286,11 +290,11 @@ function LinhaGuia({ total, progress }: { total: number; progress: MotionValue<n
         <motion.path
           d={d}
           fill="none"
-          stroke={CORAL}
+          stroke={CROMO}
           strokeWidth={1.5}
           strokeLinecap="round"
           vectorEffect="non-scaling-stroke"
-          style={{ pathLength: progress, filter: `drop-shadow(0 0 6px ${CORAL}88)` }}
+          style={{ pathLength: progress, filter: `drop-shadow(0 0 5px ${CROMO}66)` }}
         />
       </svg>
 
@@ -329,8 +333,8 @@ function No({
         marginTop: -4,
         opacity: acende,
         scale: escala,
-        background: CORAL,
-        boxShadow: `0 0 12px ${CORAL}`,
+        background: CROMO,
+        boxShadow: `0 0 10px ${CROMO}88`,
       }}
     />
   );
@@ -374,7 +378,7 @@ function Panel({
             className="pointer-events-none absolute -inset-10 -z-10 rounded-full"
             style={{
               opacity: brilho,
-              background: `radial-gradient(circle, ${CORAL}33 0%, transparent 70%)`,
+              background: `radial-gradient(circle, ${CROMO}22 0%, transparent 70%)`,
             }}
           />
           <div className="rounded-[1.75rem] border border-[var(--border)] bg-surface p-1.5 shadow-2xl shadow-black/60">
@@ -404,7 +408,7 @@ function Panel({
           </motion.span>
 
           <motion.div style={{ x: textoX, scale: escalaTexto, willChange: "transform" }}>
-            <span className="font-mono text-xs" style={{ color: CORAL }}>
+            <span className="font-mono text-xs" style={{ color: CROMO }}>
               {n}
             </span>
             <h3 className="mt-3 text-xl font-semibold tracking-tight text-primary sm:text-3xl">
@@ -440,7 +444,7 @@ function ClosingPanel({
       <div className="mt-10 flex flex-wrap justify-center gap-4">
         <Link
           href="/projetos/acorde"
-          className="bg-accent px-6 py-3 font-mono text-sm text-black transition-opacity duration-150 hover:opacity-80"
+          className="bg-accent px-6 py-3 font-mono text-sm text-[var(--bg)] transition-opacity duration-150 hover:opacity-80"
         >
           {closing.cta} →
         </Link>
@@ -509,7 +513,7 @@ function StaticPanel({ n, title, body, shot, alt }: PanelData) {
         />
       </div>
       <div>
-        <span className="font-mono text-xs" style={{ color: CORAL }}>
+        <span className="font-mono text-xs" style={{ color: CROMO }}>
           {n}
         </span>
         <h3 className="mt-3 text-2xl font-semibold tracking-tight text-primary">{title}</h3>

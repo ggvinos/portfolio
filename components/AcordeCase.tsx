@@ -287,7 +287,7 @@ export default function AcordeCase() {
                 href={c.link}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="font-mono text-sm bg-accent text-black px-6 py-3 hover:opacity-80 transition-opacity duration-150"
+                className="font-mono text-sm bg-accent text-[var(--bg)] px-6 py-3 hover:opacity-80 transition-opacity duration-150"
               >
                 {c.cta.primary} ↗
               </a>

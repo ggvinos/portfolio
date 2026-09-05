@@ -22,7 +22,7 @@ export default function Articles() {
               target="_blank"
               rel="noopener noreferrer"
               style={{ transitionDelay: `${i * 80}ms` }}
-              className={`border border-[var(--border)] bg-surface p-6 flex flex-col justify-between transition-all duration-300 ease-out cursor-pointer hover:border-[#334155] hover:-translate-y-1 hover:bg-[#080c14] group ${
+              className={`border border-[var(--border)] bg-surface p-6 flex flex-col justify-between transition-all duration-300 ease-out cursor-pointer hover:border-[#404040] hover:-translate-y-1 hover:bg-[#ececec] group ${
                 inView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
               }`}
             >

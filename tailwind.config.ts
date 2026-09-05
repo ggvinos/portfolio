@@ -15,7 +15,9 @@ const config: Config = {
         display: ["var(--font-inter)", "system-ui", "sans-serif"],
       },
       colors: {
-        accent: "#AF0C37",
+        // sem hue: em preto e branco puro, "accent" e so a
+        // camada mais escura, nao uma cor separada de --text
+        accent: "#000000",
       },
       animation: {
         "fade-in":      "fade-in 1.5s ease forwards",

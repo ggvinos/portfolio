@@ -41,7 +41,7 @@ export default function ScrollProgress() {
         style={{
           transform: "scaleX(0)",
           background:
-            "linear-gradient(90deg, rgba(148,163,184,0.2) 0%, var(--text) 100%)",
+            "linear-gradient(90deg, rgba(0,0,0,0.15) 0%, var(--text) 100%)",
         }}
       />
     </div>

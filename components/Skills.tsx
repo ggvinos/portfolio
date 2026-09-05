@@ -35,7 +35,7 @@ export default function Skills() {
                     <span
                       key={skill}
                       style={{ transitionDelay: `${gi * 80 + si * 40}ms` }}
-                      className={`font-mono text-xs px-3 py-1.5 border border-[var(--border)] text-muted bg-surface hover:border-[#334155] hover:text-[var(--text)] transition-colors duration-150 cursor-default ${
+                      className={`font-mono text-xs px-3 py-1.5 border border-[var(--border)] text-muted bg-surface hover:border-[#404040] hover:text-[var(--text)] transition-colors duration-150 cursor-default ${
                         inView ? "opacity-100" : "opacity-0"
                       }`}
                     >

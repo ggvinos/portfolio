@@ -22,14 +22,16 @@ export default function SpotlightCard({ children, className = "" }: SpotlightCar
       onMouseMove={onMove}
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
-      className={`relative overflow-hidden border border-[var(--border)] rounded-xl transition-colors duration-700 hover:border-[#334155] group ${className}`}
+      className={`relative overflow-hidden border border-[var(--border)] rounded-xl transition-colors duration-700 hover:border-[#404040] group ${className}`}
     >
       {/* spotlight layer */}
       <div
         className="pointer-events-none absolute inset-0 z-10 transition-opacity duration-500"
         style={{
           opacity: hovered ? 1 : 0,
-          background: `radial-gradient(300px at ${pos.x}px ${pos.y}px, rgba(241,245,249,0.07), transparent 80%)`,
+          // em fundo claro o spotlight escurece em vez de clarear, senao
+          // fica branco sobre branco e nunca aparece
+          background: `radial-gradient(300px at ${pos.x}px ${pos.y}px, rgba(13,13,13,0.05), transparent 80%)`,
         }}
       />
       {/* subtle gradient overlay */}

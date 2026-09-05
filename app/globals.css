@@ -2,18 +2,19 @@
 @tailwind components;
 @tailwind utilities;
 
-/* ── Paleta dark única (sem modo claro) ── */
+/* ── Paleta clara única, estritamente preto e branco ──
+   Todo valor aqui tem R=G=B (cinza puro, sem matiz nenhum). Slate/zinc do
+   Tailwind têm um leve viés azul/roxo — evitados de propósito. Se um dia
+   voltar um toggle escuro, é só trocar os valores deste bloco. */
 :root {
-  --bg: #000000;
-  --surface: #080c14;
-  --border: #1a2332;
-  --text: #f8fafc;
-  --muted: #64748b;
-  --bg-alpha: rgba(0, 0, 0, 0.88);
-  --particle-rgb: 248, 250, 252;
-  /* cor neutra do cursor customizado — nao e o accent de marca, que vem
-     só do tailwind.config.ts (colors.accent) e nao tem variavel aqui */
-  --cursor-color: #f1f5f9;
+  --bg: #ffffff;
+  --surface: #f5f5f5;
+  --border: #e0e0e0;
+  --text: #0d0d0d;
+  --muted: #737373;
+  --bg-alpha: rgba(255, 255, 255, 0.86);
+  --particle-rgb: 20, 20, 20;
+  --cursor-color: #111111;
 }
 
 html {
@@ -21,17 +22,11 @@ html {
 }
 
 ::selection {
-  background-color: rgba(148, 163, 184, 0.25);
-  color: #f8fafc;
+  background-color: rgba(0, 0, 0, 0.12);
 }
 
 body {
   background-color: var(--bg);
-  background-image:
-    radial-gradient(ellipse at 75% 8%,  rgba(56, 14, 110, 0.12) 0%, transparent 55%),
-    radial-gradient(ellipse at 20% 85%, rgba(8,  40, 110, 0.10) 0%, transparent 50%),
-    radial-gradient(ellipse at 50% 50%, rgba(20, 10,  50, 0.08) 0%, transparent 70%);
-  background-attachment: fixed;
   color: var(--text);
   -webkit-font-smoothing: antialiased;
 }
@@ -95,7 +90,11 @@ body {
   margin: 0 0 0 -1px;
 }
 
-/* ── Scanlines retro overlay ── */
+/* ── Scanlines retro overlay ──
+   mix-blend-mode:multiply com preto translúcido escurece proporcionalmente
+   a QUALQUER fundo (~8% antes). Em preto isso é ~0, imperceptível — foi
+   assim que passou despercebido. Em branco, 8% de escurecimento é bem mais
+   visível ao olho. Reduzido para 5% para manter o mesmo peso percebido. */
 body::after {
   content: '';
   position: fixed;
@@ -104,8 +103,8 @@ body::after {
     0deg,
     transparent,
     transparent 2px,
-    rgba(0, 0, 0, 0.08) 2px,
-    rgba(0, 0, 0, 0.08) 3px
+    rgba(0, 0, 0, 0.05) 2px,
+    rgba(0, 0, 0, 0.05) 3px
   );
   pointer-events: none;
   z-index: 9997;
@@ -114,7 +113,7 @@ body::after {
 
 /* ── Text outline (hero title) ── */
 .text-edge-outline {
-  -webkit-text-stroke: 1px rgba(248, 250, 252, 0.2);
+  -webkit-text-stroke: 1px rgba(13, 13, 13, 0.15);
 }
 
 /* ── Animations ── */

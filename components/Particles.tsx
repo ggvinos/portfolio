@@ -33,9 +33,12 @@ export default function Particles({
   const canvasSize = useRef({ w: 0, h: 0 });
   const dpr = typeof window !== "undefined" ? window.devicePixelRatio : 1;
   const mousePosition = useMousePosition();
+  const particleBase = useRef<number[]>([20, 20, 20]);
 
   useEffect(() => {
     if (canvasRef.current) ctx.current = canvasRef.current.getContext("2d");
+    const raw = getComputedStyle(document.documentElement).getPropertyValue("--particle-rgb").trim();
+    if (raw) particleBase.current = raw.split(",").map((n) => parseInt(n.trim(), 10));
     initCanvas();
     const animId = requestAnimationFrame(animate);
     window.addEventListener("resize", initCanvas);
@@ -93,13 +96,16 @@ export default function Particles({
 
   const drawCircle = (c: Circle, update = false) => {
     if (!ctx.current) return;
-    // 90% white stars, 7% warm amber, 3% cool blue, retro space mix
+    // 3 tons de cinza puro (sem matiz) simulam profundidade: poeira mais
+    // perto (mais escura) e mais longe (mais clara), sem depender de cor.
+    // A tonalidade base vem de --particle-rgb (CSS var), documentado desde
+    // sempre mas nunca de fato lido — implementado agora de verdade.
     const roll = (c.x * c.y) % 100;
     const rgb = roll < 7
-      ? `255, 220, 140`       // amber/warm star
+      ? particleBase.current.map((v) => Math.min(255, v + 60)).join(", ")
       : roll < 10
-        ? `160, 200, 255`     // cold blue star
-        : `248, 250, 252`;    // white
+        ? particleBase.current.map((v) => Math.max(0, v - 40)).join(", ")
+        : particleBase.current.join(", ");
     ctx.current.translate(c.translateX, c.translateY);
     ctx.current.beginPath();
     ctx.current.arc(c.x, c.y, c.size, 0, 2 * Math.PI);

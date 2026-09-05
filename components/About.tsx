@@ -32,7 +32,7 @@ export default function About() {
               <div
                 key={d.label}
                 style={{ transitionDelay: `${i * 80}ms` }}
-                className={`border border-[var(--border)] p-5 transition-all duration-500 ease-out hover:border-[#334155] ${
+                className={`border border-[var(--border)] p-5 transition-all duration-500 ease-out hover:border-[#404040] ${
                   inView ? "opacity-100 translate-x-0" : "opacity-0 translate-x-4"
                 }`}
               >
