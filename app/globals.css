@@ -9,9 +9,11 @@
   --border: #1a2332;
   --text: #f8fafc;
   --muted: #64748b;
-  --accent: #f1f5f9;
   --bg-alpha: rgba(0, 0, 0, 0.88);
   --particle-rgb: 248, 250, 252;
+  /* cor neutra do cursor customizado — nao e o accent de marca, que vem
+     só do tailwind.config.ts (colors.accent) e nao tem variavel aqui */
+  --cursor-color: #f1f5f9;
 }
 
 html {
@@ -41,14 +43,16 @@ body {
 }
 
 /* ── Classes utilitárias de tema ── */
+/* text-accent / border-accent / bg-accent NAO sao definidas aqui de
+   proposito: ja existem, geradas pelo Tailwind a partir de
+   tailwind.config.ts (colors.accent = #AF0C37). Redefini-las aqui as
+   sobrescrevia sempre, porque a regra escrita depois ganha em empate de
+   especificidade — foi assim que o vermelho de marca nunca apareceu. */
 .bg-page        { background-color: var(--bg); }
 .bg-surface     { background-color: var(--surface); }
 .border-default { border-color: var(--border); }
 .text-primary   { color: var(--text); }
 .text-muted     { color: var(--muted); }
-.text-accent    { color: var(--accent); }
-.border-accent  { border-color: var(--accent); }
-.bg-accent      { background-color: var(--accent); }
 
 /* ── Cursor customizado ── */
 @media (pointer: fine) {
@@ -58,7 +62,7 @@ body {
 .cursor-dot {
   position: fixed; top: 0; left: 0;
   width: 6px; height: 6px;
-  background-color: var(--accent);
+  background-color: var(--cursor-color);
   border-radius: 50%;
   pointer-events: none;
   z-index: 9999;
@@ -69,7 +73,7 @@ body {
 .cursor-ring {
   position: fixed; top: 0; left: 0;
   width: 30px; height: 30px;
-  border: 1px solid var(--accent);
+  border: 1px solid var(--cursor-color);
   border-radius: 50%;
   pointer-events: none;
   z-index: 9998;

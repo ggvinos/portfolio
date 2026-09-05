@@ -84,7 +84,7 @@ export default function Experience() {
             <div className="text-sm font-semibold text-[var(--text)] mb-1">
               {tooltip.item.role}
             </div>
-            <div className="font-mono text-[10px] text-[var(--accent)] tracking-wide mb-3">
+            <div className="font-mono text-[10px] text-accent tracking-wide mb-3">
               {tooltip.item.company} · {tooltip.item.period}
             </div>
             <p className="text-xs text-[var(--muted)] leading-relaxed">
