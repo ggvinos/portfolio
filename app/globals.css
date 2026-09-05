@@ -180,6 +180,18 @@ body::after {
   50%      { opacity: 0.9;  transform: scale(1); }
 }
 
+/* ── Canvas do React Three Fiber: forca 100% via CSS puro.
+   O R3F normalmente mede o container com ResizeObserver e escreve
+   width/height em px direto no canvas via JS — em abas sem composicao
+   ativa esse observer pode nao disparar nem uma vez, e o canvas fica
+   preso no tamanho padrao do HTML (300x150). Isso cobre esse caso sem
+   atrapalhar o funcionamento normal (100% do container e exatamente o
+   que o R3F aplicaria de qualquer forma). ── */
+.moon3d-canvas-fill canvas {
+  width: 100% !important;
+  height: 100% !important;
+}
+
 /* ── Acessibilidade: quem pediu menos movimento recebe a página pronta ── */
 @media (prefers-reduced-motion: reduce) {
   *,

@@ -1,64 +1,21 @@
 "use client";
 
 import { useParallax } from "@/hooks/useScrollFx";
+import Moon3D from "@/components/Moon3D";
 
 /**
- * Decoração do Hero: uma lua com crateras (nítida, close), uma esfera lisa
- * desfocada ao fundo (dá profundidade), anéis de órbita, meteoros e
- * sparkles. Tudo em cinza puro (nenhum valor com R≠G≠B).
+ * Decoração do Hero: uma lua 3D de verdade (esfera + textura real da
+ * NASA, via Moon3D.tsx), uma esfera lisa desfocada ao fundo (dá
+ * profundidade), anéis de órbita, meteoros e sparkles. Tudo em cinza puro
+ * (nenhum valor com R≠G≠B) exceto a textura da lua, que é uma foto real.
  */
 
-/**
- * Crateras hand-placed: raio e opacidade variam, posições espalhadas sem
- * grade. Cada uma usa `circle at X% Y%` sem size explícito (default
- * farthest-corner) — só os stops controlam o tamanho, evita a restrição do
- * CSS de "circle" não aceitar raio em porcentagem.
- */
-const CRATERAS = [
-  { cx: 24, cy: 30, r: 11 },
-  { cx: 58, cy: 16, r: 6 },
-  { cx: 74, cy: 52, r: 15 },
-  { cx: 36, cy: 60, r: 8 },
-  { cx: 52, cy: 42, r: 5 },
-  { cx: 16, cy: 66, r: 7 },
-  { cx: 82, cy: 28, r: 5 },
-  { cx: 46, cy: 22, r: 4 },
-  { cx: 66, cy: 74, r: 9 },
-  { cx: 30, cy: 46, r: 4 },
-];
-
-function crateraGradientes() {
-  return CRATERAS.map(
-    ({ cx, cy, r }) =>
-      `radial-gradient(circle at ${cx}% ${cy}%, rgba(0,0,0,0.34) 0%, rgba(0,0,0,0.14) ${r * 0.55}%, transparent ${r}%)`,
-  ).join(", ");
-}
-
-/** Base da esfera: luz vindo de cima-esquerda, sombra embaixo-direita. */
+/** Base da esfera lisa (BlurOrb): luz vindo de cima-esquerda. */
 const ESFERA_BASE = `
   radial-gradient(circle at 30% 25%, rgba(255,255,255,0.85) 0%, transparent 34%),
   radial-gradient(circle at 70% 74%, rgba(0,0,0,0.16) 0%, transparent 30%),
   linear-gradient(135deg, #eaeaea 0%, #b5b5b5 42%, #707070 76%, #383838 100%)
 `;
-
-/** Lua: nítida, com crateras de verdade — não genérica, elemento principal. */
-function Moon({ size, style }: { size: number; style?: React.CSSProperties }) {
-  const drift = useParallax<HTMLDivElement>(0.05);
-  return (
-    <div
-      ref={drift}
-      aria-hidden="true"
-      className="absolute rounded-full will-change-transform"
-      style={{
-        width: size,
-        height: size,
-        background: `${crateraGradientes()}, ${ESFERA_BASE}`,
-        boxShadow: "inset -14px -14px 46px rgba(0,0,0,0.4), 0 0 70px rgba(0,0,0,0.04)",
-        ...style,
-      }}
-    />
-  );
-}
 
 /** Esfera lisa desfocada: dá profundidade sem competir com a lua. */
 function BlurOrb({ size, style }: { size: number; style?: React.CSSProperties }) {
@@ -175,7 +132,7 @@ export default function HeroAtmosphere() {
       <OrbitRing size={320} style={{ top: "-2%", right: "-9%" }} />
 
       {/* lua: maior, nitida, elemento principal — quase toda fora de quadro */}
-      <Moon size={480} style={{ bottom: "-30%", left: "-16%" }} />
+      <Moon3D size={480} style={{ bottom: "-30%", left: "-16%" }} />
       <OrbitRing size={620} style={{ bottom: "-38%", left: "-22%" }} />
 
       {/* meteoros: quase verticais (60-72deg da horizontal), caem, nao "voam de lado" */}
