@@ -37,7 +37,11 @@ export default function HeroAboutJourney({ children }: { children: React.ReactNo
         <div className="sticky top-0 h-screen overflow-hidden">
           <motion.div
             className="absolute"
-            style={{ width: 520, height: 520, bottom: "-8%", left: "1%", scale, x, y }}
+            // referencia enviada: um arco grande cortado por duas bordas ao
+            // mesmo tempo (esquerda + baixo), nao o disco quase inteiro que
+            // ficou em -6%/1% (achado "muito visivel") nem a fatia pequena
+            // demais de -30%/-16% (achado "nao parece redondo"). Meio-termo.
+            style={{ width: 520, height: 520, bottom: "-20%", left: "-10%", scale, x, y }}
           >
             <div
               className="absolute rounded-full border border-black/[0.07]"
