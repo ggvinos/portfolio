@@ -1,13 +1,14 @@
 "use client";
 
 import { useParallax } from "@/hooks/useScrollFx";
-import Moon3D from "@/components/Moon3D";
 
 /**
- * Decoração do Hero: uma lua 3D de verdade (esfera + textura real da
- * NASA, via Moon3D.tsx), uma esfera lisa desfocada ao fundo (dá
- * profundidade), anéis de órbita, meteoros e sparkles. Tudo em cinza puro
- * (nenhum valor com R≠G≠B) exceto a textura da lua, que é uma foto real.
+ * Decoração do Hero: uma esfera lisa desfocada ao fundo (dá profundidade),
+ * anéis de órbita, meteoros e sparkles. Tudo em cinza puro (nenhum valor
+ * com R≠G≠B). A lua 3D mora em outro lugar: veja PersistentMoon.tsx, que
+ * fica fixa na tela e continua visível ao rolar do Hero pro Sobre — não
+ * dava pra ficar presa aqui dentro, num container que rola junto com a
+ * página e some quando o Hero sai de vista.
  */
 
 /** Base da esfera lisa (BlurOrb): luz vindo de cima-esquerda. */
@@ -130,10 +131,6 @@ export default function HeroAtmosphere() {
       {/* esfera lisa desfocada: menor, ao fundo, da profundidade */}
       <BlurOrb size={200} style={{ top: "8%", right: "-4%" }} />
       <OrbitRing size={320} style={{ top: "-2%", right: "-9%" }} />
-
-      {/* lua: maior, nitida, elemento principal — quase toda fora de quadro */}
-      <Moon3D size={480} style={{ bottom: "-30%", left: "-16%" }} />
-      <OrbitRing size={620} style={{ bottom: "-38%", left: "-22%" }} />
 
       {/* meteoros: quase verticais (60-72deg da horizontal), caem, nao "voam de lado" */}
       <Meteor x="28%" y="12%" length={80} angle={68} delay={0} duration={6} />

@@ -8,7 +8,10 @@ export default function About() {
   const [ref, inView] = useInView(0.15);
 
   return (
-    <section id="about" className="py-24 bg-page">
+    // sem bg-page de proposito: essa secao precisa deixar a lua fixa
+    // (PersistentMoon) aparecer atras dela enquanto o usuario rola ate
+    // aqui. A cor visual nao muda — o body ja e branco por baixo.
+    <section id="about" className="py-24">
       <div className="max-w-6xl mx-auto px-6">
         <div
           ref={ref}

@@ -1,6 +1,7 @@
 import Nav from "@/components/Nav";
 import Grain from "@/components/Grain";
 import ScrollProgress from "@/components/ScrollProgress";
+import PersistentMoon from "@/components/PersistentMoon";
 import Hero from "@/components/Hero";
 import About from "@/components/About";
 import AcordeShowcase from "@/components/AcordeShowcase";
@@ -17,6 +18,7 @@ export default function Home() {
     <>
       <Grain />
       <ScrollProgress />
+      <PersistentMoon />
       <Nav />
       <main>
         <Hero />

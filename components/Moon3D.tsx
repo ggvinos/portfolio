@@ -1,8 +1,11 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { Canvas, useLoader, useFrame } from "@react-three/fiber";
-import { TextureLoader, type Mesh } from "three";
+import { Canvas, useLoader, useFrame, useThree } from "@react-three/fiber";
+import { TextureLoader, Vector2, type Mesh } from "three";
+
+// reutilizado a cada frame em vez de criar um Vector2 novo por chamada
+const TAMANHO_TMP = new Vector2();
 
 /**
  * Lua real: esfera 3D com a textura da NASA (via Solar System Scope,
@@ -11,11 +14,12 @@ import { TextureLoader, type Mesh } from "three";
  * "interativa com o scroll" como pedido — sem exigir arrastar nada.
  */
 
-function EsferaLua() {
+function EsferaLua({ ladoAlvo }: { ladoAlvo: number }) {
   const ref = useRef<Mesh>(null);
   const textura = useLoader(TextureLoader, "/textures/moon-1k.jpg");
   const scrollY = useRef(0);
   const reduzMovimento = useRef(false);
+  const { gl, camera } = useThree();
 
   useEffect(() => {
     reduzMovimento.current = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
@@ -28,6 +32,22 @@ function EsferaLua() {
   }, []);
 
   useFrame(() => {
+    // reforcado a CADA frame, nao so na criacao: o onCreated sozinho nao
+    // bastou (nao dava pra confirmar se disparava, ou algo depois
+    // sobrescrevia). Checagem e barata (2 comparacoes), so mexe de verdade
+    // se o buffer estiver errado — corrige um R3F que nunca mediu direito
+    // o container (ResizeObserver que nao dispara) de forma continua,
+    // em vez de depender de um unico evento que pode nao rodar ou ser
+    // sobrescrito depois.
+    const tamanhoAtual = gl.getSize(TAMANHO_TMP);
+    if (Math.round(tamanhoAtual.width) !== ladoAlvo || Math.round(tamanhoAtual.height) !== ladoAlvo) {
+      gl.setSize(ladoAlvo, ladoAlvo, false);
+      if ("aspect" in camera && (camera as any).aspect !== 1) {
+        (camera as any).aspect = 1;
+        camera.updateProjectionMatrix();
+      }
+    }
+
     if (!ref.current || reduzMovimento.current) return;
     // rotacao amarrada ao scroll da pagina inteira, nao so do hero — a lua
     // continua girando devagar enquanto ela estiver visivel na tela
@@ -62,7 +82,7 @@ export default function Moon3D({
         <Canvas
           dpr={[1, 1.5]}
           gl={{ antialias: true, alpha: true }}
-          camera={{ position: [0, 0, 2.4], fov: 40 }}
+          camera={{ position: [0, 0, 2.4], fov: 40, aspect: 1 }}
           // largura/altura 100% via CSS puro, sem depender do
           // ResizeObserver que o R3F usa por padrao — em navegadores/abas
           // sem composicao ativa esse observer as vezes nao dispara, e o
@@ -72,7 +92,7 @@ export default function Moon3D({
           <ambientLight intensity={0.55} />
           {/* luz vindo de cima-esquerda, mesma direcao do resto da composicao */}
           <directionalLight position={[-1.4, 1.2, 1.6]} intensity={2.1} />
-          <EsferaLua />
+          <EsferaLua ladoAlvo={size} />
         </Canvas>
       )}
     </div>

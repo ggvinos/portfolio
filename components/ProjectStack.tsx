@@ -108,13 +108,12 @@ function StackedCard({
   const link = project.link;
 
   return (
-    // bg-page e essencial aqui, nao so estetico: o SpotlightCard nao tem
-    // fundo opaco (o gradiente dele vira transparente depois de 60% da
-    // diagonal), pensado pra ficar sozinho num grid sobre a pagina. Com 4
-    // cards empilhados na mesma posicao, sem isso todos aparecem ao mesmo
-    // tempo, um vazando por cima do outro.
+    // o wrapper agora so centraliza — nao tem mais fundo nem tamanho
+    // proprios. O card (SpotlightCard) e que define seu tamanho pelo
+    // proprio conteudo, em vez de esticar pra preencher a area toda de
+    // scroll (que sobrava muito espaco vazio com projetos curtos).
     <motion.div
-      className="absolute inset-0 bg-page"
+      className="absolute inset-0 flex items-center justify-center px-4"
       style={{
         zIndex: total - index,
         y: isLast ? 0 : y,
@@ -123,11 +122,13 @@ function StackedCard({
         rotate: isLast ? 0 : rotate,
       }}
     >
-      {/* h-full + overflow-y-auto: rede de seguranca — se um projeto tiver
-          conteudo demais pra caber na altura fixa da pilha, rola por dentro
-          do card em vez de cortar texto sem aviso */}
-      <SpotlightCard className="h-full">
-        <div className="flex h-full flex-col justify-start gap-4 overflow-y-auto p-6 sm:justify-center sm:gap-5 sm:p-12">
+      {/* bg-page: o SpotlightCard nao tem fundo opaco por padrao (o
+          gradiente dele vira transparente depois de 60% da diagonal,
+          pensado pra ficar sozinho sobre a pagina) — com 4 cards
+          empilhados isso deixava todos visiveis ao mesmo tempo.
+          shadow: reforca o efeito de "carta lifted da pilha". */}
+      <SpotlightCard className="w-full max-w-2xl bg-page shadow-xl shadow-black/10">
+        <div className="flex max-h-[65vh] flex-col gap-4 overflow-y-auto p-6 sm:gap-5 sm:p-10">
           <div className="flex flex-wrap items-center gap-3">
             <span className="font-mono text-xs text-muted">{String(index + 1).padStart(2, "0")}</span>
             <h3 className="text-xl font-semibold text-primary sm:text-3xl">{project.title}</h3>
