@@ -1,5 +1,6 @@
 "use client";
 
+import { useId } from "react";
 import { useParallax } from "@/hooks/useScrollFx";
 
 /**
@@ -18,26 +19,43 @@ function Planet({
   opacity?: number;
 }) {
   const drift = useParallax<HTMLDivElement>(0.05);
+  const filterId = useId();
+
   return (
-    <div
-      ref={drift}
-      aria-hidden="true"
-      className="absolute rounded-full will-change-transform"
-      style={{
-        width: size,
-        height: size,
-        opacity,
-        background: `
-          radial-gradient(circle at 30% 25%, rgba(255,255,255,0.85) 0%, transparent 34%),
-          radial-gradient(circle at 70% 74%, rgba(0,0,0,0.16) 0%, transparent 30%),
-          radial-gradient(circle at 42% 62%, rgba(0,0,0,0.10) 0%, transparent 20%),
-          radial-gradient(circle at 66% 32%, rgba(0,0,0,0.08) 0%, transparent 16%),
-          linear-gradient(135deg, #eaeaea 0%, #b5b5b5 42%, #707070 76%, #383838 100%)
-        `,
-        boxShadow: "inset -14px -14px 46px rgba(0,0,0,0.4), 0 0 70px rgba(0,0,0,0.04)",
-        ...style,
-      }}
-    />
+    <div ref={drift} aria-hidden="true" className="absolute will-change-transform" style={{ width: size, height: size, opacity, ...style }}>
+      {/* base: esfera lisa com luz vindo de cima-esquerda */}
+      <div
+        className="absolute inset-0 rounded-full"
+        style={{
+          background: `
+            radial-gradient(circle at 30% 25%, rgba(255,255,255,0.85) 0%, transparent 34%),
+            radial-gradient(circle at 70% 74%, rgba(0,0,0,0.16) 0%, transparent 30%),
+            linear-gradient(135deg, #eaeaea 0%, #b5b5b5 42%, #707070 76%, #383838 100%)
+          `,
+          boxShadow: "inset -14px -14px 46px rgba(0,0,0,0.4), 0 0 70px rgba(0,0,0,0.04)",
+        }}
+      />
+
+      {/* textura: relevo procedural via feTurbulence + feDiffuseLighting —
+          crateras de verdade em vez de 4 manchas de radial-gradient, que
+          ficavam lisas demais pra ler como superfície de planeta */}
+      <svg
+        className="absolute inset-0 rounded-full mix-blend-overlay"
+        width={size}
+        height={size}
+        style={{ opacity: 0.6 }}
+      >
+        <defs>
+          <filter id={filterId} x="-20%" y="-20%" width="140%" height="140%">
+            <feTurbulence type="fractalNoise" baseFrequency="0.09" numOctaves="5" seed="7" result="noise" />
+            <feDiffuseLighting in="noise" lightingColor="#ffffff" surfaceScale="4.5" diffuseConstant="1" result="light">
+              <feDistantLight azimuth="235" elevation="32" />
+            </feDiffuseLighting>
+          </filter>
+        </defs>
+        <circle cx={size / 2} cy={size / 2} r={size / 2} filter={`url(#${filterId})`} />
+      </svg>
+    </div>
   );
 }
 

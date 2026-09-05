@@ -3,37 +3,23 @@
 import { useLanguage } from "@/lib/context";
 import { useInView } from "@/hooks/useInView";
 import SpotlightCard from "@/components/SpotlightCard";
-import { useState, useCallback } from "react";
-
-type TooltipItem = {
-  company: string;
-  role: string;
-  period: string;
-  description: string;
-};
-
-type TooltipState = {
-  x: number;
-  y: number;
-  flipX: boolean;
-  item: TooltipItem;
-};
+import { useState } from "react";
 
 export default function Experience() {
   const { t } = useLanguage();
   const [refExp, inViewExp] = useInView();
   const [refAch, inViewAch] = useInView();
-  const [tooltip, setTooltip] = useState<TooltipState | null>(null);
+  // Set em vez de indice unico: abrir um cargo nao fecha os outros que o
+  // usuario ja tinha aberto pra comparar.
+  const [abertos, setAbertos] = useState<Set<number>>(new Set());
 
-  const handleMouseMove = useCallback(
-    (e: React.MouseEvent, item: TooltipItem) => {
-      const flipX = e.clientX > window.innerWidth * 0.55;
-      setTooltip({ x: e.clientX, y: e.clientY, flipX, item });
-    },
-    []
-  );
-
-  const handleMouseLeave = useCallback(() => setTooltip(null), []);
+  const alternar = (i: number) => {
+    setAbertos((prev) => {
+      const next = new Set(prev);
+      next.has(i) ? next.delete(i) : next.add(i);
+      return next;
+    });
+  };
 
   return (
     <section id="experience" className="py-24 bg-page">
@@ -46,52 +32,64 @@ export default function Experience() {
           ref={refExp}
           className="relative border-l border-default pl-8 flex flex-col gap-10"
         >
-          {t.experience.map((item, i) => (
-            <div
-              key={i}
-              onMouseMove={(e) => handleMouseMove(e, item)}
-              onMouseLeave={handleMouseLeave}
-              style={{ transitionDelay: `${i * 80}ms` }}
-              className={`relative cursor-default select-none transition-all duration-500 ease-out group ${
-                inViewExp ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
-              }`}
-            >
-              <span className="absolute -left-[2.15rem] top-1.5 w-2.5 h-2.5 rounded-full bg-page border-2 border-accent transition-colors duration-150 group-hover:bg-accent" />
-              <div className="flex flex-wrap items-baseline gap-2 mb-1">
-                <span className="text-primary font-semibold group-hover:text-accent transition-colors duration-150">
-                  {item.company}
-                </span>
-                {item.role && (
-                  <span className="text-muted text-sm">{item.role}</span>
-                )}
-              </div>
-              <div className="font-mono text-xs text-accent tracking-wide">
-                {item.period}
-              </div>
-            </div>
-          ))}
-        </div>
+          {t.experience.map((item, i) => {
+            const aberto = abertos.has(i);
+            return (
+              <div
+                key={i}
+                style={{ transitionDelay: `${i * 80}ms` }}
+                className={`relative transition-all duration-500 ease-out group ${
+                  inViewExp ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
+                }`}
+              >
+                <span
+                  className={`absolute -left-[2.15rem] top-1.5 w-2.5 h-2.5 rounded-full border-2 border-accent transition-colors duration-150 ${
+                    aberto ? "bg-accent" : "bg-page group-hover:bg-accent"
+                  }`}
+                />
 
-        {tooltip && (
-          <div
-            className="fixed z-50 pointer-events-none w-72 border border-[var(--border)] p-5"
-            style={{
-              left: tooltip.flipX ? tooltip.x - 304 : tooltip.x + 16,
-              top: tooltip.y - 60,
-              background: "var(--surface)",
-            }}
-          >
-            <div className="text-sm font-semibold text-[var(--text)] mb-1">
-              {tooltip.item.role}
-            </div>
-            <div className="font-mono text-[10px] text-accent tracking-wide mb-3">
-              {tooltip.item.company} · {tooltip.item.period}
-            </div>
-            <p className="text-xs text-[var(--muted)] leading-relaxed">
-              {tooltip.item.description}
-            </p>
-          </div>
-        )}
+                {/* botao real: funciona em toque, mouse e teclado — a
+                    descricao antes so aparecia num tooltip preso ao
+                    mousemove, invisivel em qualquer tela sem mouse */}
+                <button
+                  type="button"
+                  onClick={() => alternar(i)}
+                  aria-expanded={aberto}
+                  aria-controls={`experiencia-detalhe-${i}`}
+                  className="flex w-full flex-wrap items-baseline gap-2 text-left"
+                >
+                  <span className="text-primary font-semibold group-hover:text-accent transition-colors duration-150">
+                    {item.company}
+                  </span>
+                  {item.role && (
+                    <span className="text-muted text-sm">{item.role}</span>
+                  )}
+                  <span
+                    aria-hidden="true"
+                    className="font-mono text-xs text-muted transition-transform duration-200"
+                    style={{ transform: aberto ? "rotate(45deg)" : "none" }}
+                  >
+                    +
+                  </span>
+                </button>
+
+                <div className="font-mono text-xs text-accent tracking-wide mt-1">
+                  {item.period}
+                </div>
+
+                <div
+                  id={`experiencia-detalhe-${i}`}
+                  className="overflow-hidden transition-[max-height] duration-300 ease-out"
+                  style={{ maxHeight: aberto ? 320 : 0 }}
+                >
+                  <p className="max-w-xl pt-3 text-sm leading-relaxed text-muted">
+                    {item.description}
+                  </p>
+                </div>
+              </div>
+            );
+          })}
+        </div>
 
         {"languages" in t && Array.isArray((t as any).languages) && (
           <div className="mt-10 flex flex-wrap gap-3">

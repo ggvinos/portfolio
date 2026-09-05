@@ -104,8 +104,13 @@ function StackedCard({
   const link = project.link;
 
   return (
+    // bg-page e essencial aqui, nao so estetico: o SpotlightCard nao tem
+    // fundo opaco (o gradiente dele vira transparente depois de 60% da
+    // diagonal), pensado pra ficar sozinho num grid sobre a pagina. Com 4
+    // cards empilhados na mesma posicao, sem isso todos aparecem ao mesmo
+    // tempo, um vazando por cima do outro.
     <motion.div
-      className="absolute inset-0"
+      className="absolute inset-0 bg-page"
       style={{
         zIndex: total - index,
         y: isLast ? 0 : y,
