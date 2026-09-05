@@ -45,9 +45,8 @@ export default function Contact() {
 
           <div className="flex flex-wrap items-center gap-4 mb-10">
             <a
-              href="https://www.linkedin.com/in/ggvinos/"
-              target="_blank"
-              rel="noopener noreferrer"
+              href="/cv-vinicios-ferreira.pdf"
+              download="Vinicios-Ferreira-CV.pdf"
               className={`px-6 py-3 bg-[var(--text)] text-[var(--bg)] text-sm font-medium hover:opacity-85 transition-opacity ${inView ? "opacity-100" : "opacity-0"}`}
             >
               {(t as any).contact?.cv_label ?? "Download CV"}
