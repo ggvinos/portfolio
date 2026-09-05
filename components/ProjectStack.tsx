@@ -51,7 +51,7 @@ function StackedTrack({ projects }: { projects: ProjectData[] }) {
   const segments = Math.max(total - 1, 1);
 
   return (
-    <div ref={ref} style={{ height: `${segments * 70}vh` }}>
+    <div ref={ref} style={{ height: `${segments * 45}vh` }}>
       <div className="sticky top-16 mx-auto max-w-3xl" style={{ height: "82dvh" }}>
         <span className="absolute -top-10 right-0 font-mono text-[11px] text-muted">
           {String(1).padStart(2, "0")}–{String(total).padStart(2, "0")}
@@ -97,9 +97,13 @@ function StackedCard({
   const local = useStep(progress, Math.min(index, segments - 1), segments);
   const isLast = index === total - 1;
 
-  const y = useTransform(local, [0, 1], [0, -60]);
-  const opacity = useTransform(local, [0, 0.75, 1], [1, 1, 0]);
-  const scale = useTransform(local, [0, 1], [1, 0.95]);
+  // saida bem mais visivel: sobe quase pra fora da tela, escala e
+  // opacidade caem o trecho inteiro (nao so no fim), leve giro alternado
+  // por indice pra vender o "descolar da pilha", nao so um fade generico
+  const y = useTransform(local, [0, 1], [0, -190]);
+  const opacity = useTransform(local, [0, 1], [1, 0]);
+  const scale = useTransform(local, [0, 1], [1, 0.86]);
+  const rotate = useTransform(local, [0, 1], [0, index % 2 === 0 ? -5 : 5]);
 
   const link = project.link;
 
@@ -116,6 +120,7 @@ function StackedCard({
         y: isLast ? 0 : y,
         opacity: isLast ? 1 : opacity,
         scale: isLast ? 1 : scale,
+        rotate: isLast ? 0 : rotate,
       }}
     >
       {/* h-full + overflow-y-auto: rede de seguranca — se um projeto tiver

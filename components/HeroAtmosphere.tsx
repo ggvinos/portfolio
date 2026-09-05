@@ -1,61 +1,83 @@
 "use client";
 
-import { useId } from "react";
 import { useParallax } from "@/hooks/useScrollFx";
 
 /**
- * Decoração do Hero: planeta, anéis de órbita, meteoros e sparkles.
- * Tudo em cinza puro (nenhum valor com R≠G≠B) — é o mesmo mandato de cor
- * do resto do redesign, só que aqui vira textura em vez de texto/borda.
+ * Decoração do Hero: uma lua com crateras (nítida, close), uma esfera lisa
+ * desfocada ao fundo (dá profundidade), anéis de órbita, meteoros e
+ * sparkles. Tudo em cinza puro (nenhum valor com R≠G≠B).
  */
 
-function Planet({
-  size,
-  style,
-  opacity = 1,
-}: {
-  size: number;
-  style?: React.CSSProperties;
-  opacity?: number;
-}) {
+/**
+ * Crateras hand-placed: raio e opacidade variam, posições espalhadas sem
+ * grade. Cada uma usa `circle at X% Y%` sem size explícito (default
+ * farthest-corner) — só os stops controlam o tamanho, evita a restrição do
+ * CSS de "circle" não aceitar raio em porcentagem.
+ */
+const CRATERAS = [
+  { cx: 24, cy: 30, r: 11 },
+  { cx: 58, cy: 16, r: 6 },
+  { cx: 74, cy: 52, r: 15 },
+  { cx: 36, cy: 60, r: 8 },
+  { cx: 52, cy: 42, r: 5 },
+  { cx: 16, cy: 66, r: 7 },
+  { cx: 82, cy: 28, r: 5 },
+  { cx: 46, cy: 22, r: 4 },
+  { cx: 66, cy: 74, r: 9 },
+  { cx: 30, cy: 46, r: 4 },
+];
+
+function crateraGradientes() {
+  return CRATERAS.map(
+    ({ cx, cy, r }) =>
+      `radial-gradient(circle at ${cx}% ${cy}%, rgba(0,0,0,0.34) 0%, rgba(0,0,0,0.14) ${r * 0.55}%, transparent ${r}%)`,
+  ).join(", ");
+}
+
+/** Base da esfera: luz vindo de cima-esquerda, sombra embaixo-direita. */
+const ESFERA_BASE = `
+  radial-gradient(circle at 30% 25%, rgba(255,255,255,0.85) 0%, transparent 34%),
+  radial-gradient(circle at 70% 74%, rgba(0,0,0,0.16) 0%, transparent 30%),
+  linear-gradient(135deg, #eaeaea 0%, #b5b5b5 42%, #707070 76%, #383838 100%)
+`;
+
+/** Lua: nítida, com crateras de verdade — não genérica, elemento principal. */
+function Moon({ size, style }: { size: number; style?: React.CSSProperties }) {
   const drift = useParallax<HTMLDivElement>(0.05);
-  const filterId = useId();
-
   return (
-    <div ref={drift} aria-hidden="true" className="absolute will-change-transform" style={{ width: size, height: size, opacity, ...style }}>
-      {/* base: esfera lisa com luz vindo de cima-esquerda */}
-      <div
-        className="absolute inset-0 rounded-full"
-        style={{
-          background: `
-            radial-gradient(circle at 30% 25%, rgba(255,255,255,0.85) 0%, transparent 34%),
-            radial-gradient(circle at 70% 74%, rgba(0,0,0,0.16) 0%, transparent 30%),
-            linear-gradient(135deg, #eaeaea 0%, #b5b5b5 42%, #707070 76%, #383838 100%)
-          `,
-          boxShadow: "inset -14px -14px 46px rgba(0,0,0,0.4), 0 0 70px rgba(0,0,0,0.04)",
-        }}
-      />
+    <div
+      ref={drift}
+      aria-hidden="true"
+      className="absolute rounded-full will-change-transform"
+      style={{
+        width: size,
+        height: size,
+        background: `${crateraGradientes()}, ${ESFERA_BASE}`,
+        boxShadow: "inset -14px -14px 46px rgba(0,0,0,0.4), 0 0 70px rgba(0,0,0,0.04)",
+        ...style,
+      }}
+    />
+  );
+}
 
-      {/* textura: relevo procedural via feTurbulence + feDiffuseLighting —
-          crateras de verdade em vez de 4 manchas de radial-gradient, que
-          ficavam lisas demais pra ler como superfície de planeta */}
-      <svg
-        className="absolute inset-0 rounded-full mix-blend-overlay"
-        width={size}
-        height={size}
-        style={{ opacity: 0.6 }}
-      >
-        <defs>
-          <filter id={filterId} x="-20%" y="-20%" width="140%" height="140%">
-            <feTurbulence type="fractalNoise" baseFrequency="0.09" numOctaves="5" seed="7" result="noise" />
-            <feDiffuseLighting in="noise" lightingColor="#ffffff" surfaceScale="4.5" diffuseConstant="1" result="light">
-              <feDistantLight azimuth="235" elevation="32" />
-            </feDiffuseLighting>
-          </filter>
-        </defs>
-        <circle cx={size / 2} cy={size / 2} r={size / 2} filter={`url(#${filterId})`} />
-      </svg>
-    </div>
+/** Esfera lisa desfocada: dá profundidade sem competir com a lua. */
+function BlurOrb({ size, style }: { size: number; style?: React.CSSProperties }) {
+  const drift = useParallax<HTMLDivElement>(0.05);
+  return (
+    <div
+      ref={drift}
+      aria-hidden="true"
+      className="absolute rounded-full will-change-transform"
+      style={{
+        width: size,
+        height: size,
+        background: ESFERA_BASE,
+        boxShadow: "inset -14px -14px 46px rgba(0,0,0,0.4), 0 0 70px rgba(0,0,0,0.04)",
+        filter: "blur(6px)",
+        opacity: 0.85,
+        ...style,
+      }}
+    />
   );
 }
 
@@ -84,20 +106,35 @@ function Meteor({
   delay: number;
   duration?: number;
 }) {
+  // percorre a propria direcao (cos/sin do angulo), nao uma diagonal fixa —
+  // senao o rasto nao bate com a inclinacao do risco
+  const rad = (angle * Math.PI) / 180;
+  const dist = 55;
+  const dx = Math.round(Math.cos(rad) * dist);
+  const dy = Math.round(Math.sin(rad) * dist);
+
   return (
     <div
       aria-hidden="true"
       className="absolute"
-      style={{
-        left: x,
-        top: y,
-        width: length,
-        height: 1,
-        background: "linear-gradient(90deg, transparent, rgba(0,0,0,0.55) 65%, rgba(0,0,0,0.9))",
-        transform: `rotate(${angle}deg)`,
-        transformOrigin: "left center",
-        animation: `meteor-fall ${duration}s ease-in ${delay}s infinite`,
-      }}
+      style={
+        {
+          left: x,
+          top: y,
+          width: length,
+          height: 1,
+          background: "linear-gradient(90deg, transparent, rgba(0,0,0,0.55) 65%, rgba(0,0,0,0.9))",
+          transformOrigin: "left center",
+          // a rotacao precisa estar DENTRO do keyframe: animar so
+          // `translate` no keyframe sobrescreve qualquer transform estatico
+          // aplicado por fora, e o risco ficava sempre deitado (0deg)
+          // durante toda a animacao — por isso parecia cair de lado.
+          "--meteor-rot": `${angle}deg`,
+          "--meteor-dx": `${dx}px`,
+          "--meteor-dy": `${dy}px`,
+          animation: `meteor-fall ${duration}s ease-in ${delay}s infinite`,
+        } as React.CSSProperties
+      }
     />
   );
 }
@@ -133,18 +170,18 @@ function Sparkle({
 export default function HeroAtmosphere() {
   return (
     <div aria-hidden="true" className="absolute inset-0 z-0 overflow-hidden">
-      {/* planeta principal: canto superior direito, meio cortado pela borda */}
-      <Planet size={220} style={{ top: "8%", right: "-4%" }} />
-      <OrbitRing size={340} style={{ top: "-2%", right: "-9%" }} />
+      {/* esfera lisa desfocada: menor, ao fundo, da profundidade */}
+      <BlurOrb size={200} style={{ top: "8%", right: "-4%" }} />
+      <OrbitRing size={320} style={{ top: "-2%", right: "-9%" }} />
 
-      {/* segundo planeta: maior, quase todo fora de quadro, canto inferior esquerdo */}
-      <Planet size={480} style={{ bottom: "-30%", left: "-16%" }} opacity={0.9} />
+      {/* lua: maior, nitida, elemento principal — quase toda fora de quadro */}
+      <Moon size={480} style={{ bottom: "-30%", left: "-16%" }} />
       <OrbitRing size={620} style={{ bottom: "-38%", left: "-22%" }} />
 
-      {/* meteoros: riscos finos, caem devagar em loop, nunca ao mesmo tempo */}
-      <Meteor x="28%" y="14%" length={90} angle={35} delay={0} duration={6} />
-      <Meteor x="78%" y="10%" length={130} angle={40} delay={2.4} duration={7} />
-      <Meteor x="8%" y="55%" length={70} angle={30} delay={4.5} duration={5.5} />
+      {/* meteoros: quase verticais (60-72deg da horizontal), caem, nao "voam de lado" */}
+      <Meteor x="28%" y="12%" length={80} angle={68} delay={0} duration={6} />
+      <Meteor x="78%" y="8%" length={110} angle={72} delay={2.4} duration={7} />
+      <Meteor x="10%" y="50%" length={60} angle={64} delay={4.5} duration={5.5} />
 
       {/* sparkles: pontinhos de 4 pontas, brilho pulsante */}
       <Sparkle x="30%" y="20%" size={16} delay={0} />

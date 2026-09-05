@@ -164,11 +164,14 @@ body::after {
 }
 
 /* meteoro: desliza um pouco no proprio eixo e some, em loop lento */
+/* a rotacao entra em TODO keyframe: animar so translate() sobrescrevia
+   qualquer transform estatico aplicado por fora (o rotate() do meteoro
+   desaparecia assim que a animacao comecava, ficando sempre deitado) */
 @keyframes meteor-fall {
-  0%   { opacity: 0; transform: translate(0, 0); }
+  0%   { opacity: 0; transform: rotate(var(--meteor-rot)) translate(0, 0); }
   10%  { opacity: 1; }
   80%  { opacity: 1; }
-  100% { opacity: 0; transform: translate(46px, 46px); }
+  100% { opacity: 0; transform: rotate(var(--meteor-rot)) translate(var(--meteor-dx), var(--meteor-dy)); }
 }
 
 /* sparkle: brilho pulsante devagar, nunca some de vez */
