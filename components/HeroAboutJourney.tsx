@@ -2,7 +2,7 @@
 
 import { useRef } from "react";
 import { motion, useScroll, useTransform } from "motion/react";
-import Moon3D from "@/components/Moon3D";
+import Moon from "@/components/Moon";
 
 /**
  * Envolve Hero + Sobre e faz o planeta viajar continuamente pelas duas
@@ -47,7 +47,7 @@ export default function HeroAboutJourney({ children }: { children: React.ReactNo
               className="absolute rounded-full border border-black/[0.07]"
               style={{ width: 660, height: 660, top: -70, left: -70 }}
             />
-            <Moon3D size={520} />
+            <Moon size={520} progress={scrollYProgress} />
           </motion.div>
         </div>
       </div>
