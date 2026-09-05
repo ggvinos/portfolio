@@ -2,6 +2,7 @@
 
 import { useLanguage } from "@/lib/context";
 import Particles from "@/components/Particles";
+import HeroAtmosphere from "@/components/HeroAtmosphere";
 import { useScrollRecede } from "@/hooks/useScrollFx";
 
 const TOOLS = [
@@ -27,6 +28,7 @@ const T = {
   metrics: "2.2s",
   ctas: "2.4s",
   hint: "2.7s",
+  corners: "3s",
 };
 
 const fadeIn = (delay: string) => ({
@@ -48,19 +50,7 @@ export default function Hero() {
         className="absolute inset-0 z-0"
         style={{ animation: "fade-in-ambient 2.2s ease both", animationDelay: T.world }}
       >
-        {/* fundo: vinheta neutra, sem matiz — o planeta e os meteoros entram
-            numa etapa seguinte, isto aqui é só a base para não ficar colorido
-            enquanto isso não é decidido */}
-        <div
-          className="absolute inset-0 z-0"
-          style={{
-            background: `
-              radial-gradient(ellipse 65% 45% at 72% 18%, rgba(0, 0, 0, 0.05) 0%, transparent 55%),
-              radial-gradient(ellipse 55% 65% at 22% 78%, rgba(0, 0, 0, 0.04) 0%, transparent 52%),
-              #ffffff
-            `,
-          }}
-        />
+        <HeroAtmosphere />
 
         <Particles className="absolute inset-0 z-[1]" quantity={380} staticity={40} />
 
@@ -157,6 +147,29 @@ export default function Hero() {
           <span className="font-mono text-[10px] text-muted tracking-widest uppercase">scroll</span>
           <div className="w-px h-8" style={{ background: "linear-gradient(to bottom, var(--muted), transparent)" }} />
         </div>
+      </div>
+
+      {/* assinatura pessoal: canto inferior esquerdo, só a partir de sm */}
+      <div
+        className="hidden sm:block absolute bottom-10 left-6 z-[3] animate-fade-in"
+        style={fadeIn(T.corners)}
+      >
+        {t.hero.values.map((word) => (
+          <p key={word} className="font-mono text-[11px] font-semibold tracking-wide text-primary leading-tight">
+            {word}
+          </p>
+        ))}
+        <div className="mt-2 h-px w-10 bg-[var(--text)]" />
+      </div>
+
+      {/* coordenadas: canto inferior direito, só a partir de sm */}
+      <div
+        className="hidden sm:block absolute bottom-10 right-6 z-[3] text-right animate-fade-in"
+        style={fadeIn(T.corners)}
+      >
+        <p className="font-mono text-[11px] text-muted leading-tight">{t.hero.coordinates.lat}</p>
+        <p className="font-mono text-[11px] text-muted leading-tight">{t.hero.coordinates.lng}</p>
+        <p className="font-mono text-[11px] text-muted leading-tight">{t.hero.coordinates.route}</p>
       </div>
     </section>
   );

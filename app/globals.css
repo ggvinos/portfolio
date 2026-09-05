@@ -163,6 +163,20 @@ body::after {
   to   { opacity: 1; }
 }
 
+/* meteoro: desliza um pouco no proprio eixo e some, em loop lento */
+@keyframes meteor-fall {
+  0%   { opacity: 0; transform: translate(0, 0); }
+  10%  { opacity: 1; }
+  80%  { opacity: 1; }
+  100% { opacity: 0; transform: translate(46px, 46px); }
+}
+
+/* sparkle: brilho pulsante devagar, nunca some de vez */
+@keyframes sparkle-twinkle {
+  0%, 100% { opacity: 0.25; transform: scale(0.85); }
+  50%      { opacity: 0.9;  transform: scale(1); }
+}
+
 /* ── Acessibilidade: quem pediu menos movimento recebe a página pronta ── */
 @media (prefers-reduced-motion: reduce) {
   *,

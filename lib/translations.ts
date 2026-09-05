@@ -24,6 +24,10 @@ export const translations = {
       ],
       cta_primary: "View Projects",
       cta_secondary: "Contact",
+      // tradução literal do bloco de valores pessoais que existe só em PT
+      // na referência visual — ajuste se preferir outra ênfase em inglês
+      values: ["DISCIPLINE", "TRANSFORMS", "POSSIBILITY"],
+      coordinates: { lat: "-27.5954° S", lng: "-48.5480° W", route: "BR → WORLD" },
     },
     sections: {
       about: "ABOUT",
@@ -496,6 +500,8 @@ export const translations = {
       ],
       cta_primary: "Ver Projetos",
       cta_secondary: "Contato",
+      values: ["DISCIPLINA", "TRANSFORMA", "POSSIBILIDADES"],
+      coordinates: { lat: "-27.5954° S", lng: "-48.5480° W", route: "BR → WORLD" },
     },
     sections: {
       about: "SOBRE",
