@@ -1,7 +1,7 @@
 import Nav from "@/components/Nav";
 import Grain from "@/components/Grain";
 import ScrollProgress from "@/components/ScrollProgress";
-import PersistentMoon from "@/components/PersistentMoon";
+import HeroAboutJourney from "@/components/HeroAboutJourney";
 import Hero from "@/components/Hero";
 import About from "@/components/About";
 import AcordeShowcase from "@/components/AcordeShowcase";
@@ -18,11 +18,12 @@ export default function Home() {
     <>
       <Grain />
       <ScrollProgress />
-      <PersistentMoon />
       <Nav />
       <main>
-        <Hero />
-        <About />
+        <HeroAboutJourney>
+          <Hero />
+          <About />
+        </HeroAboutJourney>
         <AcordeShowcase />
         <Projects />
         <Experience />

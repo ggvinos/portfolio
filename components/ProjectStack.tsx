@@ -16,11 +16,23 @@ type ProjectData = {
   link: string | null;
 };
 
+// vh de scroll dedicado a cada carta — precisa ser bastante pra dar tempo
+// de perceber "essa saiu, essa entrou", nao uma troca de 100-200px
+const VH_POR_CARTA = 165;
+
+// quanto cada nivel de profundidade na pilha desce/encolhe em repouso
+const OFFSET_POR_NIVEL = 22;
+const ESCALA_POR_NIVEL = 0.045;
+
 /**
- * Pilha de cards: o de cima sai (sobe, apaga, encolhe) revelando o de
- * baixo, que já está pronto e parado no lugar — não precisa animar
- * "entrada", só aparecer conforme o de cima some. Um card a menos que o
- * total de segmentos de scroll: o último nunca sai, só fica.
+ * Pilha de cartas de verdade: todas existem e ficam visíveis o tempo
+ * todo, desde o início, com profundidade (offset + escala decrescente)
+ * simulando cartas físicas empilhadas — a carta 2 e 3 espiam atrás da 1.
+ *
+ * Quando o scroll avança, a carta da frente sobe/apaga/gira saindo,
+ * enquanto TODAS as de trás sobem um nível ao mesmo tempo (a pilha
+ * inteira se desloca junto, não só a próxima carta) — é o que acontece
+ * fisicamente ao tirar a carta do topo de uma pilha real.
  *
  * Abaixo de `prefers-reduced-motion`, ou com 1 projeto só (pilha de 1 não
  * faz sentido), cai numa grade estática com o fade que já existia.
@@ -48,85 +60,74 @@ function StackedTrack({ projects }: { projects: ProjectData[] }) {
   const { scrollYProgress } = useScroll({ target: ref, offset: ["start start", "end end"] });
 
   const total = projects.length;
-  const segments = Math.max(total - 1, 1);
 
   return (
-    <div ref={ref} style={{ height: `${segments * 45}vh` }}>
-      <div className="sticky top-16 mx-auto max-w-3xl" style={{ height: "82dvh" }}>
+    <div ref={ref} style={{ height: `${total * VH_POR_CARTA}vh` }}>
+      <div className="sticky top-16 mx-auto max-w-3xl" style={{ height: "70vh" }}>
         <span className="absolute -top-10 right-0 font-mono text-[11px] text-muted">
           {String(1).padStart(2, "0")}–{String(total).padStart(2, "0")}
         </span>
 
         {projects.map((p, i) => (
-          <StackedCard
-            key={p.id}
-            project={p}
-            index={i}
-            total={total}
-            segments={segments}
-            progress={scrollYProgress}
-          />
+          <StackedCard key={p.id} project={p} index={i} total={total} progress={scrollYProgress} />
         ))}
       </div>
     </div>
   );
 }
 
-/** 0 enquanto o card está no topo da pilha; vai a 1 conforme ele sai. */
-function useStep(progress: MotionValue<number>, index: number, segments: number) {
-  const from = index / segments;
-  const to = (index + 1) / segments;
-  return useTransform(progress, [from, to], [0, 1], { clamp: true });
-}
-
 function StackedCard({
   project,
   index,
   total,
-  segments,
   progress,
 }: {
   project: ProjectData;
   index: number;
   total: number;
-  segments: number;
   progress: MotionValue<number>;
 }) {
-  // chamado sempre, até no último card — hooks não podem ser condicionais.
-  // o valor só não é aplicado quando isLast (ver style abaixo).
-  const local = useStep(progress, Math.min(index, segments - 1), segments);
   const isLast = index === total - 1;
 
-  // saida bem mais visivel: sobe quase pra fora da tela, escala e
-  // opacidade caem o trecho inteiro (nao so no fim), leve giro alternado
-  // por indice pra vender o "descolar da pilha", nao so um fade generico
-  const y = useTransform(local, [0, 1], [0, -190]);
-  const opacity = useTransform(local, [0, 1], [1, 0]);
-  const scale = useTransform(local, [0, 1], [1, 0.86]);
-  const rotate = useTransform(local, [0, 1], [0, index % 2 === 0 ? -5 : 5]);
+  // a ultima carta nunca "sai": congela o progresso dela no instante em
+  // que ela chega na frente, senao ela tambem tentaria sair no fim
+  const tetoProgresso = isLast ? (total - 1) / total : 1;
+  const progressoEfetivo = useTransform(progress, (p) => Math.min(p, tetoProgresso));
+
+  // posicao continua na fila: positivo = ainda empilhada atras (quanto
+  // maior, mais no fundo), 0 = na frente, negativo = ja e a vez dela sair.
+  // formula unica pra tudo: conforme o progresso avanca, TODA a pilha
+  // desliza um nivel de uma vez — nao e "a proxima carta reage", e "a
+  // pilha inteira anda", que e como uma pilha fisica se comporta.
+  const posicaoNaFila = useTransform(progressoEfetivo, (p) => index - p * total);
+
+  const profundidade = useTransform(posicaoNaFila, (r) => Math.max(0, r));
+  const saida = useTransform(posicaoNaFila, (r) => Math.min(1, Math.max(0, -r)));
+
+  const y = useTransform([profundidade, saida], ([prof, sai]: number[]) => prof * OFFSET_POR_NIVEL - sai * 220);
+  const scale = useTransform(
+    [profundidade, saida],
+    ([prof, sai]: number[]) => Math.max(0.8, 1 - prof * ESCALA_POR_NIVEL) * (1 - sai * 0.08),
+  );
+  const opacity = useTransform(saida, (sai) => 1 - sai);
+  const rotate = useTransform(saida, (sai) => sai * (index % 2 === 0 ? -7 : 7));
 
   const link = project.link;
 
   return (
-    // o wrapper agora so centraliza — nao tem mais fundo nem tamanho
-    // proprios. O card (SpotlightCard) e que define seu tamanho pelo
-    // proprio conteudo, em vez de esticar pra preencher a area toda de
-    // scroll (que sobrava muito espaco vazio com projetos curtos).
+    // z-index estatico por indice, nao dinamico: fisicamente, a carta
+    // sendo tirada do topo passa POR CIMA da que esta sendo revelada
+    // embaixo enquanto e levantada — e assim que uma pilha real se
+    // comporta, entao a carta de indice menor sempre pinta por cima.
     <motion.div
-      className="absolute inset-0 flex items-center justify-center px-4"
-      style={{
-        zIndex: total - index,
-        y: isLast ? 0 : y,
-        opacity: isLast ? 1 : opacity,
-        scale: isLast ? 1 : scale,
-        rotate: isLast ? 0 : rotate,
-      }}
+      className="absolute inset-0 flex items-start justify-center px-4 pt-2"
+      style={{ zIndex: total - index, y, opacity, scale, rotate }}
     >
       {/* bg-page: o SpotlightCard nao tem fundo opaco por padrao (o
           gradiente dele vira transparente depois de 60% da diagonal,
-          pensado pra ficar sozinho sobre a pagina) — com 4 cards
-          empilhados isso deixava todos visiveis ao mesmo tempo.
-          shadow: reforca o efeito de "carta lifted da pilha". */}
+          pensado pra ficar sozinho sobre a pagina). Com varias cartas
+          empilhadas na mesma area isso deixava todas se misturando.
+          shadow: reforca a leitura de "carta fisica", nao card plano. */}
       <SpotlightCard className="w-full max-w-2xl bg-page shadow-xl shadow-black/10">
         <div className="flex max-h-[65vh] flex-col gap-4 overflow-y-auto p-6 sm:gap-5 sm:p-10">
           <div className="flex flex-wrap items-center gap-3">
