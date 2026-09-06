@@ -104,23 +104,26 @@ export default function HeroAboutJourney({ children }: { children: React.ReactNo
   // caixa esta no estado "Hero" (scale 1, sem translate) e onde
   // queremos que ele fique no estado "Sobre".
   const BOX = 520;
-  const ESCALA_SOBRE = 0.32;
+  // 0.28 (era 0.32): menor libera mais espaco de sobra pro dwell (ver
+  // bufferMaximoSemSobrepor abaixo — um raio menor aumenta diretamente
+  // quanto da pra esticar o tempo parado sem arriscar sobrepor a
+  // proxima secao).
+  const ESCALA_SOBRE = 0.28;
   const centroHeroX = -0.1 * viewport.w + BOX / 2;
   const centroHeroY = 1.2 * viewport.h - BOX / 2;
   const raioSobre = (BOX * ESCALA_SOBRE) / 2;
 
-  // alvo: canto inferior-esquerdo, ENCOSTADA na zona proibida da bio
-  // (nao no rodape da tela). Isso importa pro sticky soltar direito:
+  // alvo: encostada na zona proibida da bio, SEM folga extra (era
+  // "+20") — cada pixel mais perto do topo da zona segura vira pixel a
+  // mais de dwell disponivel. Isso importa pro sticky soltar direito:
   // uma vez que o sticky solta (perto do fim do Sobre) a lua passa a
   // rolar 1:1 com a pagina, junto com tudo — a partir dai a distancia
   // dela ate a proxima secao NUNCA MUDA (as duas rolam juntas). Ficar
-  // colada no topo da zona segura (logo abaixo da bio) em vez de colada
-  // no rodape da tela maximiza essa distancia fixa, garantindo que ela
-  // ja esta bem acima de onde a proxima secao comeca quando as duas
-  // ficarem visiveis ao mesmo tempo.
+  // o mais perto possivel do topo da zona segura maximiza essa
+  // distancia fixa, e portanto o dwell.
   const zonaProibidaAteY = 96 + bioAlturaPx + 40; // top-24 (96px) + bio + folga
   const centroSobreX = Math.max(0.14 * viewport.w, raioSobre + 24);
-  const centroSobreY = Math.min(zonaProibidaAteY + raioSobre + 20, viewport.h - raioSobre - 24);
+  const centroSobreY = Math.min(zonaProibidaAteY + raioSobre, viewport.h - raioSobre - 24);
   const xSobrePct = ((centroSobreX - centroHeroX) / BOX) * 100;
   const ySobrePct = ((centroSobreY - centroHeroY) / BOX) * 100;
 
@@ -149,7 +152,7 @@ export default function HeroAboutJourney({ children }: { children: React.ReactNo
   // distancia (em pixels de pagina) entre "onde o sticky soltaria" e
   // "onde a proxima secao comeca" precisa ficar sempre >= a borda de
   // baixo da lua + uma margem.
-  const margemAteAcorde = 40;
+  const margemAteAcorde = 15;
   const bufferMaximoSemSobrepor = Math.max(0, viewport.h - centroSobreY - raioSobre - margemAteAcorde);
   // USA SEMPRE O MAXIMO SEGURO, nao so o minimo pra caber a transicao —
   // pedido do usuario: ela nao pode so' "passar" pela posicao do Sobre
