@@ -20,7 +20,7 @@ export default function About() {
           }`}
         >
           {/* label + bio, sticky enquanto os cards são lidos */}
-          <div className="lg:sticky lg:top-24 lg:self-start">
+          <div data-bio-col className="lg:sticky lg:top-24 lg:self-start">
             <h2 className="font-mono text-xs text-accent uppercase tracking-widest mb-8">
               {t.sections.about}
             </h2>

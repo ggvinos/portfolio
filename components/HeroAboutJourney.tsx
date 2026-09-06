@@ -45,6 +45,18 @@ export default function HeroAboutJourney({ children }: { children: React.ReactNo
   // left:-10%) e um recorte proposital que só existe fora da tela.
   const [viewport, setViewport] = useState({ w: 1440, h: 900 });
 
+  // altura real da bio (coluna esquerda do Sobre, marcada com
+  // data-bio-col em About.tsx). Ela e sticky em top-24 (96px) e fica
+  // PARADA nessa posicao o tempo todo que o Sobre esta na tela — entao
+  // "96px + altura dela + folga" e uma zona proibida constante pra lua,
+  // nao importa o quanto o usuario role dentro do Sobre.
+  const [bioAlturaPx, setBioAlturaPx] = useState(260);
+
+  // altura real do conteudo (Hero+Sobre) — necessaria pro fix do sticky
+  // logo abaixo. Sem isso nao da pra calcular quanto de "folga" o sticky
+  // precisa pra ficar grudado ate o fim do Sobre.
+  const [conteudoAlturaPx, setConteudoAlturaPx] = useState(1600);
+
   useLayoutEffect(() => {
     function medir() {
       const container = contentRef.current;
@@ -54,6 +66,11 @@ export default function HeroAboutJourney({ children }: { children: React.ReactNo
       const alturaTotal = container.offsetHeight;
       if (alturaTotal > 0) {
         setHeroFracao(hero.offsetHeight / alturaTotal);
+        setConteudoAlturaPx(alturaTotal);
+      }
+      const bio = container.querySelector("[data-bio-col]") as HTMLElement | null;
+      if (bio) {
+        setBioAlturaPx(bio.offsetHeight);
       }
       setViewport({ w: window.innerWidth, h: window.innerHeight });
     }
@@ -73,22 +90,32 @@ export default function HeroAboutJourney({ children }: { children: React.ReactNo
   // (h-screen) — de proposito cortada pelas duas bordas no Hero. Sem essa
   // conta, o x/y (que sao % da PROPRIA caixa, nao da tela) so empurra a
   // partir desse ponto cortado, e nunca garante que o circulo entre
-  // inteiro na tela: ficou cortado nas duas ultimas tentativas.
+  // inteiro na tela: ficou cortado em tentativas anteriores.
   // Aqui calculamos, em pixel real, onde o CENTRO da caixa esta no estado
   // "Hero" (scale 1, sem translate) e onde queremos que ele fique no
-  // estado "Sobre" (menor, dentro da tela, sem tocar nenhuma borda, e a
-  // direita da bio pra nao cobrir o paragrafo), e convertemos a diferenca
-  // pra % da caixa (que e a unidade que x/y entendem).
+  // estado "Sobre".
   const BOX = 520;
   const ESCALA_SOBRE = 0.4;
   const centroHeroX = -0.1 * viewport.w + BOX / 2;
   const centroHeroY = 1.2 * viewport.h - BOX / 2;
-  // alvo: ~62% da largura (fica dentro da coluna dos cards, a direita da
-  // bio) e ~30% da altura (bem acima da borda de baixo), com folga de
-  // raio suficiente pra nao tocar nenhuma borda mesmo em telas de 1024px.
   const raioSobre = (BOX * ESCALA_SOBRE) / 2;
-  const centroSobreX = Math.max(0.55, Math.min(0.62, 1 - raioSobre / viewport.w - 0.03)) * viewport.w;
-  const centroSobreY = 0.3 * viewport.h;
+
+  // alvo: canto inferior-esquerdo — a UNICA area realmente vazia da
+  // secao. A direita tem os cards (sem fundo opaco, entao a lua atras
+  // deles atrapalhava leitura e contraste). Acima, na mesma coluna, tem
+  // a bio. Abaixo da bio, na coluna esquerda, nao tem mais nada — e essa
+  // zona nao muda de tamanho com o scroll porque a bio e sticky (fica
+  // sempre nos mesmos 96px do topo + a propria altura, medida de
+  // verdade via data-bio-col, nao chutada).
+  const zonaProibidaAteY = 96 + bioAlturaPx + 40; // top-24 (96px) + bio + folga
+  const centroSobreX = Math.max(0.14 * viewport.w, raioSobre + 24);
+  // nunca deixa cortar embaixo, mesmo que isso, numa tela muito baixa,
+  // signifique nao limpar 100% a folga da bio — prioridade e nao cortar
+  const limiteInferior = viewport.h - raioSobre - 24;
+  const centroSobreY = Math.min(
+    Math.max(zonaProibidaAteY + raioSobre, Math.min(0.85 * viewport.h, limiteInferior)),
+    limiteInferior,
+  );
   const xSobrePct = ((centroSobreX - centroHeroX) / BOX) * 100;
   const ySobrePct = ((centroSobreY - centroHeroY) / BOX) * 100;
 
@@ -96,15 +123,45 @@ export default function HeroAboutJourney({ children }: { children: React.ReactNo
   const x = useTransform(scrollYProgress, [0, heroFracao, fimTransicao, 1], ["0%", "0%", `${xSobrePct}%`, `${xSobrePct}%`]);
   const y = useTransform(scrollYProgress, [0, heroFracao, fimTransicao, 1], ["0%", "0%", `${ySobrePct}%`, `${ySobrePct}%`]);
 
+  // BUG DE ARQUITETURA (achado rolando a pagina de verdade neste
+  // ambiente via scrollTo+getBoundingClientRect, nao só olhando a
+  // formula): `position: sticky` só fica grudado enquanto sobra
+  // "altura do container menos altura da tela" de scroll. Como o
+  // container (celula do grid) tinha exatamente a altura do conteudo
+  // (1673px num teste real) e a tela 800px, o sticky descolava e
+  // COMECAVA A SUBIR sozinho depois de só 873px de scroll — bem no meio
+  // do Sobre, arrastando a posicao "congelada" pra cima, direto em cima
+  // do texto da bio. Isso nao aparecia na conta de x/y (que assume
+  // sticky sempre com top:0), só ficava visivel rolando de verdade.
+  //
+  // Fix: a camada decorativa passa a ter sua PROPRIA altura, igual ao
+  // conteudo + 1 tela inteira. Isso empurra a linha do grid pra ficar
+  // mais alta que o conteudo, dando ao sticky folga suficiente pra ficar
+  // grudado ATE o fim do Sobre (e so entao soltar, junto com o Sobre
+  // saindo de tela). O `marginBottom` negativo do mesmo tamanho no
+  // container inteiro cancela esse espaco extra na pagina — sem isso,
+  // apareceria um vao em branco entre o Sobre e Projetos.
+  // a camada decorativa e "hidden lg:block" (some no mobile) — nesse
+  // caso ela nao contribui em nada pra altura da linha do grid, e a
+  // margem negativa NAO PODE ser aplicada (cortaria a proxima secao por
+  // engano, ja que nao existe folga nenhuma pra compensar). So conta
+  // quando ela realmente esta visivel (>=1024px, o breakpoint "lg").
+  const decorativaVisivel = viewport.w >= 1024;
+  const alturaComFolga = conteudoAlturaPx + viewport.h;
+  const margemCompensacao = decorativaVisivel ? -viewport.h : 0;
+
   return (
-    <div ref={ref} className="grid">
+    <div ref={ref} className="grid" style={{ marginBottom: margemCompensacao }}>
       {/* sem altura fixa aqui: precisa esticar pra altura da celula do
           grid inteira (Hero+Sobre), senao a div sticky de dentro so tem
           h-screen de "pista" pra colar e solta a lua logo apos o Hero */}
       {/* hidden abaixo de lg: em telas pequenas o Sobre vira coluna unica
           (about.tsx usa lg:grid-cols-2) e o layout fica apertado demais
           pra sobrar espaco decorativo — a lua some no mobile de proposito */}
-      <div className="pointer-events-none relative z-0 col-start-1 row-start-1 hidden lg:block">
+      <div
+        className="pointer-events-none relative z-0 col-start-1 row-start-1 hidden lg:block"
+        style={{ height: alturaComFolga }}
+      >
         <div className="sticky top-0 h-screen overflow-hidden">
           <motion.div
             className="absolute"
@@ -132,7 +189,14 @@ export default function HeroAboutJourney({ children }: { children: React.ReactNo
         </div>
       </div>
 
-      <div ref={contentRef} className="relative z-10 col-start-1 row-start-1">
+      {/* self-start: sem isso, o grid estica esta celula pra acompanhar a
+          camada decorativa (que agora e mais alta de proposito, ver
+          `alturaComFolga` acima) — estica o WRAPPER, nao rearranja os
+          filhos, mas quebraria a medicao de `conteudoAlturaPx` (que le
+          o offsetHeight deste proprio elemento): a altura medida
+          cresceria pra acompanhar a folga que ela mesma define, um
+          loop. self-start mantem a altura sempre igual ao conteudo real. */}
+      <div ref={contentRef} className="relative z-10 col-start-1 row-start-1 self-start">
         {children}
       </div>
     </div>
