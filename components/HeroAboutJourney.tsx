@@ -127,69 +127,84 @@ export default function HeroAboutJourney({ children }: { children: React.ReactNo
   const xSobrePct = ((centroSobreX - centroHeroX) / BOX) * 100;
   const ySobrePct = ((centroSobreY - centroHeroY) / BOX) * 100;
 
-  // pontos da jornada: grande e parada enquanto o Hero ocupa a tela
-  // (0-heroFracao), transicao curta logo que o Sobre comeca a aparecer,
-  // depois parada no Sobre — os dois ultimos valores de cada array sao
-  // IGUAIS de proposito, sem deriva residual.
+  // pontos da jornada: grande e parada no Hero, transicao curta,
+  // PARADA DE VERDADE no Sobre (dwell), e SAIDA RAPIDA controlada.
   //
-  // O sticky nativo solta sozinho em "altura do container - altura da
-  // tela" (e' assim que sticky sempre funciona). Se o Sobre (sozinho,
-  // sem o Hero) for mais BAIXO que a propria tela — comum em telas
-  // largas/altas com pouco texto — esse ponto de soltura cai ANTES do
-  // Hero nem ter terminado, o que quebraria a jornada inteira (a lua
-  // sairia da tela ainda gigante, no meio do Hero). BUFFER DINAMICO:
-  // soma altura extra ao container SO' na medida exata que falta pra
-  // garantir pelo menos um pouco de transicao depois do Hero — quando o
-  // Sobre ja e' alto o bastante por si so, o buffer fica em 0 (nao
-  // estica nada). O `marginBottom` negativo do mesmo tamanho cancela
-  // esse espaco extra na pagina, senao apareceria um vao antes de
-  // Projetos.
+  // CRITERIO CERTO (corrigido apos o usuario mostrar 2 prints): nao
+  // basta a lua nao COLIDIR em pixel com o Acorde — ela nao pode nem
+  // estar na tela ao MESMO TEMPO que qualquer pedaco do Acorde ja
+  // apareceu, mesmo sem tocar nele. O Acorde comeca a aparecer (top
+  // toca o fundo da viewport) sempre em scrollY = alturaConteudo -
+  // alturaTela — esse ponto NAO muda com buffer nenhum (a margem
+  // negativa so cancela o espaco extra na pagina, nao move onde o
+  // Acorde realmente comeca). Entao TODA a jornada (transicao + dwell
+  // + saida) tem que terminar ANTES desse ponto. Isso limita o dwell
+  // de verdade: dwell = altura do Sobre sozinho - altura da tela -
+  // transicao - saida - folga. Quanto mais alto o Sobre, mais dwell —
+  // por isso o espacamento de About.tsx foi aumentado (ver comentario
+  // la).
   const heroFracaoPx = heroFracao * conteudoAlturaPx;
-  // TETO DE SEGURANCA: o quanto da pra esticar o container sem a lua,
-  // ja parada na posicao final, "nascer" (em coordenada de pagina)
-  // DENTRO da area da proxima secao — sobreposicao garantida assim que
-  // as duas rolarem juntas depois que o sticky soltar. Formula: a
-  // distancia (em pixels de pagina) entre "onde o sticky soltaria" e
-  // "onde a proxima secao comeca" precisa ficar sempre >= a borda de
-  // baixo da lua + uma margem.
-  const margemAteAcorde = 15;
-  const bufferMaximoSemSobrepor = Math.max(0, viewport.h - centroSobreY - raioSobre - margemAteAcorde);
-  // USA SEMPRE O MAXIMO SEGURO, nao so o minimo pra caber a transicao —
-  // pedido do usuario: ela nao pode so' "passar" pela posicao do Sobre
-  // e ja comecar a deslizar, ela precisa ficar parada la' o MAIOR tempo
-  // possivel (do jeito que a bio tambem fica parada, sticky, enquanto
-  // o usuario le os cards), nao ter um comportamento diferente do
-  // texto ao lado. O teto acima ja garante que isso nunca sobrepoe a
-  // proxima secao, entao maximizar o tempo parado e seguro.
-  const bufferNecessario = bufferMaximoSemSobrepor;
+  const TRANSICAO_PX = 70;
+  const SAIDA_PX = 80;
+  const FOLGA_SEGURANCA = 20;
+
+  const acordeApareceEmPx = conteudoAlturaPx - viewport.h;
+  const fimTransicaoPx = heroFracaoPx + TRANSICAO_PX;
+  const dwellDisponivelPx = Math.max(0, acordeApareceEmPx - fimTransicaoPx - SAIDA_PX - FOLGA_SEGURANCA);
+  const saidaComecaPx = fimTransicaoPx + dwellDisponivelPx;
+  const saidaFimPx = saidaComecaPx + SAIDA_PX;
+
+  // o sticky nativo so fica grudado ate "altura do container - altura
+  // da tela". O buffer aqui e' só uma garantia tecnica: sem ele, em
+  // telas onde o Sobre sozinho e mais baixo que a propria tela, esse
+  // ponto de soltura cairia ANTES da transicao terminar, quebrando a
+  // jornada (a lua sairia da tela ainda gigante, no meio do Hero). Ele
+  // NAO afeta o calculo do dwell acima (que usa a altura REAL do
+  // conteudo, sem buffer) nem o momento em que o Acorde aparece (que
+  // tambem nao muda com o buffer, ja que a margem negativa cancela
+  // exatamente esse espaco extra). O `marginBottom` negativo do mesmo
+  // tamanho evita um vao em branco antes de Projetos.
+  const bufferNecessario = Math.max(0, saidaFimPx + FOLGA_SEGURANCA - acordeApareceEmPx);
   const alturaComBuffer = conteudoAlturaPx + bufferNecessario;
   const decorativaVisivel = viewport.w >= 1024;
   const margemCompensacao = decorativaVisivel ? -bufferNecessario : 0;
 
-  const soltaSozinhoEmPx = alturaComBuffer - viewport.h;
-  // fim da transicao FIXO logo apos o Hero (curto, ~70px de scroll) —
-  // NAO relativo a soltaSozinhoEmPx. Antes estava amarrado a
-  // "soltaSozinhoEmPx - folga", entao aumentar o buffer so empurrava os
-  // dois juntos e o tempo parado (dwell) nunca crescia (ficava sempre
-  // ~30px). Com o fim fixo, todo o buffer extra vira tempo de
-  // permanencia de verdade entre "terminou de encolher" e "sticky
-  // solta", em vez de ser consumido tentando perseguir o proprio ponto
-  // de soltura.
-  const TRANSICAO_PX = 70;
-  const fimTransicaoPx = Math.min(heroFracaoPx + TRANSICAO_PX, soltaSozinhoEmPx - 10);
+  // IMPORTANTE: com offset ["start start", "end end"], o scrollYProgress
+  // do motion NAO mede 0-1 sobre a altura total do container — mede
+  // sobre "altura do container - altura da tela" (progress=1 e' quando
+  // o FIM do container encosta no FIM da viewport, o que acontece em
+  // scrollY = alturaContainer - alturaTela, nao em scrollY =
+  // alturaContainer). Dividir pelo denominador errado (jeito que uma
+  // versao anterior fazia) faz TODOS os breakpoints ficarem fora de
+  // escala — foi assim que a lua apareceu direto na posicao de SAIDA
+  // ainda no meio do dwell esperado, achado rolando de verdade.
+  const denominadorProgress = alturaComBuffer - viewport.h;
+  const heroFracaoAjustada = heroFracaoPx / denominadorProgress;
+  const fimTransicao = fimTransicaoPx / denominadorProgress;
+  const saidaComeca = saidaComecaPx / denominadorProgress;
+  const saidaFim = Math.min(saidaFimPx / denominadorProgress, 0.98);
 
-  // IMPORTANTE: o scrollYProgress do motion mede 0-1 sobre a altura
-  // RENDERIZADA do container (que e' `alturaComBuffer` quando o buffer
-  // existe, nao `conteudoAlturaPx`) — as duas fracoes abaixo tem que
-  // dividir pelo MESMO denominador que o motion usa, senao os
-  // breakpoints do useTransform ficam fora de escala assim que o buffer
-  // entra em cena.
-  const heroFracaoAjustada = heroFracaoPx / alturaComBuffer;
-  const fimTransicao = Math.min(fimTransicaoPx / alturaComBuffer, 0.95);
+  // alvo da saida: MESMO x, y bem mais negativo — o suficiente pra
+  // cobrir qualquer altura de tela (centroSobreY + raioSobre e' quanto
+  // falta, em pixel de tela, pra borda de baixo da lua sair do topo da
+  // viewport a partir da posicao de dwell; +80 de folga extra).
+  const ySaidaPct = ySobrePct - ((centroSobreY + raioSobre + 80) / BOX) * 100;
 
-  const scale = useTransform(scrollYProgress, [0, heroFracaoAjustada, fimTransicao, 1], [1, 1, ESCALA_SOBRE, ESCALA_SOBRE]);
-  const x = useTransform(scrollYProgress, [0, heroFracaoAjustada, fimTransicao, 1], ["0%", "0%", `${xSobrePct}%`, `${xSobrePct}%`]);
-  const y = useTransform(scrollYProgress, [0, heroFracaoAjustada, fimTransicao, 1], ["0%", "0%", `${ySobrePct}%`, `${ySobrePct}%`]);
+  const scale = useTransform(
+    scrollYProgress,
+    [0, heroFracaoAjustada, fimTransicao, saidaComeca, saidaFim],
+    [1, 1, ESCALA_SOBRE, ESCALA_SOBRE, ESCALA_SOBRE],
+  );
+  const x = useTransform(
+    scrollYProgress,
+    [0, heroFracaoAjustada, fimTransicao, saidaComeca, saidaFim],
+    ["0%", "0%", `${xSobrePct}%`, `${xSobrePct}%`, `${xSobrePct}%`],
+  );
+  const y = useTransform(
+    scrollYProgress,
+    [0, heroFracaoAjustada, fimTransicao, saidaComeca, saidaFim],
+    ["0%", "0%", `${ySobrePct}%`, `${ySobrePct}%`, `${ySaidaPct}%`],
+  );
 
   return (
     <div ref={ref} className="grid" style={{ marginBottom: margemCompensacao }}>
