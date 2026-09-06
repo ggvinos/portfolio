@@ -40,6 +40,11 @@ export default function HeroAboutJourney({ children }: { children: React.ReactNo
     return () => clearTimeout(t);
   }, []);
 
+  // viewport medido de verdade (nao chutado) — necessario pra calcular a
+  // posicao final em pixels reais, ja que o ponto de partida (bottom:-20%,
+  // left:-10%) e um recorte proposital que só existe fora da tela.
+  const [viewport, setViewport] = useState({ w: 1440, h: 900 });
+
   useLayoutEffect(() => {
     function medir() {
       const container = contentRef.current;
@@ -50,6 +55,7 @@ export default function HeroAboutJourney({ children }: { children: React.ReactNo
       if (alturaTotal > 0) {
         setHeroFracao(hero.offsetHeight / alturaTotal);
       }
+      setViewport({ w: window.innerWidth, h: window.innerHeight });
     }
     medir();
     window.addEventListener("resize", medir);
@@ -61,18 +67,34 @@ export default function HeroAboutJourney({ children }: { children: React.ReactNo
   // (heroFracao a +0.12), depois PARADA DE VERDADE no Sobre — os dois
   // ultimos valores de cada array sao IGUAIS de proposito, sem deriva
   // residual depois que chega na posicao final.
-  // alvo do congelamento: perto do texto da bio (coluna esquerda, sticky
-  // top-24 dentro do Sobre) em vez do canto inferior direito de antes —
-  // pedido do usuario foi "ela fica ao lado dessa informacao", nao solta
-  // no rodape da secao. Ajuste feito as cegas (este ambiente nao roda o
-  // scroll ao vivo pra conferir visualmente); se nao bater exatamente do
-  // lado do paragrafo, e so avisar pra um novo ajuste fino.
-  // tamanho fixo: a lua nao encolhe mais indo pro Sobre, so muda de
-  // posicao (x/y) — pedido do usuario apos ver o encolhimento e nao
-  // entender o motivo. Scale aqui e so o efeito de entrada (abaixo).
   const fimTransicao = Math.min(heroFracao + 0.12, 0.95);
-  const x = useTransform(scrollYProgress, [0, heroFracao, fimTransicao, 1], ["0%", "0%", "10%", "10%"]);
-  const y = useTransform(scrollYProgress, [0, heroFracao, fimTransicao, 1], ["0%", "0%", "-10%", "-10%"]);
+
+  // A caixa (520px) fica ancorada em bottom:-20%/left:-10% do container
+  // (h-screen) — de proposito cortada pelas duas bordas no Hero. Sem essa
+  // conta, o x/y (que sao % da PROPRIA caixa, nao da tela) so empurra a
+  // partir desse ponto cortado, e nunca garante que o circulo entre
+  // inteiro na tela: ficou cortado nas duas ultimas tentativas.
+  // Aqui calculamos, em pixel real, onde o CENTRO da caixa esta no estado
+  // "Hero" (scale 1, sem translate) e onde queremos que ele fique no
+  // estado "Sobre" (menor, dentro da tela, sem tocar nenhuma borda, e a
+  // direita da bio pra nao cobrir o paragrafo), e convertemos a diferenca
+  // pra % da caixa (que e a unidade que x/y entendem).
+  const BOX = 520;
+  const ESCALA_SOBRE = 0.4;
+  const centroHeroX = -0.1 * viewport.w + BOX / 2;
+  const centroHeroY = 1.2 * viewport.h - BOX / 2;
+  // alvo: ~62% da largura (fica dentro da coluna dos cards, a direita da
+  // bio) e ~30% da altura (bem acima da borda de baixo), com folga de
+  // raio suficiente pra nao tocar nenhuma borda mesmo em telas de 1024px.
+  const raioSobre = (BOX * ESCALA_SOBRE) / 2;
+  const centroSobreX = Math.max(0.55, Math.min(0.62, 1 - raioSobre / viewport.w - 0.03)) * viewport.w;
+  const centroSobreY = 0.3 * viewport.h;
+  const xSobrePct = ((centroSobreX - centroHeroX) / BOX) * 100;
+  const ySobrePct = ((centroSobreY - centroHeroY) / BOX) * 100;
+
+  const scale = useTransform(scrollYProgress, [0, heroFracao, fimTransicao, 1], [1, 1, ESCALA_SOBRE, ESCALA_SOBRE]);
+  const x = useTransform(scrollYProgress, [0, heroFracao, fimTransicao, 1], ["0%", "0%", `${xSobrePct}%`, `${xSobrePct}%`]);
+  const y = useTransform(scrollYProgress, [0, heroFracao, fimTransicao, 1], ["0%", "0%", `${ySobrePct}%`, `${ySobrePct}%`]);
 
   return (
     <div ref={ref} className="grid">
@@ -90,7 +112,7 @@ export default function HeroAboutJourney({ children }: { children: React.ReactNo
             // mesmo tempo (esquerda + baixo), nao o disco quase inteiro que
             // ficou em -6%/1% (achado "muito visivel") nem a fatia pequena
             // demais de -30%/-16% (achado "nao parece redondo"). Meio-termo.
-            style={{ width: 520, height: 520, bottom: "-20%", left: "-10%", x, y }}
+            style={{ width: 520, height: 520, bottom: "-20%", left: "-10%", scale, x, y }}
           >
             {/* entrada por tempo (opacity + escala pequena), separada do
                 scale de scroll acima — nao existe mais scale ligado ao
