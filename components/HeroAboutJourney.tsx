@@ -20,6 +20,7 @@ import Moon from "@/components/Moon";
 export default function HeroAboutJourney({ children }: { children: React.ReactNode }) {
   const ref = useRef<HTMLDivElement>(null);
   const contentRef = useRef<HTMLDivElement>(null);
+  const moonBoxRef = useRef<HTMLDivElement>(null);
   const { scrollYProgress } = useScroll({ target: ref, offset: ["start start", "end end"] });
 
   // fracao real (0-1) de onde o Hero termina dentro da altura total
@@ -81,10 +82,11 @@ export default function HeroAboutJourney({ children }: { children: React.ReactNo
 
   // pontos da jornada: grande e parada enquanto o Hero ocupa a tela
   // (0-heroFracao), transicao curta logo que o Sobre comeca a aparecer
-  // (heroFracao a +0.12), depois PARADA DE VERDADE no Sobre — os dois
+  // (heroFracao a +0.2), depois PARADA DE VERDADE no Sobre — os dois
   // ultimos valores de cada array sao IGUAIS de proposito, sem deriva
-  // residual depois que chega na posicao final.
-  const fimTransicao = Math.min(heroFracao + 0.12, 0.95);
+  // residual depois que chega na posicao final. Janela alargada (era
+  // +0.12) a pedido do usuario pra ficar mais suave, menos abrupta.
+  const fimTransicao = Math.min(heroFracao + 0.2, 0.95);
 
   // A caixa (520px) fica ancorada em bottom:-20%/left:-10% do container
   // (h-screen) — de proposito cortada pelas duas bordas no Hero. Sem essa
@@ -95,7 +97,9 @@ export default function HeroAboutJourney({ children }: { children: React.ReactNo
   // "Hero" (scale 1, sem translate) e onde queremos que ele fique no
   // estado "Sobre".
   const BOX = 520;
-  const ESCALA_SOBRE = 0.4;
+  // 0.32 (era 0.4): reduzido a pedido do usuario pra garantir folga de
+  // sobra e a lua aparecer inteira, sem chegar perto de nenhuma borda.
+  const ESCALA_SOBRE = 0.32;
   const centroHeroX = -0.1 * viewport.w + BOX / 2;
   const centroHeroY = 1.2 * viewport.h - BOX / 2;
   const raioSobre = (BOX * ESCALA_SOBRE) / 2;
@@ -127,6 +131,51 @@ export default function HeroAboutJourney({ children }: { children: React.ReactNo
   // secao seguinte era outra (z-index, ver classe "z-0" removida
   // abaixo) — isso aqui e so um reforco, nao a correcao principal.
   const opacitySaida = useTransform(scrollYProgress, [0, 0.94, 1], [1, 1, 0]);
+
+  // esconde a lua assim que a PROXIMA secao (irma depois deste wrapper
+  // no DOM, ex: Acorde) alcança a propria borda de baixo da lua na tela
+  // — nao uma fracao fixa da viewport, nao o sticky soltar. Descobertas
+  // rolando de verdade: (1) como a lua fica perto do rodape da tela (pra
+  // nao cobrir a bio, que fica no topo), qualquer margem fixa "generosa"
+  // acabava, na pratica, sendo exatamente onde a proxima secao entra —
+  // as duas brigam pelo mesmo pedaco de tela perto do rodape; medir
+  // contra a posicao REAL da lua (nao um numero chutado) resolve. (2) o
+  // calculo so pode confiar na leitura de "onde a lua esta" DEPOIS que
+  // ela chegou no tamanho final do Sobre — lendo essa posicao ainda no
+  // Hero (onde ela e gigante, quase saindo da tela por baixo) grava um
+  // valor errado que trava a lua escondida o tempo todo depois.
+  const larguraEsperadaSobre = BOX * ESCALA_SOBRE;
+  const [visivel, setVisivel] = useState(true);
+  const ultimaBordaInferiorRef = useRef(0);
+  useEffect(() => {
+    function verificar() {
+      const wrapper = ref.current;
+      const proximaSecao = wrapper?.nextElementSibling as HTMLElement | null;
+      const moonBox = moonBoxRef.current;
+      if (!proximaSecao || !moonBox) return;
+      const rect = moonBox.getBoundingClientRect();
+      // so grava/confia na medicao quando a lua ja esta no tamanho final
+      // do Sobre (10% de tolerancia) — no Hero ou em transicao, o valor
+      // nao serve de referencia pra decidir se deve esconder.
+      const jaEstaNoTamanhoDoSobre = Math.abs(rect.width - larguraEsperadaSobre) < larguraEsperadaSobre * 0.1;
+      if (jaEstaNoTamanhoDoSobre) {
+        ultimaBordaInferiorRef.current = rect.bottom;
+      }
+      if (ultimaBordaInferiorRef.current === 0) {
+        setVisivel(true);
+        return;
+      }
+      const margemSeguranca = 24;
+      setVisivel(proximaSecao.getBoundingClientRect().top > ultimaBordaInferiorRef.current + margemSeguranca);
+    }
+    verificar();
+    window.addEventListener("scroll", verificar, { passive: true });
+    window.addEventListener("resize", verificar);
+    return () => {
+      window.removeEventListener("scroll", verificar);
+      window.removeEventListener("resize", verificar);
+    };
+  }, [larguraEsperadaSobre]);
 
   // BUG DE ARQUITETURA (achado rolando a pagina de verdade neste
   // ambiente via scrollTo+getBoundingClientRect, nao só olhando a
@@ -176,8 +225,22 @@ export default function HeroAboutJourney({ children }: { children: React.ReactNo
         className="pointer-events-none relative col-start-1 row-start-1 hidden lg:block"
         style={{ height: alturaComFolga }}
       >
-        <div className="sticky top-0 h-screen overflow-hidden">
+        {/* display:none aplicado AQUI (no sticky), nao no wrapper de fora:
+            o wrapper de fora tem altura explicita (alturaComFolga) que
+            precisa continuar contando pro tamanho da linha do grid — o
+            sticky pega folga suficiente pra ficar grudado ate o fim do
+            Sobre. Aplicar "hidden" la em cima fazia o wrapper sumir por
+            inteiro (display:none ignora altura, mesmo explicita), a
+            linha do grid encolhia de repente, e a margem negativa (que
+            nao muda) ficava puxando space de menos — bug feio: a pagina
+            toda saltava assim que a lua escondia. Aqui dentro, escondida
+            ou nao, o wrapper de fora nunca muda de tamanho. */}
+        <div
+          className="sticky top-0 h-screen overflow-hidden"
+          style={{ display: visivel ? undefined : "none" }}
+        >
           <motion.div
+            ref={moonBoxRef}
             className="absolute"
             // referencia enviada: um arco grande cortado por duas bordas ao
             // mesmo tempo (esquerda + baixo), nao o disco quase inteiro que
