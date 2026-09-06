@@ -77,7 +77,15 @@ export default function HeroAboutJourney({ children }: { children: React.ReactNo
     }
     medir();
     window.addEventListener("resize", medir);
-    return () => window.removeEventListener("resize", medir);
+    // as alturas mudam depois da montagem (fonte carregando, textos de
+    // i18n entrando, cards animando) — medir so no mount deixava os
+    // breakpoints presos em numeros de um layout que ja nao existe mais.
+    const ro = new ResizeObserver(medir);
+    if (contentRef.current) ro.observe(contentRef.current);
+    return () => {
+      window.removeEventListener("resize", medir);
+      ro.disconnect();
+    };
   }, []);
 
   // A caixa (520px) fica ancorada em bottom:-20%/left:-10% do container
@@ -91,9 +99,8 @@ export default function HeroAboutJourney({ children }: { children: React.ReactNo
   const raioSobre = (BOX * ESCALA_SOBRE) / 2;
 
   // Onde o sticky solta sozinho: fim do container encostando no fim da
-  // tela. Depois disso a lua rola embora com a página — no mesmo
-  // instante em que a bio (também sticky) solta. As duas param de ser
-  // perseguidas pela câmera juntas, que é o comportamento pedido.
+  // tela. Serve como o ponto em que o movimento natural da página
+  // assume o lugar do transform (ver `subidaPx` abaixo).
   const soltaPx = topoContainerPx + Math.max(0, conteudoAlturaPx - viewport.h);
 
   // Transição: começa depois do primeiro terço do Hero e termina quando
@@ -115,9 +122,22 @@ export default function HeroAboutJourney({ children }: { children: React.ReactNo
   const xSobrePct = ((centroSobreX - centroHeroX) / BOX) * 100;
   const ySobrePct = ((centroSobreY - centroHeroY) / BOX) * 100;
 
+  // Depois de chegar no lugar, a lua para de ser perseguida pela câmera:
+  // ela sobe 1:1 com o scroll, ancorada ao Sobre como qualquer elemento
+  // da página. Isso é feito no próprio transform até `soltaPx`, porque a
+  // partir dali o sticky solta sozinho e o movimento natural assume — se
+  // o transform continuasse, ela subiria com o dobro da velocidade.
+  const subidaPx = Math.max(0, soltaPx - fimPx);
+  const ySobeComPagina = ySobrePct - (subidaPx / BOX) * 100;
+  const fimSubidaPx = Math.max(fimPx + 1, soltaPx);
+
   const scale = useTransform(scrollY, [comecaPx, fimPx], [1, ESCALA_SOBRE]);
   const x = useTransform(scrollY, [comecaPx, fimPx], ["0%", `${xSobrePct}%`]);
-  const y = useTransform(scrollY, [comecaPx, fimPx], ["0%", `${ySobrePct}%`]);
+  const y = useTransform(
+    scrollY,
+    [comecaPx, fimPx, fimSubidaPx],
+    ["0%", `${ySobrePct}%`, `${ySobeComPagina}%`],
+  );
 
   return (
     <div ref={ref} className="grid">

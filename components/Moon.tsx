@@ -46,7 +46,10 @@ export default function Moon({
         height: size,
         // sombra por fora: da peso/profundidade contra a pagina, como se
         // a esfera projetasse sombra, nao so uma foto colada na tela
-        boxShadow: "0 50px 90px -30px rgba(0,0,0,0.35)",
+        // sombra projetada + halo de contato: duas camadas em vez de uma da
+        // a impressao de um corpo apoiado num espaco, nao um disco flutuando
+        boxShadow:
+          "0 60px 110px -35px rgba(0,0,0,0.42), 0 12px 30px -12px rgba(0,0,0,0.22)",
         ...style,
       }}
     >
@@ -59,44 +62,68 @@ export default function Moon({
           backgroundSize: "auto 100%",
           backgroundPositionX,
           backgroundPositionY: "center",
+          // a foto vem plana e clara demais; um empurrao de contraste faz
+          // as crateras devolverem relevo quando o sombreado entra por cima
+          filter: "contrast(1.12) brightness(0.96) saturate(0.85)",
         }}
       />
-      {/* sombreado de esfera: gradiente linear (nao radial) simula o
-          terminador dia/noite de verdade — claro no canto que recebe luz,
-          escurecendo progressivamente pro lado oposto. A foto sozinha tem
-          iluminacao propria fixa e plana; isso e o que da volume. Contraste
-          aumentado (0.7 no canto escuro, era 0.6) porque a versao anterior
-          lia como "foto com filtro leve", nao como esfera de verdade. */}
+      {/* Sombreamento principal: RADIAL, centrado na fonte de luz (canto
+          superior esquerdo), nao linear. Numa esfera de verdade o brilho
+          cai com o cosseno do angulo em relacao a luz — isso se parece
+          muito mais com aneis concentricos ao redor do ponto iluminado do
+          que com uma rampa reta atravessando o disco. Era um
+          linear-gradient antes, e por isso a lua lia como uma foto com
+          filtro diagonal em vez de um corpo redondo. */}
       <div
         className="pointer-events-none absolute inset-0"
         style={{
-          background: `linear-gradient(
-            135deg,
-            rgba(255,255,255,0.16) 0%,
-            transparent 30%,
-            rgba(0,0,0,0.18) 55%,
-            rgba(0,0,0,0.7) 100%
+          background: `radial-gradient(
+            circle at 30% 24%,
+            rgba(255,255,255,0.18) 0%,
+            rgba(255,255,255,0.05) 18%,
+            rgba(0,0,0,0) 34%,
+            rgba(0,0,0,0.22) 55%,
+            rgba(0,0,0,0.58) 78%,
+            rgba(0,0,0,0.88) 100%
           )`,
         }}
       />
-      {/* sombra propria embaixo: nenhuma esfera real e iluminada por baixo,
-          entao a base sempre escurece mais que o resto — reforca peso e
-          contato com uma "luz vindo de cima" implicita. */}
+      {/* Escurecimento de limbo: qualquer esfera escurece perto da borda
+          porque ali a superficie esta quase de perfil pra quem olha.
+          Centrado no disco (nao na luz), so nos ultimos ~40% do raio. */}
       <div
         className="pointer-events-none absolute inset-0"
         style={{
-          background: `linear-gradient(
-            to top,
-            rgba(0,0,0,0.55) 0%,
-            transparent 40%
+          background: `radial-gradient(
+            circle at 50% 50%,
+            rgba(0,0,0,0) 58%,
+            rgba(0,0,0,0.16) 80%,
+            rgba(0,0,0,0.42) 94%,
+            rgba(0,0,0,0.62) 100%
           )`,
         }}
       />
-      {/* vinheta no aro: escurece a borda inteira, reforcando a curvatura
-          da esfera perto do limbo (onde qualquer esfera real escurece) */}
+      {/* Luz ambiente no lado escuro: um fio de claridade rente ao aro
+          oposto a luz. Sem isso o lado noturno vira preto chapado e o
+          disco lê como recorte colado; com ele o volume fecha e a esfera
+          parece continuar por tras. */}
       <div
         className="pointer-events-none absolute inset-0 rounded-full"
-        style={{ boxShadow: "inset 0 0 52px 6px rgba(0,0,0,0.5)" }}
+        style={{
+          background: `radial-gradient(
+            circle at 76% 82%,
+            rgba(180,196,222,0.16) 0%,
+            rgba(180,196,222,0.05) 30%,
+            rgba(0,0,0,0) 52%
+          )`,
+          mixBlendMode: "screen",
+        }}
+      />
+      {/* Vinheta de aro, agora mais suave: o trabalho pesado passou pros
+          gradientes radiais acima, aqui e' so pra amarrar a silhueta. */}
+      <div
+        className="pointer-events-none absolute inset-0 rounded-full"
+        style={{ boxShadow: "inset 0 0 40px 2px rgba(0,0,0,0.35)" }}
       />
     </div>
   );
