@@ -29,12 +29,10 @@ export default function About() {
             </p>
           </div>
 
-          {/* cards alinhados ao topo da coluna. Espaçamento (p-5->p-7,
-              space-y-3->space-y-5) aumentado de proposito: da mais
-              altura real ao Sobre, que alimenta diretamente quanto
-              tempo a lua fica parada ao lado do texto antes de sair —
-              ver `dwellPx` em HeroAboutJourney.tsx (dwell = altura do
-              Sobre + buffer - altura da tela - transicao). */}
+          {/* cards alinhados ao topo da coluna. Espaçamento generoso de
+              propósito: dá mais altura real ao Sobre, e é essa altura que
+              define por quanto tempo a lua fica parada ao lado do texto
+              antes do sticky soltar (ver HeroAboutJourney.tsx). */}
           <div className="space-y-6">
             {t.about.differentials.map((d, i) => (
               <div
