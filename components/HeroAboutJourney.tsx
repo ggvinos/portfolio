@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef } from "react";
+import { useLayoutEffect, useRef, useState } from "react";
 import { motion, useScroll, useTransform } from "motion/react";
 import Moon from "@/components/Moon";
 
@@ -19,17 +19,42 @@ import Moon from "@/components/Moon";
  */
 export default function HeroAboutJourney({ children }: { children: React.ReactNode }) {
   const ref = useRef<HTMLDivElement>(null);
+  const contentRef = useRef<HTMLDivElement>(null);
   const { scrollYProgress } = useScroll({ target: ref, offset: ["start start", "end end"] });
 
-  // pontos da jornada: grande e parado no Hero (0-0.3), transicao continua
-  // (0.3-0.55), pequeno e PARADA DE VERDADE no Sobre (0.55-1) — os dois
-  // ultimos valores de cada array sao IGUAIS de proposito. Antes tinha uma
-  // deriva residual (20%->22%, 55%->58%) pensada como "continuidade
-  // organica", mas o usuario quer parada real: nao sobe, nao desce, nao
-  // desliza mais depois que chega na posicao do Sobre.
-  const scale = useTransform(scrollYProgress, [0, 0.3, 0.55, 1], [1, 1, 0.4, 0.4]);
-  const x = useTransform(scrollYProgress, [0, 0.3, 0.55, 1], ["0%", "0%", "20%", "20%"]);
-  const y = useTransform(scrollYProgress, [0, 0.3, 0.55, 1], ["0%", "0%", "55%", "55%"]);
+  // fracao real (0-1) de onde o Hero termina dentro da altura total
+  // Hero+Sobre. Breakpoints fixos (ex: 0.3) presumiam uma proporcao entre
+  // as duas secoes que nao bate com o conteudo real — o Hero e ~100vh mas
+  // o Sobre varia de tamanho, entao um numero fixo fazia a lua comecar a
+  // encolher ainda dentro do Hero, antes do Sobre aparecer na tela.
+  // Medido via DOM (altura do primeiro filho = Hero) em vez de chutado.
+  const [heroFracao, setHeroFracao] = useState(0.55);
+
+  useLayoutEffect(() => {
+    function medir() {
+      const container = contentRef.current;
+      if (!container) return;
+      const hero = container.firstElementChild as HTMLElement | null;
+      if (!hero) return;
+      const alturaTotal = container.offsetHeight;
+      if (alturaTotal > 0) {
+        setHeroFracao(hero.offsetHeight / alturaTotal);
+      }
+    }
+    medir();
+    window.addEventListener("resize", medir);
+    return () => window.removeEventListener("resize", medir);
+  }, []);
+
+  // pontos da jornada: grande e parada enquanto o Hero ocupa a tela
+  // (0-heroFracao), transicao curta logo que o Sobre comeca a aparecer
+  // (heroFracao a +0.12), depois PARADA DE VERDADE no Sobre — os dois
+  // ultimos valores de cada array sao IGUAIS de proposito, sem deriva
+  // residual depois que chega na posicao final.
+  const fimTransicao = Math.min(heroFracao + 0.12, 0.95);
+  const scale = useTransform(scrollYProgress, [0, heroFracao, fimTransicao, 1], [1, 1, 0.4, 0.4]);
+  const x = useTransform(scrollYProgress, [0, heroFracao, fimTransicao, 1], ["0%", "0%", "20%", "20%"]);
+  const y = useTransform(scrollYProgress, [0, heroFracao, fimTransicao, 1], ["0%", "0%", "55%", "55%"]);
 
   return (
     <div ref={ref} className="grid">
@@ -55,7 +80,9 @@ export default function HeroAboutJourney({ children }: { children: React.ReactNo
         </div>
       </div>
 
-      <div className="relative z-10 col-start-1 row-start-1">{children}</div>
+      <div ref={contentRef} className="relative z-10 col-start-1 row-start-1">
+        {children}
+      </div>
     </div>
   );
 }
