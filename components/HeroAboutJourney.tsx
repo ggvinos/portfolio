@@ -142,26 +142,38 @@ export default function HeroAboutJourney({ children }: { children: React.ReactNo
   // esse espaco extra na pagina, senao apareceria um vao antes de
   // Projetos.
   const heroFracaoPx = heroFracao * conteudoAlturaPx;
-  const TRANSICAO_MINIMA_PX = 70;
-  const bufferDesejado = Math.max(0, heroFracaoPx + TRANSICAO_MINIMA_PX - (conteudoAlturaPx - viewport.h));
-  // TETO DE SEGURANCA: um buffer grande demais (Sobre MUITO curto pra
-  // tela) empurra o ponto de soltura tao pra frente que a lua, ja
-  // parada na posicao final, acabaria "nascendo" (em coordenada de
-  // pagina) DENTRO da area da proxima secao — sobreposicao garantida
-  // assim que as duas rolarem juntas. O teto abaixo nunca deixa o
-  // buffer passar desse limite, mesmo que isso, num caso bem extremo
-  // (tablet vertical com Sobre curtissimo), deixe a transicao um pouco
-  // mais abrupta — prioridade e' nunca sobrepor a proxima secao.
+  // TETO DE SEGURANCA: o quanto da pra esticar o container sem a lua,
+  // ja parada na posicao final, "nascer" (em coordenada de pagina)
+  // DENTRO da area da proxima secao — sobreposicao garantida assim que
+  // as duas rolarem juntas depois que o sticky soltar. Formula: a
+  // distancia (em pixels de pagina) entre "onde o sticky soltaria" e
+  // "onde a proxima secao comeca" precisa ficar sempre >= a borda de
+  // baixo da lua + uma margem.
   const margemAteAcorde = 40;
   const bufferMaximoSemSobrepor = Math.max(0, viewport.h - centroSobreY - raioSobre - margemAteAcorde);
-  const bufferNecessario = Math.min(bufferDesejado, bufferMaximoSemSobrepor);
+  // USA SEMPRE O MAXIMO SEGURO, nao so o minimo pra caber a transicao —
+  // pedido do usuario: ela nao pode so' "passar" pela posicao do Sobre
+  // e ja comecar a deslizar, ela precisa ficar parada la' o MAIOR tempo
+  // possivel (do jeito que a bio tambem fica parada, sticky, enquanto
+  // o usuario le os cards), nao ter um comportamento diferente do
+  // texto ao lado. O teto acima ja garante que isso nunca sobrepoe a
+  // proxima secao, entao maximizar o tempo parado e seguro.
+  const bufferNecessario = bufferMaximoSemSobrepor;
   const alturaComBuffer = conteudoAlturaPx + bufferNecessario;
   const decorativaVisivel = viewport.w >= 1024;
   const margemCompensacao = decorativaVisivel ? -bufferNecessario : 0;
 
   const soltaSozinhoEmPx = alturaComBuffer - viewport.h;
-  const folgaSeguranca = 30;
-  const fimTransicaoPx = Math.max(heroFracaoPx + 40, soltaSozinhoEmPx - folgaSeguranca);
+  // fim da transicao FIXO logo apos o Hero (curto, ~70px de scroll) —
+  // NAO relativo a soltaSozinhoEmPx. Antes estava amarrado a
+  // "soltaSozinhoEmPx - folga", entao aumentar o buffer so empurrava os
+  // dois juntos e o tempo parado (dwell) nunca crescia (ficava sempre
+  // ~30px). Com o fim fixo, todo o buffer extra vira tempo de
+  // permanencia de verdade entre "terminou de encolher" e "sticky
+  // solta", em vez de ser consumido tentando perseguir o proprio ponto
+  // de soltura.
+  const TRANSICAO_PX = 70;
+  const fimTransicaoPx = Math.min(heroFracaoPx + TRANSICAO_PX, soltaSozinhoEmPx - 10);
 
   // IMPORTANTE: o scrollYProgress do motion mede 0-1 sobre a altura
   // RENDERIZADA do container (que e' `alturaComBuffer` quando o buffer
