@@ -1,6 +1,6 @@
 "use client";
 
-import { useLayoutEffect, useRef, useState } from "react";
+import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import { motion, useScroll, useTransform } from "motion/react";
 import Moon from "@/components/Moon";
 
@@ -30,6 +30,16 @@ export default function HeroAboutJourney({ children }: { children: React.ReactNo
   // Medido via DOM (altura do primeiro filho = Hero) em vez de chutado.
   const [heroFracao, setHeroFracao] = useState(0.55);
 
+  // a lua so entra depois que o nome do Hero termina de se resolver
+  // (animate-title: delay 0.2s + 2s de duracao = 2.2s), nao no instante em
+  // que a pagina carrega — entrada por tempo, independente do scroll,
+  // porque aos 0s de scroll o nome ainda esta em animacao.
+  const [podeAparecer, setPodeAparecer] = useState(false);
+  useEffect(() => {
+    const t = setTimeout(() => setPodeAparecer(true), 2200);
+    return () => clearTimeout(t);
+  }, []);
+
   useLayoutEffect(() => {
     function medir() {
       const container = contentRef.current;
@@ -57,8 +67,10 @@ export default function HeroAboutJourney({ children }: { children: React.ReactNo
   // no rodape da secao. Ajuste feito as cegas (este ambiente nao roda o
   // scroll ao vivo pra conferir visualmente); se nao bater exatamente do
   // lado do paragrafo, e so avisar pra um novo ajuste fino.
+  // tamanho fixo: a lua nao encolhe mais indo pro Sobre, so muda de
+  // posicao (x/y) — pedido do usuario apos ver o encolhimento e nao
+  // entender o motivo. Scale aqui e so o efeito de entrada (abaixo).
   const fimTransicao = Math.min(heroFracao + 0.12, 0.95);
-  const scale = useTransform(scrollYProgress, [0, heroFracao, fimTransicao, 1], [1, 1, 0.4, 0.4]);
   const x = useTransform(scrollYProgress, [0, heroFracao, fimTransicao, 1], ["0%", "0%", "10%", "10%"]);
   const y = useTransform(scrollYProgress, [0, heroFracao, fimTransicao, 1], ["0%", "0%", "-10%", "-10%"]);
 
@@ -78,13 +90,22 @@ export default function HeroAboutJourney({ children }: { children: React.ReactNo
             // mesmo tempo (esquerda + baixo), nao o disco quase inteiro que
             // ficou em -6%/1% (achado "muito visivel") nem a fatia pequena
             // demais de -30%/-16% (achado "nao parece redondo"). Meio-termo.
-            style={{ width: 520, height: 520, bottom: "-20%", left: "-10%", scale, x, y }}
+            style={{ width: 520, height: 520, bottom: "-20%", left: "-10%", x, y }}
           >
-            <div
-              className="absolute rounded-full border border-black/[0.07]"
-              style={{ width: 660, height: 660, top: -70, left: -70 }}
-            />
-            <Moon size={520} progress={scrollYProgress} />
+            {/* entrada por tempo (opacity + escala pequena), separada do
+                scale de scroll acima — nao existe mais scale ligado ao
+                scroll, entao esta e a UNICA animacao de escala da lua */}
+            <motion.div
+              initial={{ opacity: 0, scale: 0.82 }}
+              animate={podeAparecer ? { opacity: 1, scale: 1 } : {}}
+              transition={{ duration: 1.1, ease: "easeOut" }}
+            >
+              <div
+                className="absolute rounded-full border border-black/[0.07]"
+                style={{ width: 660, height: 660, top: -70, left: -70 }}
+              />
+              <Moon size={520} progress={scrollYProgress} />
+            </motion.div>
           </motion.div>
         </div>
       </div>
