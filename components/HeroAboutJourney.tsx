@@ -10,6 +10,21 @@ import Moon from "@/components/Moon";
  * e presente no Sobre — a mesma câmera atravessando o mesmo espaço, não
  * um elemento que desaparece e outro que aparece.
  *
+ * ARQUITETURA (revisão importante): nao existe nenhum efeito de "sumir".
+ * A lua e `position: sticky` (presa na tela) só durante o Hero + a
+ * transição. Assim que ela chega na posição final do Sobre, o proprio
+ * sticky nativo do CSS solta sozinho (e' assim que sticky sempre
+ * funciona: fica preso so' enquanto sobra espaco de scroll no
+ * container) — a partir dai' ela vira um elemento comum, PRESO NA
+ * PAGINA (nao mais na tela), e rola embora junto com o resto do Sobre
+ * exatamente como o texto da bio ou os cards rolam. Ela nunca e
+ * escondida via display/opacity: ela so para de ser perseguida pela
+ * camera. Tentativas anteriores tentaram ESTICAR o sticky pra ela
+ * ficar presa na tela por mais tempo (com display:none pra tampar o
+ * vazamento pra secao seguinte) — trocado por essa abordagem porque
+ * qualquer "esconder" e' um efeito notavel, e o pedido era exatamente
+ * o contrario: ela so' deve parar de seguir a tela, nunca "sumir".
+ *
  * Técnica: CSS Grid com duas camadas na MESMA célula (col-start-1
  * row-start-1), não duas linhas empilhadas. Um elemento `sticky` ocupa
  * espaço próprio no fluxo normal igual a uma div comum da mesma altura —
@@ -20,7 +35,6 @@ import Moon from "@/components/Moon";
 export default function HeroAboutJourney({ children }: { children: React.ReactNode }) {
   const ref = useRef<HTMLDivElement>(null);
   const contentRef = useRef<HTMLDivElement>(null);
-  const moonBoxRef = useRef<HTMLDivElement>(null);
   const { scrollYProgress } = useScroll({ target: ref, offset: ["start start", "end end"] });
 
   // fracao real (0-1) de onde o Hero termina dentro da altura total
@@ -53,9 +67,11 @@ export default function HeroAboutJourney({ children }: { children: React.ReactNo
   // nao importa o quanto o usuario role dentro do Sobre.
   const [bioAlturaPx, setBioAlturaPx] = useState(260);
 
-  // altura real do conteudo (Hero+Sobre) — necessaria pro fix do sticky
-  // logo abaixo. Sem isso nao da pra calcular quanto de "folga" o sticky
-  // precisa pra ficar grudado ate o fim do Sobre.
+  // altura real do conteudo (Hero+Sobre) — so usada pra calcular ONDE o
+  // sticky nativo solta sozinho (contentH - viewportH), garantindo que
+  // a transicao termine ANTES desse ponto. Nao existe mais nenhum
+  // "buffer" somado aqui — a altura e so pra fins de calculo, o sticky
+  // usa o espaco natural do conteudo, sem esticar nada.
   const [conteudoAlturaPx, setConteudoAlturaPx] = useState(1600);
 
   useLayoutEffect(() => {
@@ -80,173 +96,109 @@ export default function HeroAboutJourney({ children }: { children: React.ReactNo
     return () => window.removeEventListener("resize", medir);
   }, []);
 
-  // pontos da jornada: grande e parada enquanto o Hero ocupa a tela
-  // (0-heroFracao), transicao curta logo que o Sobre comeca a aparecer
-  // (heroFracao a +0.2), depois PARADA DE VERDADE no Sobre — os dois
-  // ultimos valores de cada array sao IGUAIS de proposito, sem deriva
-  // residual depois que chega na posicao final. Janela alargada (era
-  // +0.12) a pedido do usuario pra ficar mais suave, menos abrupta.
-  const fimTransicao = Math.min(heroFracao + 0.2, 0.95);
-
   // A caixa (520px) fica ancorada em bottom:-20%/left:-10% do container
   // (h-screen) — de proposito cortada pelas duas bordas no Hero. Sem essa
   // conta, o x/y (que sao % da PROPRIA caixa, nao da tela) so empurra a
   // partir desse ponto cortado, e nunca garante que o circulo entre
-  // inteiro na tela: ficou cortado em tentativas anteriores.
-  // Aqui calculamos, em pixel real, onde o CENTRO da caixa esta no estado
-  // "Hero" (scale 1, sem translate) e onde queremos que ele fique no
-  // estado "Sobre".
+  // inteiro na tela. Aqui calculamos, em pixel real, onde o CENTRO da
+  // caixa esta no estado "Hero" (scale 1, sem translate) e onde
+  // queremos que ele fique no estado "Sobre".
   const BOX = 520;
-  // 0.32 (era 0.4): reduzido a pedido do usuario pra garantir folga de
-  // sobra e a lua aparecer inteira, sem chegar perto de nenhuma borda.
   const ESCALA_SOBRE = 0.32;
   const centroHeroX = -0.1 * viewport.w + BOX / 2;
   const centroHeroY = 1.2 * viewport.h - BOX / 2;
   const raioSobre = (BOX * ESCALA_SOBRE) / 2;
 
-  // alvo: canto inferior-esquerdo — a UNICA area realmente vazia da
-  // secao. A direita tem os cards (sem fundo opaco, entao a lua atras
-  // deles atrapalhava leitura e contraste). Acima, na mesma coluna, tem
-  // a bio. Abaixo da bio, na coluna esquerda, nao tem mais nada — e essa
-  // zona nao muda de tamanho com o scroll porque a bio e sticky (fica
-  // sempre nos mesmos 96px do topo + a propria altura, medida de
-  // verdade via data-bio-col, nao chutada).
+  // alvo: canto inferior-esquerdo, ENCOSTADA na zona proibida da bio
+  // (nao no rodape da tela). Isso importa pro sticky soltar direito:
+  // uma vez que o sticky solta (perto do fim do Sobre) a lua passa a
+  // rolar 1:1 com a pagina, junto com tudo — a partir dai a distancia
+  // dela ate a proxima secao NUNCA MUDA (as duas rolam juntas). Ficar
+  // colada no topo da zona segura (logo abaixo da bio) em vez de colada
+  // no rodape da tela maximiza essa distancia fixa, garantindo que ela
+  // ja esta bem acima de onde a proxima secao comeca quando as duas
+  // ficarem visiveis ao mesmo tempo.
   const zonaProibidaAteY = 96 + bioAlturaPx + 40; // top-24 (96px) + bio + folga
   const centroSobreX = Math.max(0.14 * viewport.w, raioSobre + 24);
-  // nunca deixa cortar embaixo, mesmo que isso, numa tela muito baixa,
-  // signifique nao limpar 100% a folga da bio — prioridade e nao cortar
-  const limiteInferior = viewport.h - raioSobre - 24;
-  const centroSobreY = Math.min(
-    Math.max(zonaProibidaAteY + raioSobre, Math.min(0.85 * viewport.h, limiteInferior)),
-    limiteInferior,
-  );
+  const centroSobreY = Math.min(zonaProibidaAteY + raioSobre + 20, viewport.h - raioSobre - 24);
   const xSobrePct = ((centroSobreX - centroHeroX) / BOX) * 100;
   const ySobrePct = ((centroSobreY - centroHeroY) / BOX) * 100;
 
-  const scale = useTransform(scrollYProgress, [0, heroFracao, fimTransicao, 1], [1, 1, ESCALA_SOBRE, ESCALA_SOBRE]);
-  const x = useTransform(scrollYProgress, [0, heroFracao, fimTransicao, 1], ["0%", "0%", `${xSobrePct}%`, `${xSobrePct}%`]);
-  const y = useTransform(scrollYProgress, [0, heroFracao, fimTransicao, 1], ["0%", "0%", `${ySobrePct}%`, `${ySobrePct}%`]);
-  // fade de seguranca extra nos ultimos 6% do progresso, sumida um pouco
-  // antes do sticky soltar de vez. A causa real do "vazamento" pra
-  // secao seguinte era outra (z-index, ver classe "z-0" removida
-  // abaixo) — isso aqui e so um reforco, nao a correcao principal.
-  const opacitySaida = useTransform(scrollYProgress, [0, 0.94, 1], [1, 1, 0]);
-
-  // esconde a lua assim que a PROXIMA secao (irma depois deste wrapper
-  // no DOM, ex: Acorde) alcança a propria borda de baixo da lua na tela
-  // — nao uma fracao fixa da viewport, nao o sticky soltar. Descobertas
-  // rolando de verdade: (1) como a lua fica perto do rodape da tela (pra
-  // nao cobrir a bio, que fica no topo), qualquer margem fixa "generosa"
-  // acabava, na pratica, sendo exatamente onde a proxima secao entra —
-  // as duas brigam pelo mesmo pedaco de tela perto do rodape; medir
-  // contra a posicao REAL da lua (nao um numero chutado) resolve. (2) o
-  // calculo so pode confiar na leitura de "onde a lua esta" DEPOIS que
-  // ela chegou no tamanho final do Sobre — lendo essa posicao ainda no
-  // Hero (onde ela e gigante, quase saindo da tela por baixo) grava um
-  // valor errado que trava a lua escondida o tempo todo depois.
-  const larguraEsperadaSobre = BOX * ESCALA_SOBRE;
-  const [visivel, setVisivel] = useState(true);
-  const ultimaBordaInferiorRef = useRef(0);
-  useEffect(() => {
-    function verificar() {
-      const wrapper = ref.current;
-      const proximaSecao = wrapper?.nextElementSibling as HTMLElement | null;
-      const moonBox = moonBoxRef.current;
-      if (!proximaSecao || !moonBox) return;
-      const rect = moonBox.getBoundingClientRect();
-      // so grava/confia na medicao quando a lua ja esta no tamanho final
-      // do Sobre (10% de tolerancia) — no Hero ou em transicao, o valor
-      // nao serve de referencia pra decidir se deve esconder.
-      const jaEstaNoTamanhoDoSobre = Math.abs(rect.width - larguraEsperadaSobre) < larguraEsperadaSobre * 0.1;
-      if (jaEstaNoTamanhoDoSobre) {
-        ultimaBordaInferiorRef.current = rect.bottom;
-      }
-      if (ultimaBordaInferiorRef.current === 0) {
-        setVisivel(true);
-        return;
-      }
-      const margemSeguranca = 24;
-      setVisivel(proximaSecao.getBoundingClientRect().top > ultimaBordaInferiorRef.current + margemSeguranca);
-    }
-    verificar();
-    window.addEventListener("scroll", verificar, { passive: true });
-    window.addEventListener("resize", verificar);
-    return () => {
-      window.removeEventListener("scroll", verificar);
-      window.removeEventListener("resize", verificar);
-    };
-  }, [larguraEsperadaSobre]);
-
-  // BUG DE ARQUITETURA (achado rolando a pagina de verdade neste
-  // ambiente via scrollTo+getBoundingClientRect, nao só olhando a
-  // formula): `position: sticky` só fica grudado enquanto sobra
-  // "altura do container menos altura da tela" de scroll. Como o
-  // container (celula do grid) tinha exatamente a altura do conteudo
-  // (1673px num teste real) e a tela 800px, o sticky descolava e
-  // COMECAVA A SUBIR sozinho depois de só 873px de scroll — bem no meio
-  // do Sobre, arrastando a posicao "congelada" pra cima, direto em cima
-  // do texto da bio. Isso nao aparecia na conta de x/y (que assume
-  // sticky sempre com top:0), só ficava visivel rolando de verdade.
+  // pontos da jornada: grande e parada enquanto o Hero ocupa a tela
+  // (0-heroFracao), transicao curta logo que o Sobre comeca a aparecer,
+  // depois parada no Sobre — os dois ultimos valores de cada array sao
+  // IGUAIS de proposito, sem deriva residual.
   //
-  // Fix: a camada decorativa passa a ter sua PROPRIA altura, igual ao
-  // conteudo + 1 tela inteira. Isso empurra a linha do grid pra ficar
-  // mais alta que o conteudo, dando ao sticky folga suficiente pra ficar
-  // grudado ATE o fim do Sobre (e so entao soltar, junto com o Sobre
-  // saindo de tela). O `marginBottom` negativo do mesmo tamanho no
-  // container inteiro cancela esse espaco extra na pagina — sem isso,
-  // apareceria um vao em branco entre o Sobre e Projetos.
-  // a camada decorativa e "hidden lg:block" (some no mobile) — nesse
-  // caso ela nao contribui em nada pra altura da linha do grid, e a
-  // margem negativa NAO PODE ser aplicada (cortaria a proxima secao por
-  // engano, ja que nao existe folga nenhuma pra compensar). So conta
-  // quando ela realmente esta visivel (>=1024px, o breakpoint "lg").
+  // O sticky nativo solta sozinho em "altura do container - altura da
+  // tela" (e' assim que sticky sempre funciona). Se o Sobre (sozinho,
+  // sem o Hero) for mais BAIXO que a propria tela — comum em telas
+  // largas/altas com pouco texto — esse ponto de soltura cai ANTES do
+  // Hero nem ter terminado, o que quebraria a jornada inteira (a lua
+  // sairia da tela ainda gigante, no meio do Hero). BUFFER DINAMICO:
+  // soma altura extra ao container SO' na medida exata que falta pra
+  // garantir pelo menos um pouco de transicao depois do Hero — quando o
+  // Sobre ja e' alto o bastante por si so, o buffer fica em 0 (nao
+  // estica nada). O `marginBottom` negativo do mesmo tamanho cancela
+  // esse espaco extra na pagina, senao apareceria um vao antes de
+  // Projetos.
+  const heroFracaoPx = heroFracao * conteudoAlturaPx;
+  const TRANSICAO_MINIMA_PX = 70;
+  const bufferDesejado = Math.max(0, heroFracaoPx + TRANSICAO_MINIMA_PX - (conteudoAlturaPx - viewport.h));
+  // TETO DE SEGURANCA: um buffer grande demais (Sobre MUITO curto pra
+  // tela) empurra o ponto de soltura tao pra frente que a lua, ja
+  // parada na posicao final, acabaria "nascendo" (em coordenada de
+  // pagina) DENTRO da area da proxima secao — sobreposicao garantida
+  // assim que as duas rolarem juntas. O teto abaixo nunca deixa o
+  // buffer passar desse limite, mesmo que isso, num caso bem extremo
+  // (tablet vertical com Sobre curtissimo), deixe a transicao um pouco
+  // mais abrupta — prioridade e' nunca sobrepor a proxima secao.
+  const margemAteAcorde = 40;
+  const bufferMaximoSemSobrepor = Math.max(0, viewport.h - centroSobreY - raioSobre - margemAteAcorde);
+  const bufferNecessario = Math.min(bufferDesejado, bufferMaximoSemSobrepor);
+  const alturaComBuffer = conteudoAlturaPx + bufferNecessario;
   const decorativaVisivel = viewport.w >= 1024;
-  const alturaComFolga = conteudoAlturaPx + viewport.h;
-  const margemCompensacao = decorativaVisivel ? -viewport.h : 0;
+  const margemCompensacao = decorativaVisivel ? -bufferNecessario : 0;
+
+  const soltaSozinhoEmPx = alturaComBuffer - viewport.h;
+  const folgaSeguranca = 30;
+  const fimTransicaoPx = Math.max(heroFracaoPx + 40, soltaSozinhoEmPx - folgaSeguranca);
+
+  // IMPORTANTE: o scrollYProgress do motion mede 0-1 sobre a altura
+  // RENDERIZADA do container (que e' `alturaComBuffer` quando o buffer
+  // existe, nao `conteudoAlturaPx`) — as duas fracoes abaixo tem que
+  // dividir pelo MESMO denominador que o motion usa, senao os
+  // breakpoints do useTransform ficam fora de escala assim que o buffer
+  // entra em cena.
+  const heroFracaoAjustada = heroFracaoPx / alturaComBuffer;
+  const fimTransicao = Math.min(fimTransicaoPx / alturaComBuffer, 0.95);
+
+  const scale = useTransform(scrollYProgress, [0, heroFracaoAjustada, fimTransicao, 1], [1, 1, ESCALA_SOBRE, ESCALA_SOBRE]);
+  const x = useTransform(scrollYProgress, [0, heroFracaoAjustada, fimTransicao, 1], ["0%", "0%", `${xSobrePct}%`, `${xSobrePct}%`]);
+  const y = useTransform(scrollYProgress, [0, heroFracaoAjustada, fimTransicao, 1], ["0%", "0%", `${ySobrePct}%`, `${ySobrePct}%`]);
 
   return (
     <div ref={ref} className="grid" style={{ marginBottom: margemCompensacao }}>
       {/* sem altura fixa aqui: precisa esticar pra altura da celula do
           grid inteira (Hero+Sobre), senao a div sticky de dentro so tem
-          h-screen de "pista" pra colar e solta a lua logo apos o Hero */}
-      {/* hidden abaixo de lg: em telas pequenas o Sobre vira coluna unica
-          (about.tsx usa lg:grid-cols-2) e o layout fica apertado demais
-          pra sobrar espaco decorativo — a lua some no mobile de proposito.
-          SEM z-index (nem "z-0"): um z-index DEFINIDO, mesmo que seja 0,
-          empilha acima de qualquer elemento com z-index:auto — inclusive
-          secoes DEPOIS desta no DOM (Acorde), nao importa a ordem real no
-          HTML. Foi por isso que a lua vazava visualmente por cima do
-          Acorde na cauda da folga extra do sticky. Sem z-index aqui, esta
-          camada volta a respeitar a ordem normal do documento (pinta
-          embaixo de tudo que vem depois dela), e "z-10" no conteudo ao
-          lado (mais abaixo) continua garantindo que o texto do Sobre
-          fique por cima da lua enquanto as duas dividem a mesma secao. */}
+          h-screen de "pista" pra colar e solta a lua logo apos o Hero.
+          hidden abaixo de lg: em telas pequenas o Sobre vira coluna
+          unica (about.tsx usa lg:grid-cols-2) e o layout fica apertado
+          demais pra sobrar espaco decorativo — a lua some no mobile de
+          proposito. altura explicita = alturaComBuffer: normalmente
+          igual ao conteudo (buffer=0), so cresce quando o Sobre sozinho
+          e mais baixo que a tela (ver bufferNecessario acima). */}
       <div
         className="pointer-events-none relative col-start-1 row-start-1 hidden lg:block"
-        style={{ height: alturaComFolga }}
+        style={{ height: alturaComBuffer }}
       >
-        {/* display:none aplicado AQUI (no sticky), nao no wrapper de fora:
-            o wrapper de fora tem altura explicita (alturaComFolga) que
-            precisa continuar contando pro tamanho da linha do grid — o
-            sticky pega folga suficiente pra ficar grudado ate o fim do
-            Sobre. Aplicar "hidden" la em cima fazia o wrapper sumir por
-            inteiro (display:none ignora altura, mesmo explicita), a
-            linha do grid encolhia de repente, e a margem negativa (que
-            nao muda) ficava puxando space de menos — bug feio: a pagina
-            toda saltava assim que a lua escondia. Aqui dentro, escondida
-            ou nao, o wrapper de fora nunca muda de tamanho. */}
-        <div
-          className="sticky top-0 h-screen overflow-hidden"
-          style={{ display: visivel ? undefined : "none" }}
-        >
+        <div className="sticky top-0 h-screen overflow-hidden">
           <motion.div
-            ref={moonBoxRef}
             className="absolute"
             // referencia enviada: um arco grande cortado por duas bordas ao
             // mesmo tempo (esquerda + baixo), nao o disco quase inteiro que
             // ficou em -6%/1% (achado "muito visivel") nem a fatia pequena
             // demais de -30%/-16% (achado "nao parece redondo"). Meio-termo.
-            style={{ width: 520, height: 520, bottom: "-20%", left: "-10%", scale, x, y, opacity: opacitySaida }}
+            style={{ width: 520, height: 520, bottom: "-20%", left: "-10%", scale, x, y }}
           >
             {/* entrada por tempo (opacity + escala pequena), separada do
                 scale de scroll acima — nao existe mais scale ligado ao
@@ -266,13 +218,12 @@ export default function HeroAboutJourney({ children }: { children: React.ReactNo
         </div>
       </div>
 
-      {/* self-start: sem isso, o grid estica esta celula pra acompanhar a
-          camada decorativa (que agora e mais alta de proposito, ver
-          `alturaComFolga` acima) — estica o WRAPPER, nao rearranja os
-          filhos, mas quebraria a medicao de `conteudoAlturaPx` (que le
-          o offsetHeight deste proprio elemento): a altura medida
-          cresceria pra acompanhar a folga que ela mesma define, um
-          loop. self-start mantem a altura sempre igual ao conteudo real. */}
+      {/* self-start: quando o buffer dinamico entra em cena (Sobre curto
+          pra tela), a camada decorativa fica mais alta que o conteudo —
+          sem self-start o grid esticaria esta celula pra acompanhar,
+          inflando `container.offsetHeight` medido acima (que alimenta o
+          proprio buffer), um loop. self-start mantem a altura sempre
+          igual ao conteudo real, nao a linha do grid. */}
       <div ref={contentRef} className="relative z-10 col-start-1 row-start-1 self-start">
         {children}
       </div>
