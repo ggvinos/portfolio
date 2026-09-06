@@ -51,17 +51,26 @@ export default function HeroAboutJourney({ children }: { children: React.ReactNo
   // (heroFracao a +0.12), depois PARADA DE VERDADE no Sobre — os dois
   // ultimos valores de cada array sao IGUAIS de proposito, sem deriva
   // residual depois que chega na posicao final.
+  // alvo do congelamento: perto do texto da bio (coluna esquerda, sticky
+  // top-24 dentro do Sobre) em vez do canto inferior direito de antes —
+  // pedido do usuario foi "ela fica ao lado dessa informacao", nao solta
+  // no rodape da secao. Ajuste feito as cegas (este ambiente nao roda o
+  // scroll ao vivo pra conferir visualmente); se nao bater exatamente do
+  // lado do paragrafo, e so avisar pra um novo ajuste fino.
   const fimTransicao = Math.min(heroFracao + 0.12, 0.95);
   const scale = useTransform(scrollYProgress, [0, heroFracao, fimTransicao, 1], [1, 1, 0.4, 0.4]);
-  const x = useTransform(scrollYProgress, [0, heroFracao, fimTransicao, 1], ["0%", "0%", "20%", "20%"]);
-  const y = useTransform(scrollYProgress, [0, heroFracao, fimTransicao, 1], ["0%", "0%", "55%", "55%"]);
+  const x = useTransform(scrollYProgress, [0, heroFracao, fimTransicao, 1], ["0%", "0%", "10%", "10%"]);
+  const y = useTransform(scrollYProgress, [0, heroFracao, fimTransicao, 1], ["0%", "0%", "-10%", "-10%"]);
 
   return (
     <div ref={ref} className="grid">
       {/* sem altura fixa aqui: precisa esticar pra altura da celula do
           grid inteira (Hero+Sobre), senao a div sticky de dentro so tem
           h-screen de "pista" pra colar e solta a lua logo apos o Hero */}
-      <div className="pointer-events-none relative z-0 col-start-1 row-start-1">
+      {/* hidden abaixo de lg: em telas pequenas o Sobre vira coluna unica
+          (about.tsx usa lg:grid-cols-2) e o layout fica apertado demais
+          pra sobrar espaco decorativo — a lua some no mobile de proposito */}
+      <div className="pointer-events-none relative z-0 col-start-1 row-start-1 hidden lg:block">
         <div className="sticky top-0 h-screen overflow-hidden">
           <motion.div
             className="absolute"
