@@ -11,7 +11,7 @@ export default function About() {
     // sem bg-page de proposito: essa secao precisa deixar a lua fixa
     // (PersistentMoon) aparecer atras dela enquanto o usuario rola ate
     // aqui. A cor visual nao muda — o body ja e branco por baixo.
-    <section id="about" className="py-24">
+    <section id="about" className="py-32">
       <div className="max-w-6xl mx-auto px-6">
         <div
           ref={ref}
@@ -29,13 +29,18 @@ export default function About() {
             </p>
           </div>
 
-          {/* cards alinhados ao topo da coluna */}
-          <div className="space-y-3">
+          {/* cards alinhados ao topo da coluna. Espaçamento (p-5->p-7,
+              space-y-3->space-y-5) aumentado de proposito: da mais
+              altura real ao Sobre, que alimenta diretamente quanto
+              tempo a lua fica parada ao lado do texto antes de sair —
+              ver `dwellPx` em HeroAboutJourney.tsx (dwell = altura do
+              Sobre + buffer - altura da tela - transicao). */}
+          <div className="space-y-5">
             {t.about.differentials.map((d, i) => (
               <div
                 key={d.label}
                 style={{ transitionDelay: `${i * 80}ms` }}
-                className={`border border-[var(--border)] p-5 transition-all duration-500 ease-out hover:border-[#404040] ${
+                className={`border border-[var(--border)] p-7 transition-all duration-500 ease-out hover:border-[#404040] ${
                   inView ? "opacity-100 translate-x-0" : "opacity-0 translate-x-4"
                 }`}
               >
