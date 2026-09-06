@@ -22,11 +22,14 @@ export default function HeroAboutJourney({ children }: { children: React.ReactNo
   const { scrollYProgress } = useScroll({ target: ref, offset: ["start start", "end end"] });
 
   // pontos da jornada: grande e parado no Hero (0-0.3), transicao continua
-  // (0.3-0.55), pequeno e parado no Sobre (0.55-1). Nao sao 3 estados que
-  // trocam — scale/x/y sao funcoes continuas do mesmo progresso.
+  // (0.3-0.55), pequeno e PARADA DE VERDADE no Sobre (0.55-1) — os dois
+  // ultimos valores de cada array sao IGUAIS de proposito. Antes tinha uma
+  // deriva residual (20%->22%, 55%->58%) pensada como "continuidade
+  // organica", mas o usuario quer parada real: nao sobe, nao desce, nao
+  // desliza mais depois que chega na posicao do Sobre.
   const scale = useTransform(scrollYProgress, [0, 0.3, 0.55, 1], [1, 1, 0.4, 0.4]);
-  const x = useTransform(scrollYProgress, [0, 0.3, 0.55, 1], ["0%", "0%", "20%", "22%"]);
-  const y = useTransform(scrollYProgress, [0, 0.3, 0.55, 1], ["0%", "0%", "55%", "58%"]);
+  const x = useTransform(scrollYProgress, [0, 0.3, 0.55, 1], ["0%", "0%", "20%", "20%"]);
+  const y = useTransform(scrollYProgress, [0, 0.3, 0.55, 1], ["0%", "0%", "55%", "55%"]);
 
   return (
     <div ref={ref} className="grid">

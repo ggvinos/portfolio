@@ -37,7 +37,9 @@ export default function Moon({
       style={{
         width: size,
         height: size,
-        boxShadow: "inset -14px -14px 46px rgba(0,0,0,0.35), 0 0 70px rgba(0,0,0,0.04)",
+        // sombra por fora: da peso/profundidade contra a pagina, como se
+        // a esfera projetasse sombra, nao so uma foto colada na tela
+        boxShadow: "0 50px 90px -30px rgba(0,0,0,0.35)",
         ...style,
       }}
     >
@@ -52,17 +54,27 @@ export default function Moon({
           backgroundPositionY: "center",
         }}
       />
-      {/* sombreado por cima da foto: luz vindo de cima-esquerda, pra
-          combinar com o resto da composicao (planetas, meteoros) mesmo
-          a foto tendo a propria iluminacao original fixa */}
+      {/* sombreado de esfera: gradiente linear (nao radial) simula o
+          terminador dia/noite de verdade — claro no canto que recebe luz,
+          escurecendo progressivamente pro lado oposto. A foto sozinha tem
+          iluminacao propria fixa e plana; isso e o que da volume. */}
       <div
         className="pointer-events-none absolute inset-0"
         style={{
-          background: `
-            radial-gradient(circle at 30% 25%, rgba(255,255,255,0.18) 0%, transparent 40%),
-            radial-gradient(circle at 72% 76%, rgba(0,0,0,0.32) 0%, transparent 55%)
-          `,
+          background: `linear-gradient(
+            135deg,
+            rgba(255,255,255,0.12) 0%,
+            transparent 32%,
+            rgba(0,0,0,0.12) 58%,
+            rgba(0,0,0,0.6) 100%
+          )`,
         }}
+      />
+      {/* vinheta no aro: escurece a borda inteira, reforcando a curvatura
+          da esfera perto do limbo (onde qualquer esfera real escurece) */}
+      <div
+        className="pointer-events-none absolute inset-0 rounded-full"
+        style={{ boxShadow: "inset 0 0 44px 4px rgba(0,0,0,0.4)" }}
       />
     </div>
   );
