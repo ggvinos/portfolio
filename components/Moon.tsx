@@ -1,6 +1,6 @@
 "use client";
 
-import { motion, type MotionValue, useTransform } from "motion/react";
+import { motion, type MotionValue, useSpring, useTransform } from "motion/react";
 
 /**
  * Lua real, sem WebGL. Depois de três tentativas com Three.js (textura
@@ -28,8 +28,15 @@ export default function Moon({
 }) {
   // a textura e um mapa 2:1 pensado pra enrolar numa esfera — deslizando
   // horizontalmente com repeat-x, o ponto onde ela "junta" nas bordas nao
-  // aparece, e o efeito le como girar, nao como uma foto arrastando
-  const backgroundPositionX = useTransform(progress, [0, 1], ["0%", "-300%"]);
+  // aparece, e o efeito le como girar, nao como uma foto arrastando.
+  // -140% em vez de -300%: giro mais lento e suave ao longo do mesmo
+  // trecho de scroll, sem parecer que a foto desliza rapido demais.
+  const backgroundPositionXRaw = useTransform(progress, [0, 1], ["0%", "-140%"]);
+  const backgroundPositionX = useSpring(backgroundPositionXRaw, {
+    stiffness: 60,
+    damping: 20,
+    mass: 0.6,
+  });
 
   return (
     <div
@@ -57,16 +64,31 @@ export default function Moon({
       {/* sombreado de esfera: gradiente linear (nao radial) simula o
           terminador dia/noite de verdade — claro no canto que recebe luz,
           escurecendo progressivamente pro lado oposto. A foto sozinha tem
-          iluminacao propria fixa e plana; isso e o que da volume. */}
+          iluminacao propria fixa e plana; isso e o que da volume. Contraste
+          aumentado (0.7 no canto escuro, era 0.6) porque a versao anterior
+          lia como "foto com filtro leve", nao como esfera de verdade. */}
       <div
         className="pointer-events-none absolute inset-0"
         style={{
           background: `linear-gradient(
             135deg,
-            rgba(255,255,255,0.12) 0%,
-            transparent 32%,
-            rgba(0,0,0,0.12) 58%,
-            rgba(0,0,0,0.6) 100%
+            rgba(255,255,255,0.16) 0%,
+            transparent 30%,
+            rgba(0,0,0,0.18) 55%,
+            rgba(0,0,0,0.7) 100%
+          )`,
+        }}
+      />
+      {/* sombra propria embaixo: nenhuma esfera real e iluminada por baixo,
+          entao a base sempre escurece mais que o resto — reforca peso e
+          contato com uma "luz vindo de cima" implicita. */}
+      <div
+        className="pointer-events-none absolute inset-0"
+        style={{
+          background: `linear-gradient(
+            to top,
+            rgba(0,0,0,0.55) 0%,
+            transparent 40%
           )`,
         }}
       />
@@ -74,7 +96,7 @@ export default function Moon({
           da esfera perto do limbo (onde qualquer esfera real escurece) */}
       <div
         className="pointer-events-none absolute inset-0 rounded-full"
-        style={{ boxShadow: "inset 0 0 44px 4px rgba(0,0,0,0.4)" }}
+        style={{ boxShadow: "inset 0 0 52px 6px rgba(0,0,0,0.5)" }}
       />
     </div>
   );
