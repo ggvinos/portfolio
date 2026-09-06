@@ -122,6 +122,11 @@ export default function HeroAboutJourney({ children }: { children: React.ReactNo
   const scale = useTransform(scrollYProgress, [0, heroFracao, fimTransicao, 1], [1, 1, ESCALA_SOBRE, ESCALA_SOBRE]);
   const x = useTransform(scrollYProgress, [0, heroFracao, fimTransicao, 1], ["0%", "0%", `${xSobrePct}%`, `${xSobrePct}%`]);
   const y = useTransform(scrollYProgress, [0, heroFracao, fimTransicao, 1], ["0%", "0%", `${ySobrePct}%`, `${ySobrePct}%`]);
+  // fade de seguranca extra nos ultimos 6% do progresso, sumida um pouco
+  // antes do sticky soltar de vez. A causa real do "vazamento" pra
+  // secao seguinte era outra (z-index, ver classe "z-0" removida
+  // abaixo) — isso aqui e so um reforco, nao a correcao principal.
+  const opacitySaida = useTransform(scrollYProgress, [0, 0.94, 1], [1, 1, 0]);
 
   // BUG DE ARQUITETURA (achado rolando a pagina de verdade neste
   // ambiente via scrollTo+getBoundingClientRect, nao só olhando a
@@ -157,9 +162,18 @@ export default function HeroAboutJourney({ children }: { children: React.ReactNo
           h-screen de "pista" pra colar e solta a lua logo apos o Hero */}
       {/* hidden abaixo de lg: em telas pequenas o Sobre vira coluna unica
           (about.tsx usa lg:grid-cols-2) e o layout fica apertado demais
-          pra sobrar espaco decorativo — a lua some no mobile de proposito */}
+          pra sobrar espaco decorativo — a lua some no mobile de proposito.
+          SEM z-index (nem "z-0"): um z-index DEFINIDO, mesmo que seja 0,
+          empilha acima de qualquer elemento com z-index:auto — inclusive
+          secoes DEPOIS desta no DOM (Acorde), nao importa a ordem real no
+          HTML. Foi por isso que a lua vazava visualmente por cima do
+          Acorde na cauda da folga extra do sticky. Sem z-index aqui, esta
+          camada volta a respeitar a ordem normal do documento (pinta
+          embaixo de tudo que vem depois dela), e "z-10" no conteudo ao
+          lado (mais abaixo) continua garantindo que o texto do Sobre
+          fique por cima da lua enquanto as duas dividem a mesma secao. */}
       <div
-        className="pointer-events-none relative z-0 col-start-1 row-start-1 hidden lg:block"
+        className="pointer-events-none relative col-start-1 row-start-1 hidden lg:block"
         style={{ height: alturaComFolga }}
       >
         <div className="sticky top-0 h-screen overflow-hidden">
@@ -169,7 +183,7 @@ export default function HeroAboutJourney({ children }: { children: React.ReactNo
             // mesmo tempo (esquerda + baixo), nao o disco quase inteiro que
             // ficou em -6%/1% (achado "muito visivel") nem a fatia pequena
             // demais de -30%/-16% (achado "nao parece redondo"). Meio-termo.
-            style={{ width: 520, height: 520, bottom: "-20%", left: "-10%", scale, x, y }}
+            style={{ width: 520, height: 520, bottom: "-20%", left: "-10%", scale, x, y, opacity: opacitySaida }}
           >
             {/* entrada por tempo (opacity + escala pequena), separada do
                 scale de scroll acima — nao existe mais scale ligado ao
