@@ -287,15 +287,13 @@ export const translations = {
     },
     acordeShowcase: {
       eyebrow: "LIVE PRODUCT",
-      title: "One study session, start to finish",
-      lead: "Acorde turns a song you already listen to into an English lesson. This is what a single session looks like.",
+      title: "What I test in production",
+      lead: "Acorde turns a song you already listen to into an English lesson. This is the QA lens on the four flows that carry the product.",
       panels: [
-        { n: "01", title: "You pick the song", body: "No fixed word list. The lesson starts from something you already wanted to hear.", shot: "/acorde/home.webp", alt: "Acorde home screen" },
-        { n: "02", title: "The lyric follows the audio", body: "Synced line by line, with translation one tap away. Reading never interrupts listening.", shot: "/acorde/letra.webp", alt: "Synced lyrics with translation" },
-        { n: "03", title: "Focus mode: one line at a time", body: "Everything else blurs out. The cognitive load drops to a single sentence.", shot: "/acorde/foco.webp", alt: "Focus mode, one line at a time" },
-        { n: "04", title: "You sing it, you get a score", body: "Whisper transcribes and grades word by word. When the API fails, the browser engine takes over.", shot: "/acorde/fala.webp", alt: "Speaking practice with per-word score" },
-        { n: "05", title: "The hard word becomes a flashcard", body: "What you missed goes into spaced repetition (SM-2) and comes back exactly when you are about to forget.", shot: "/acorde/revisao.webp", alt: "Spaced repetition flashcard" },
-        { n: "06", title: "The streak holds the routine", body: "Daily challenge, XP and push reminders. Each one exists to bring you back to a session that already works.", shot: "/acorde/progresso.webp", alt: "Progress and streak screen" },
+        { n: "01", title: "You pick the song", body: "No fixed word list: the session starts on the song someone already wants to hear. It's the first flow I test, because it's the first thing the user sees.", shot: "/acorde/home.webp", alt: "Acorde home screen" },
+        { n: "02", title: "Synced lyrics, the most used path", body: "The lyric lights up with the audio, translation one tap away. Critical path: I validate this flow before every deploy.", shot: "/acorde/letra.webp", alt: "Synced lyrics with translation" },
+        { n: "03", title: "Speaking practice, scored word by word", body: "AI transcription (Whisper), with automatic fallback to the browser engine when the API fails. I tested both paths, not just the happy one.", shot: "/acorde/fala.webp", alt: "Speaking practice with per-word score" },
+        { n: "04", title: "Spaced repetition drives retention", body: "What you missed comes back right on time (SM-2). Activation funnel instrumented before spending a cent on ads.", shot: "/acorde/revisao.webp", alt: "Spaced repetition flashcard" },
       ],
       closing: {
         title: "Built, tested and operated end to end",
@@ -755,15 +753,13 @@ export const translations = {
     },
     acordeShowcase: {
       eyebrow: "PRODUTO NO AR",
-      title: "Uma sessão de estudo, do início ao fim",
-      lead: "O Acorde transforma uma música que você já ouve em aula de inglês. É assim que uma sessão acontece.",
+      title: "O que eu testo em produção",
+      lead: "O Acorde transforma uma música que você já ouve em aula de inglês. Esta é a lente de QA sobre os quatro fluxos que sustentam o produto.",
       panels: [
-        { n: "01", title: "Você escolhe a música", body: "Sem lista fixa de palavras. A aula começa por algo que você já queria ouvir.", shot: "/acorde/home.webp", alt: "Tela inicial do Acorde" },
-        { n: "02", title: "A letra acompanha o áudio", body: "Sincronizada linha a linha, com tradução a um toque. Ler nunca interrompe ouvir.", shot: "/acorde/letra.webp", alt: "Letra sincronizada com tradução" },
-        { n: "03", title: "Modo foco: uma linha por vez", body: "Todo o resto desfoca. A carga cognitiva cai para uma frase só.", shot: "/acorde/foco.webp", alt: "Modo foco, uma linha por vez" },
-        { n: "04", title: "Você canta e recebe a nota", body: "O Whisper transcreve e avalia palavra a palavra. Quando a API falha, o motor do navegador assume.", shot: "/acorde/fala.webp", alt: "Prática de fala com nota por palavra" },
-        { n: "05", title: "A palavra difícil vira flashcard", body: "O que você errou entra na revisão espaçada (SM-2) e volta na hora em que você ia esquecer.", shot: "/acorde/revisao.webp", alt: "Flashcard de revisão espaçada" },
-        { n: "06", title: "O streak segura a rotina", body: "Desafio diário, XP e lembretes push. Cada um existe para trazer você de volta a uma sessão que já funciona.", shot: "/acorde/progresso.webp", alt: "Tela de progresso e streak" },
+        { n: "01", title: "Você escolhe a música", body: "Sem lista fixa de palavras: a sessão começa na música que a pessoa já quer ouvir. É o primeiro fluxo que eu testo, porque é o primeiro que o usuário vê.", shot: "/acorde/home.webp", alt: "Tela inicial do Acorde" },
+        { n: "02", title: "Letra sincronizada, o caminho mais usado", body: "A letra acende junto com o áudio, tradução a um toque. Caminho crítico: valido esse fluxo antes de qualquer deploy.", shot: "/acorde/letra.webp", alt: "Letra sincronizada com tradução" },
+        { n: "03", title: "Fala com nota por palavra", body: "Transcrição por IA (Whisper), com fallback automático pro motor do navegador quando a API falha. Testei os dois caminhos, não só o feliz.", shot: "/acorde/fala.webp", alt: "Prática de fala com nota por palavra" },
+        { n: "04", title: "Revisão espaçada segura a retenção", body: "O que você errou volta na hora certa (SM-2). Funil de ativação instrumentado antes de gastar um real em anúncio.", shot: "/acorde/revisao.webp", alt: "Flashcard de revisão espaçada" },
       ],
       closing: {
         title: "Construído, testado e operado de ponta a ponta",
