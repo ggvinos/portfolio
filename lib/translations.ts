@@ -16,12 +16,6 @@ export const translations = {
       name: "VINICIOS FERREIRA",
       subtitle: "QA Engineer · Builder · 6+ years in tech",
       tagline: "QA who automates, measures, and delivers what the team doesn't have yet.",
-      metrics: [
-        { value: "20 → 2 min", label: "validation time per deploy" },
-        { value: "47 bugs", label: "caught before production" },
-        { value: "40%", label: "fewer regressions" },
-        { value: "95%", label: "delivery efficiency gain" },
-      ],
       cta_primary: "View Projects",
       cta_secondary: "Contact",
       // tradução literal do bloco de valores pessoais que existe só em PT
@@ -492,12 +486,6 @@ export const translations = {
       name: "VINICIOS FERREIRA",
       subtitle: "QA Engineer · Builder · 6+ anos em tecnologia",
       tagline: "QA que automatiza, mede e entrega o que o time ainda não tem.",
-      metrics: [
-        { value: "20 → 2 min", label: "tempo de validação por deploy" },
-        { value: "47 bugs", label: "capturados antes da produção" },
-        { value: "40%", label: "menos regressões" },
-        { value: "95%", label: "ganho em eficiência de entregas" },
-      ],
       cta_primary: "Ver Projetos",
       cta_secondary: "Contato",
       values: ["DISCIPLINA", "TRANSFORMA", "POSSIBILIDADES"],

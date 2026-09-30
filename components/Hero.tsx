@@ -25,8 +25,7 @@ const T = {
   tagline: "1.25s",
   world: "1.6s",
   marquee: "2s",
-  metrics: "2.2s",
-  ctas: "2.4s",
+  ctas: "2.2s",
   hint: "2.7s",
   corners: "3s",
 };
@@ -118,16 +117,6 @@ export default function Hero() {
               </span>
             ))}
           </div>
-        </div>
-
-        {/* métricas */}
-        <div className="mt-10 flex flex-wrap justify-center gap-8 sm:gap-12 animate-fade-in" style={fadeIn(T.metrics)}>
-          {t.hero.metrics.map((m) => (
-            <div key={m.label} className="flex flex-col items-center gap-1">
-              <span className="font-mono text-xl sm:text-2xl font-bold text-[var(--text)]">{m.value}</span>
-              <span className="font-mono text-[10px] text-muted uppercase tracking-widest">{m.label}</span>
-            </div>
-          ))}
         </div>
 
         {/* CTAs */}

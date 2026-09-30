@@ -1,7 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
-import { motion, useScroll, useTransform, type MotionValue } from "motion/react";
+import { useEffect, useState } from "react";
 import { useInView } from "@/hooks/useInView";
 import SpotlightCard from "@/components/SpotlightCard";
 
@@ -16,26 +15,29 @@ type ProjectData = {
   link: string | null;
 };
 
-// vh de scroll dedicado a cada carta — precisa ser bastante pra dar tempo
-// de perceber "essa saiu, essa entrou", nao uma troca de 100-200px
-const VH_POR_CARTA = 165;
+// distancia de scroll entre a chegada de uma carta e a da seguinte
+const STEP_VH = 70;
 
-// quanto cada nivel de profundidade na pilha desce/encolhe em repouso
-const OFFSET_POR_NIVEL = 22;
-const ESCALA_POR_NIVEL = 0.045;
+// sobra de leitura garantida pra ultima carta, que nao tem nenhuma depois
+// pra lhe dar motivo de continuar presa
+const TAIL_VH = 120;
+
+// cada carta gruda um pouco mais abaixo que a anterior: e essa diferenca de
+// "top" que deixa a faixa de titulo da carta de baixo espiando por cima da
+// que esta por cima dela, ao inves dela simplesmente desaparecer
+const PEEK_PX = 34;
 
 /**
- * Pilha de cartas de verdade: todas existem e ficam visíveis o tempo
- * todo, desde o início, com profundidade (offset + escala decrescente)
- * simulando cartas físicas empilhadas — a carta 2 e 3 espiam atrás da 1.
+ * Empilhamento por acumulo: o wrapper de cada carta e absolutamente
+ * posicionado do seu instante de chegada ate o fim do trilho inteiro
+ * (top crescente, bottom: 0), entao o elemento sticky por dentro dele
+ * permanece grudado no topo ate o trilho acabar, nao so ate a proxima
+ * carta chegar. Resultado: conforme rola, as cartas anteriores nao somem,
+ * ficam empilhadas como faixas de titulo visiveis por cima da carta atual,
+ * uma sobre a outra, de baixo para cima na pagina, crescendo a pilha.
  *
- * Quando o scroll avança, a carta da frente sobe/apaga/gira saindo,
- * enquanto TODAS as de trás sobem um nível ao mesmo tempo (a pilha
- * inteira se desloca junto, não só a próxima carta) — é o que acontece
- * fisicamente ao tirar a carta do topo de uma pilha real.
- *
- * Abaixo de `prefers-reduced-motion`, ou com 1 projeto só (pilha de 1 não
- * faz sentido), cai numa grade estática com o fade que já existia.
+ * Abaixo de `prefers-reduced-motion`, ou com 1 projeto so (pilha de 1 nao
+ * faz sentido), cai numa grade estatica com o fade que ja existia.
  */
 export default function ProjectStack({ projects }: { projects: ProjectData[] }) {
   const [empilhado, setEmpilhado] = useState(false);
@@ -52,140 +54,87 @@ export default function ProjectStack({ projects }: { projects: ProjectData[] }) 
     return <StaticGrid projects={projects} />;
   }
 
-  return <StackedTrack projects={projects} />;
-}
-
-function StackedTrack({ projects }: { projects: ProjectData[] }) {
-  const ref = useRef<HTMLDivElement>(null);
-  const { scrollYProgress } = useScroll({ target: ref, offset: ["start start", "end end"] });
-
   const total = projects.length;
+  const totalVh = (total - 1) * STEP_VH + TAIL_VH;
 
   return (
-    <div ref={ref} style={{ height: `${total * VH_POR_CARTA}vh` }}>
-      <div className="sticky top-16 mx-auto max-w-3xl" style={{ height: "70vh" }}>
-        <span className="absolute -top-10 right-0 font-mono text-[11px] text-muted">
-          {String(1).padStart(2, "0")}–{String(total).padStart(2, "0")}
-        </span>
-
-        {projects.map((p, i) => (
-          <StackedCard key={p.id} project={p} index={i} total={total} progress={scrollYProgress} />
-        ))}
-      </div>
+    <div className="relative" style={{ height: `${totalVh}vh` }}>
+      {projects.map((project, i) => (
+        <div key={project.id} className="absolute inset-x-0 bottom-0" style={{ top: `${i * STEP_VH}vh` }}>
+          <div
+            className="sticky flex justify-center px-4 pb-6"
+            style={{ top: `${64 + i * PEEK_PX}px`, zIndex: i + 1 }}
+          >
+            <StackedCardContent project={project} index={i} total={total} />
+          </div>
+        </div>
+      ))}
     </div>
   );
 }
 
-function StackedCard({
-  project,
-  index,
-  total,
-  progress,
-}: {
-  project: ProjectData;
-  index: number;
-  total: number;
-  progress: MotionValue<number>;
-}) {
-  const isLast = index === total - 1;
-
-  // a ultima carta nunca "sai": congela o progresso dela no instante em
-  // que ela chega na frente, senao ela tambem tentaria sair no fim
-  const tetoProgresso = isLast ? (total - 1) / total : 1;
-  const progressoEfetivo = useTransform(progress, (p) => Math.min(p, tetoProgresso));
-
-  // posicao continua na fila: positivo = ainda empilhada atras (quanto
-  // maior, mais no fundo), 0 = na frente, negativo = ja e a vez dela sair.
-  // formula unica pra tudo: conforme o progresso avanca, TODA a pilha
-  // desliza um nivel de uma vez — nao e "a proxima carta reage", e "a
-  // pilha inteira anda", que e como uma pilha fisica se comporta.
-  const posicaoNaFila = useTransform(progressoEfetivo, (p) => index - p * total);
-
-  const profundidade = useTransform(posicaoNaFila, (r) => Math.max(0, r));
-  const saida = useTransform(posicaoNaFila, (r) => Math.min(1, Math.max(0, -r)));
-
-  const y = useTransform([profundidade, saida], ([prof, sai]: number[]) => prof * OFFSET_POR_NIVEL - sai * 220);
-  const scale = useTransform(
-    [profundidade, saida],
-    ([prof, sai]: number[]) => Math.max(0.8, 1 - prof * ESCALA_POR_NIVEL) * (1 - sai * 0.08),
-  );
-  const opacity = useTransform(saida, (sai) => 1 - sai);
-  const rotate = useTransform(saida, (sai) => sai * (index % 2 === 0 ? -7 : 7));
-
+function StackedCardContent({ project, index, total }: { project: ProjectData; index: number; total: number }) {
   const link = project.link;
 
   return (
-    // z-index estatico por indice, nao dinamico: fisicamente, a carta
-    // sendo tirada do topo passa POR CIMA da que esta sendo revelada
-    // embaixo enquanto e levantada — e assim que uma pilha real se
-    // comporta, entao a carta de indice menor sempre pinta por cima.
-    <motion.div
-      className="absolute inset-0 flex items-start justify-center px-4 pt-2"
-      style={{ zIndex: total - index, y, opacity, scale, rotate }}
-    >
-      {/* bg-page: o SpotlightCard nao tem fundo opaco por padrao (o
-          gradiente dele vira transparente depois de 60% da diagonal,
-          pensado pra ficar sozinho sobre a pagina). Com varias cartas
-          empilhadas na mesma area isso deixava todas se misturando.
-          shadow: reforca a leitura de "carta fisica", nao card plano. */}
-      <SpotlightCard className="w-full max-w-2xl bg-page shadow-xl shadow-black/10">
-        <div className="flex max-h-[65vh] flex-col gap-4 overflow-y-auto p-6 sm:gap-5 sm:p-10">
-          <div className="flex flex-wrap items-center gap-3">
-            <span className="font-mono text-xs text-muted">{String(index + 1).padStart(2, "0")}</span>
-            <h3 className="text-xl font-semibold text-primary sm:text-3xl">{project.title}</h3>
-            {project.label && (
-              <span className="whitespace-nowrap border border-[var(--border)] px-2 py-0.5 font-mono text-[10px] tracking-widest text-muted">
-                {project.label}
-              </span>
-            )}
-          </div>
-
-          <p className="max-w-xl text-sm leading-relaxed text-muted sm:text-lg">
-            {project.description}
-          </p>
-
-          {project.detail && (
-            <ul className="space-y-1.5 sm:space-y-2">
-              {project.detail.map((item, j) => (
-                <li key={j} className="flex gap-2 text-xs text-muted sm:text-sm">
-                  <span className="shrink-0 font-mono text-accent">—</span>
-                  <span>{item}</span>
-                </li>
-              ))}
-            </ul>
+    <SpotlightCard className="w-full max-w-2xl bg-page shadow-xl shadow-black/10">
+      <div className="flex max-h-[60vh] flex-col gap-4 overflow-y-auto p-6 sm:gap-5 sm:p-10">
+        <div className="flex flex-wrap items-center gap-3">
+          <span className="font-mono text-xs text-muted">{String(index + 1).padStart(2, "0")}</span>
+          <h3 className="text-xl font-semibold text-primary sm:text-3xl">{project.title}</h3>
+          {project.label && (
+            <span className="whitespace-nowrap border border-[var(--border)] px-2 py-0.5 font-mono text-[10px] tracking-widest text-muted">
+              {project.label}
+            </span>
           )}
+          <span className="ml-auto font-mono text-[11px] text-muted">
+            {String(index + 1).padStart(2, "0")}–{String(total).padStart(2, "0")}
+          </span>
+        </div>
 
-          {project.metrics && (
-            <div className="flex flex-wrap gap-1.5">
-              {project.metrics.map((m) => (
-                <span key={m} className="border border-accent px-2 py-1 font-mono text-[10px] text-accent">
-                  {m}
-                </span>
-              ))}
-            </div>
-          )}
+        <p className="max-w-xl text-sm leading-relaxed text-muted sm:text-lg">{project.description}</p>
 
-          <div className="flex flex-wrap gap-2">
-            {project.tags.map((tag) => (
-              <span key={tag} className="border border-[var(--border)] px-2 py-1 font-mono text-[11px] text-muted">
-                {tag}
+        {project.detail && (
+          <ul className="space-y-1.5 sm:space-y-2">
+            {project.detail.map((item, j) => (
+              <li key={j} className="flex gap-2 text-xs text-muted sm:text-sm">
+                <span className="shrink-0 font-mono text-accent">—</span>
+                <span>{item}</span>
+              </li>
+            ))}
+          </ul>
+        )}
+
+        {project.metrics && (
+          <div className="flex flex-wrap gap-1.5">
+            {project.metrics.map((m) => (
+              <span key={m} className="border border-accent px-2 py-1 font-mono text-[10px] text-accent">
+                {m}
               </span>
             ))}
           </div>
+        )}
 
-          {link && (
-            <a
-              href={link}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-block py-1.5 font-mono text-xs text-accent hover:underline"
-            >
-              {link.includes("github.com") ? "github ↗" : link.replace("https://", "")}
-            </a>
-          )}
+        <div className="flex flex-wrap gap-2">
+          {project.tags.map((tag) => (
+            <span key={tag} className="border border-[var(--border)] px-2 py-1 font-mono text-[11px] text-muted">
+              {tag}
+            </span>
+          ))}
         </div>
-      </SpotlightCard>
-    </motion.div>
+
+        {link && (
+          <a
+            href={link}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-block py-1.5 font-mono text-xs text-accent hover:underline"
+          >
+            {link.includes("github.com") ? "github ↗" : link.replace("https://", "")}
+          </a>
+        )}
+      </div>
+    </SpotlightCard>
   );
 }
 
@@ -228,16 +177,6 @@ function StaticGrid({ projects }: { projects: ProjectData[] }) {
                     </li>
                   ))}
                 </ul>
-              )}
-
-              {project.metrics && (
-                <div className="mb-4 flex flex-wrap gap-1.5">
-                  {project.metrics.map((m) => (
-                    <span key={m} className="border border-accent px-2 py-1 font-mono text-[10px] text-accent">
-                      {m}
-                    </span>
-                  ))}
-                </div>
               )}
 
               <div className="mt-auto flex flex-wrap gap-2">
