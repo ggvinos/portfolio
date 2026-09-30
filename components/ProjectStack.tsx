@@ -78,7 +78,7 @@ function StackedCardContent({ project, index, total }: { project: ProjectData; i
 
   return (
     <SpotlightCard className="w-full max-w-2xl bg-page shadow-xl shadow-black/10">
-      <div className="flex max-h-[60vh] flex-col gap-4 overflow-y-auto p-6 sm:gap-5 sm:p-10">
+      <div className="flex flex-col gap-4 p-6 sm:gap-5 sm:p-10">
         <div className="flex flex-wrap items-center gap-3">
           <span className="font-mono text-xs text-muted">{String(index + 1).padStart(2, "0")}</span>
           <h3 className="text-xl font-semibold text-primary sm:text-3xl">{project.title}</h3>
