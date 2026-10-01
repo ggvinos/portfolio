@@ -298,7 +298,6 @@ export const translations = {
       closing: {
         title: "Built, tested and operated end to end",
         body: "Same standards I use as a QA: instrumented activation funnel, tested critical paths and every feature measured in production before scaling.",
-        cta: "Read the full case study",
         visit: "Open acorde.club",
       },
     },
@@ -764,7 +763,6 @@ export const translations = {
       closing: {
         title: "Construído, testado e operado de ponta a ponta",
         body: "Os mesmos padrões que uso como QA: funil de ativação instrumentado, caminhos críticos testados e cada feature medida em produção antes de escalar.",
-        cta: "Ver o estudo de caso completo",
         visit: "Abrir acorde.club",
       },
     },
