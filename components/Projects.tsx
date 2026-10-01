@@ -59,7 +59,7 @@ export default function Projects() {
                       href={p.link}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="font-mono text-xs text-accent hover:underline mt-4 inline-block py-1.5"
+                      className="font-mono text-xs text-accent hover:underline mt-4 inline-block py-2.5"
                     >
                       {p.link.replace("https://www.", "")} ↗
                     </a>

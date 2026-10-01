@@ -56,7 +56,9 @@ export default function Experience() {
                   onClick={() => alternar(i)}
                   aria-expanded={aberto}
                   aria-controls={`experiencia-detalhe-${i}`}
-                  className="flex w-full flex-wrap items-baseline gap-2 text-left"
+                  // py-2: sem ele a linha so tem 24px de altura, alvo curto
+                  // demais pra dedo numa timeline que vive de abrir e fechar
+                  className="flex w-full flex-wrap items-baseline gap-2 py-2 text-left"
                 >
                   <span className="text-primary font-semibold group-hover:text-accent transition-colors duration-150">
                     {item.company}

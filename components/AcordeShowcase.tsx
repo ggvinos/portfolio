@@ -59,7 +59,11 @@ function Scrolly({ panels, hint }: { panels: PanelData[]; hint: string }) {
   const [pinned, setPinned] = useState(false);
 
   useEffect(() => {
-    const mq = window.matchMedia("(prefers-reduced-motion: no-preference)");
+    // min-width junto: o miolo e `h-dvh` e o conteudo (aparelho + legenda)
+    // mal cabia num 375x667 — 20px de folga, estourando em telas menores.
+    // E scroll-jack no touch e hostil de qualquer jeito: no mobile a lista
+    // empilhada normal mostra as 4 telas sem prender o dedo de ninguem.
+    const mq = window.matchMedia("(prefers-reduced-motion: no-preference) and (min-width: 768px)");
     const sync = () => setPinned(mq.matches);
     sync();
     mq.addEventListener("change", sync);
@@ -130,13 +134,16 @@ function PinnedTour({
           {hint}
         </span>
 
-        <div className="flex w-full max-w-5xl flex-col-reverse items-center gap-12 sm:flex-row sm:gap-20">
+        {/* gap e alturas apertados no mobile de proposito: o miolo e `h-dvh`,
+            entao legenda + aparelho + respiro precisam caber numa tela de
+            ~667px (iPhone SE) sem estourar. */}
+        <div className="flex w-full max-w-5xl flex-col-reverse items-center gap-8 sm:flex-row sm:gap-20">
           {/* coluna da legenda: o trilho mora na borda esquerda e as legendas
               ficam recuadas dele. As legendas sao absolutas pra trocarem sem
               pular a altura, e absoluto resolve contra o PADDING BOX — por
               isso o recuo vive em cada legenda (left-12), nunca num padding
               do container, que seria simplesmente ignorado. */}
-          <div className="relative min-h-[300px] w-full sm:flex-1">
+          <div className="relative min-h-[250px] w-full sm:min-h-[320px] sm:flex-1">
             <Rail total={total} step={step} fillRef={fillRef} />
             {panels.map((p, i) => (
               <Caption key={p.n} panel={p} active={i === step} />
@@ -200,26 +207,33 @@ function Caption({ panel, active }: { panel: PanelData; active: boolean }) {
   );
 }
 
+/**
+ * A proporcao vive na TELA (div de dentro), nao na moldura: com ela na
+ * moldura, o padding entrava na conta e o `object-cover` cortava um fio
+ * da imagem. A moldura e so a borda fisica em volta.
+ */
 function Phone({ panels, step }: { panels: PanelData[]; step: number }) {
   return (
-    <div
-      className="relative shrink-0 overflow-hidden rounded-[2rem] border border-[var(--border)] bg-surface p-1.5 shadow-2xl shadow-black/20"
-      style={{ width: "clamp(190px, 24vw, 260px)", aspectRatio: "590 / 1278" }}
-    >
-      {panels.map((p, i) => (
-        // eslint-disable-next-line @next/next/no-img-element
-        <img
-          key={p.n}
-          src={p.shot}
-          alt={p.alt}
-          loading={i === 0 ? "eager" : "lazy"}
-          className="absolute inset-1.5 h-[calc(100%-0.75rem)] w-[calc(100%-0.75rem)] rounded-[1.6rem] object-cover transition-all duration-500"
-          style={{
-            opacity: i === step ? 1 : 0,
-            transform: i === step ? "translateY(0) scale(1)" : "translateY(10px) scale(0.98)",
-          }}
-        />
-      ))}
+    <div className="shrink-0 rounded-[2.2rem] border border-[var(--border)] bg-surface p-2 shadow-2xl shadow-black/25">
+      <div
+        className="relative overflow-hidden rounded-[1.7rem]"
+        style={{ width: "clamp(160px, 40vw, 290px)", aspectRatio: "590 / 1278" }}
+      >
+        {panels.map((p, i) => (
+          // eslint-disable-next-line @next/next/no-img-element
+          <img
+            key={p.n}
+            src={p.shot}
+            alt={p.alt}
+            loading={i === 0 ? "eager" : "lazy"}
+            className="absolute inset-0 h-full w-full object-cover transition-all duration-500"
+            style={{
+              opacity: i === step ? 1 : 0,
+              transform: i === step ? "translateY(0) scale(1)" : "translateY(10px) scale(0.98)",
+            }}
+          />
+        ))}
+      </div>
     </div>
   );
 }

@@ -45,7 +45,7 @@ export default function Nav() {
 
           <button
             onClick={toggle}
-            className="font-mono text-xs border border-[var(--border)] px-3 py-1.5 hover:border-accent hover:text-accent transition-colors duration-150 text-muted"
+            className="font-mono text-xs border border-[var(--border)] px-3 py-2.5 hover:border-accent hover:text-accent transition-colors duration-150 text-muted"
           >
             {lang === "pt" ? "EN" : "PT"}
           </button>

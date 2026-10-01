@@ -100,6 +100,18 @@ As legendas são `absolute`, e **absoluto resolve contra o padding box** — o r
 
 Com `prefers-reduced-motion`, vira lista empilhada comum com fade por IntersectionObserver.
 
+## Mobile
+
+As duas seções com `sticky` (`ProjectStack` e `AcordeShowcase`) caem para o fallback estático **abaixo de 768px**, não só com `prefers-reduced-motion`. A media query é uma só: `(prefers-reduced-motion: no-preference) and (min-width: 768px)`.
+
+O motivo é funcional, não estético: medido num 375×667, as 4 cartas empilhadas passavam da tela e a última perdia 242px — e como são `sticky`, esse pedaço fica **inalcançável**, não dá para rolar até ele. O tour do Acorde sobrava só 20px numa tela de 667px.
+
+Em telas baixas de desktop (1366×768 e afins) o problema também existe, então cada carta empilhada carrega `maxHeight: calc(100dvh - ${topPx + 24}px)` com `overflow-y-auto`. O teto é calculado **por carta**, porque cada uma gruda num `top` diferente (64 + i·34). Numa tela alta a carta cabe inteira e nenhuma barra aparece — a válvula só morde quando o conteúdo ficaria escondido. Não use um `max-h` fixo tipo `60vh`: já foi feito, a barra aparecia sempre e ficou feio.
+
+**Marquee do Hero: `w-screen` só funciona junto com `-mx-6`.** Sozinho, ele mede 100vw dentro de um container com `px-6`, o min-content do container vira `100vw + 48px` e a página ganha 48px de scroll horizontal (invisível em 375px, escancarado em 320px). Também não adianta trocar por largura relativa: tanto `self-stretch` quanto `w-[calc(100%+3rem)]` esticam para o `max-w-6xl` (1152px) mesmo num container de 375px, porque a porcentagem do item flex resolve contra o tamanho intrínseco, não contra a largura real.
+
+Alvos de toque: mínimo de 36px de altura. O acordeão da `Experience` tinha 24px (só a altura da linha) e precisou de `py-2`.
+
 ## Hooks
 
 - `hooks/useInView.ts` — IntersectionObserver, desconecta após primeira intersecção

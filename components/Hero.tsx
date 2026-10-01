@@ -105,7 +105,18 @@ export default function Hero() {
         </p>
 
         {/* marquee */}
-        <div className="relative mt-8 w-screen overflow-hidden animate-fade-in" style={fadeIn(T.marquee)}>
+        {/* w-screen PRECISA vir com -mx-6. Sozinho ele mede 100vw dentro de
+            um container com px-6, entao o min-content do container vira
+            100vw+48px e a pagina ganha 48px de scroll horizontal (medido num
+            320px). O -mx-6 come o padding e zera a sobra.
+            Trocar o w-screen por largura relativa nao funciona: tanto
+            `self-stretch` quanto `w-[calc(100%+3rem)]` esticam pro max-w-6xl
+            (1152px) mesmo num container de 375, porque a porcentagem do item
+            flex resolve contra o tamanho intrinseco, nao contra os 375. */}
+        <div
+          className="relative mt-8 -mx-6 w-screen overflow-hidden animate-fade-in"
+          style={fadeIn(T.marquee)}
+        >
           <div className="pointer-events-none absolute left-0 top-0 bottom-0 w-24 z-10"
             style={{ background: "linear-gradient(to right, var(--bg), transparent)" }} />
           <div className="pointer-events-none absolute right-0 top-0 bottom-0 w-24 z-10"

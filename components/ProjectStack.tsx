@@ -43,7 +43,10 @@ export default function ProjectStack({ projects }: { projects: ProjectData[] }) 
   const [empilhado, setEmpilhado] = useState(false);
 
   useEffect(() => {
-    const mq = window.matchMedia("(prefers-reduced-motion: no-preference)");
+    // min-width junto: medido num 375x667, as 4 cartas empilhadas passam da
+    // tela (a ultima perde 242px) e, por serem sticky, esse pedaco fica
+    // INALCANCAVEL — nao da pra rolar pra ver. No mobile vira grade normal.
+    const mq = window.matchMedia("(prefers-reduced-motion: no-preference) and (min-width: 768px)");
     const sync = () => setEmpilhado(mq.matches);
     sync();
     mq.addEventListener("change", sync);
@@ -59,26 +62,43 @@ export default function ProjectStack({ projects }: { projects: ProjectData[] }) 
 
   return (
     <div className="relative" style={{ height: `${totalVh}vh` }}>
-      {projects.map((project, i) => (
-        <div key={project.id} className="absolute inset-x-0 bottom-0" style={{ top: `${i * STEP_VH}vh` }}>
-          <div
-            className="sticky flex justify-center px-4 pb-6"
-            style={{ top: `${64 + i * PEEK_PX}px`, zIndex: i + 1 }}
-          >
-            <StackedCardContent project={project} index={i} total={total} />
+      {projects.map((project, i) => {
+        const topPx = 64 + i * PEEK_PX;
+        return (
+          <div key={project.id} className="absolute inset-x-0 bottom-0" style={{ top: `${i * STEP_VH}vh` }}>
+            <div className="sticky flex justify-center px-4 pb-6" style={{ top: `${topPx}px`, zIndex: i + 1 }}>
+              <StackedCardContent project={project} index={i} total={total} topPx={topPx} />
+            </div>
           </div>
-        </div>
-      ))}
+        );
+      })}
     </div>
   );
 }
 
-function StackedCardContent({ project, index, total }: { project: ProjectData; index: number; total: number }) {
+function StackedCardContent({
+  project,
+  index,
+  total,
+  topPx,
+}: {
+  project: ProjectData;
+  index: number;
+  total: number;
+  topPx: number;
+}) {
   const link = project.link;
 
   return (
     <SpotlightCard className="w-full max-w-2xl bg-page shadow-xl shadow-black/10">
-      <div className="flex flex-col gap-4 p-6 sm:gap-5 sm:p-10">
+      {/* Valvula de seguranca: a carta gruda em `topPx`, entao o que passar
+          de (tela - topPx) fica fora e, por ser sticky, INALCANCAVEL. Esse
+          teto so morde em tela baixa (1366x768 e afins); numa tela alta a
+          carta cabe inteira e nenhuma barra aparece. */}
+      <div
+        className="flex flex-col gap-4 overflow-y-auto p-6 sm:gap-5 sm:p-10"
+        style={{ maxHeight: `calc(100dvh - ${topPx + 24}px)` }}
+      >
         <div className="flex flex-wrap items-center gap-3">
           <span className="font-mono text-xs text-muted">{String(index + 1).padStart(2, "0")}</span>
           <h3 className="text-xl font-semibold text-primary sm:text-3xl">{project.title}</h3>
