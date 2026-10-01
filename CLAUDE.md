@@ -74,7 +74,7 @@ style={{ animationDelay: "0.6s", animationFillMode: "both" }}
 | `CaseNav.tsx` | Nav slim das páginas de case: voltar + toggle de idioma |
 | `AcordeCase.tsx` | Conteúdo do estudo de caso do Acorde (`/projetos/acorde`) |
 | `PhoneShot.tsx` | Grupo de telas em moldura de celular; com mais de um src os aparelhos ficam escalonados |
-| `AcordeShowcase.tsx` | Faixa horizontal do Acorde na home: 6 painéis de narrativa + 1 de fechamento |
+| `AcordeShowcase.tsx` | Tour vertical do Acorde na home: 4 passos com lente de QA + CTA pro app |
 | `ScrollProgress.tsx` | Barra fina de progresso de leitura no topo |
 
 ## Rotas
@@ -90,13 +90,15 @@ Para atualizar: `cd ~/Documentos/lyriclearn && npm run dev`, depois `cd ~/Docume
 
 **A identidade do Acorde mudou em ago/2026** (roxo → coral `#ff7a59` + serifa Fraunces, roxo `#8c30ff` só no logo). Se as telas parecerem todas roxas, estão velhas.
 
-## Faixa horizontal (AcordeShowcase)
+## Tour do Acorde (AcordeShowcase)
 
-Container alto (`total * 80vh`) com miolo `sticky`; `useScroll` + `useTransform` viram `translateX` no trilho.
+Portado do tour de `acorde.club/sobre` (`lyriclearn/src/pages/Sobre/Scrolly.jsx`): container alto (`total * 100dvh`) com miolo `sticky`, trilho vertical com pontos à esquerda, legenda e aparelho trocando por passo. **Foi faixa horizontal até set/2026** — virou vertical porque o scroll-jack lateral era longo demais para o papel da seção, que é mostrar trabalho de QA, não vender o produto.
 
-Regra que não pode quebrar: o trilho usa **porcentagem de si mesmo**, nunca `vw`. `100vw` inclui a barra de rolagem e o último painel fica cortado pela largura dela. Trilho = `total * 100%`, painel = `100 / total %`, deslocamento = `-((total - 1) / total) * 100%`.
+Sem framer-motion: um `scroll` listener com rAF escreve `scaleY` da barra direto no style (sem re-render) e só chama `setState` quando o passo inteiro muda.
 
-Abaixo de 1024px, ou com `prefers-reduced-motion`, vira carrossel de arrastar com snap. Scroll-jack em touch é hostil.
+As legendas são `absolute`, e **absoluto resolve contra o padding box** — o recuo em relação ao trilho vive em cada legenda (`left-12`), nunca num `padding` do container, que seria ignorado e deixaria o texto por cima do trilho (já aconteceu).
+
+Com `prefers-reduced-motion`, vira lista empilhada comum com fade por IntersectionObserver.
 
 ## Hooks
 

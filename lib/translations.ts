@@ -289,11 +289,12 @@ export const translations = {
       eyebrow: "LIVE PRODUCT",
       title: "What I test in production",
       lead: "Acorde turns a song you already listen to into an English lesson. This is the QA lens on the four flows that carry the product.",
+      hint: "Guided tour: scroll to advance",
       panels: [
-        { n: "01", title: "You pick the song", body: "No fixed word list: the session starts on the song someone already wants to hear. It's the first flow I test, because it's the first thing the user sees.", shot: "/acorde/home.webp", alt: "Acorde home screen" },
-        { n: "02", title: "Synced lyrics, the most used path", body: "The lyric lights up with the audio, translation one tap away. Critical path: I validate this flow before every deploy.", shot: "/acorde/letra.webp", alt: "Synced lyrics with translation" },
-        { n: "03", title: "Speaking practice, scored word by word", body: "AI transcription (Whisper), with automatic fallback to the browser engine when the API fails. I tested both paths, not just the happy one.", shot: "/acorde/fala.webp", alt: "Speaking practice with per-word score" },
-        { n: "04", title: "Spaced repetition drives retention", body: "What you missed comes back right on time (SM-2). Activation funnel instrumented before spending a cent on ads.", shot: "/acorde/revisao.webp", alt: "Spaced repetition flashcard" },
+        { n: "01", tag: "FUNNEL ENTRY", title: "You pick the song", body: "No fixed word list: the session starts on the song someone already wants to hear. It's the first flow I test, because it's the first thing the user sees.", shot: "/acorde/home.webp", alt: "Acorde home screen" },
+        { n: "02", tag: "CRITICAL PATH", title: "Synced lyrics, the most used path", body: "The lyric lights up with the audio, translation one tap away. Critical path: I validate this flow before every deploy.", shot: "/acorde/letra.webp", alt: "Synced lyrics with translation" },
+        { n: "03", tag: "TESTED FALLBACK", title: "Speaking practice, scored word by word", body: "AI transcription (Whisper), with automatic fallback to the browser engine when the API fails. I tested both paths, not just the happy one.", shot: "/acorde/fala.webp", alt: "Speaking practice with per-word score" },
+        { n: "04", tag: "MEASURED RETENTION", title: "Spaced repetition drives retention", body: "What you missed comes back right on time (SM-2). Activation funnel instrumented before spending a cent on ads.", shot: "/acorde/revisao.webp", alt: "Spaced repetition flashcard" },
       ],
       closing: {
         title: "Built, tested and operated end to end",
@@ -754,11 +755,12 @@ export const translations = {
       eyebrow: "PRODUTO NO AR",
       title: "O que eu testo em produção",
       lead: "O Acorde transforma uma música que você já ouve em aula de inglês. Esta é a lente de QA sobre os quatro fluxos que sustentam o produto.",
+      hint: "Tour guiado: role pra avançar",
       panels: [
-        { n: "01", title: "Você escolhe a música", body: "Sem lista fixa de palavras: a sessão começa na música que a pessoa já quer ouvir. É o primeiro fluxo que eu testo, porque é o primeiro que o usuário vê.", shot: "/acorde/home.webp", alt: "Tela inicial do Acorde" },
-        { n: "02", title: "Letra sincronizada, o caminho mais usado", body: "A letra acende junto com o áudio, tradução a um toque. Caminho crítico: valido esse fluxo antes de qualquer deploy.", shot: "/acorde/letra.webp", alt: "Letra sincronizada com tradução" },
-        { n: "03", title: "Fala com nota por palavra", body: "Transcrição por IA (Whisper), com fallback automático pro motor do navegador quando a API falha. Testei os dois caminhos, não só o feliz.", shot: "/acorde/fala.webp", alt: "Prática de fala com nota por palavra" },
-        { n: "04", title: "Revisão espaçada segura a retenção", body: "O que você errou volta na hora certa (SM-2). Funil de ativação instrumentado antes de gastar um real em anúncio.", shot: "/acorde/revisao.webp", alt: "Flashcard de revisão espaçada" },
+        { n: "01", tag: "ENTRADA DO FUNIL", title: "Você escolhe a música", body: "Sem lista fixa de palavras: a sessão começa na música que a pessoa já quer ouvir. É o primeiro fluxo que eu testo, porque é o primeiro que o usuário vê.", shot: "/acorde/home.webp", alt: "Tela inicial do Acorde" },
+        { n: "02", tag: "CAMINHO CRÍTICO", title: "Letra sincronizada, o caminho mais usado", body: "A letra acende junto com o áudio, tradução a um toque. Caminho crítico: valido esse fluxo antes de qualquer deploy.", shot: "/acorde/letra.webp", alt: "Letra sincronizada com tradução" },
+        { n: "03", tag: "FALLBACK TESTADO", title: "Fala com nota por palavra", body: "Transcrição por IA (Whisper), com fallback automático pro motor do navegador quando a API falha. Testei os dois caminhos, não só o feliz.", shot: "/acorde/fala.webp", alt: "Prática de fala com nota por palavra" },
+        { n: "04", tag: "RETENÇÃO MEDIDA", title: "Revisão espaçada segura a retenção", body: "O que você errou volta na hora certa (SM-2). Funil de ativação instrumentado antes de gastar um real em anúncio.", shot: "/acorde/revisao.webp", alt: "Flashcard de revisão espaçada" },
       ],
       closing: {
         title: "Construído, testado e operado de ponta a ponta",

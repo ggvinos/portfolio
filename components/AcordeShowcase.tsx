@@ -6,6 +6,7 @@ import { useInView } from "@/hooks/useInView";
 
 type PanelData = {
   n: string;
+  tag: string;
   title: string;
   body: string;
   shot: string;
@@ -35,26 +36,16 @@ export default function AcordeShowcase() {
   return (
     <section id="acorde" className="relative border-t border-[var(--border)]">
       <Header eyebrow={s.eyebrow} title={s.title} lead={s.lead} />
-      <Scrolly panels={s.panels as unknown as PanelData[]} />
+      <Scrolly panels={s.panels as unknown as PanelData[]} hint={s.hint} />
       <ClosingCta closing={s.closing} />
     </section>
   );
 }
 
-function Header({
-  eyebrow,
-  title,
-  lead,
-}: {
-  eyebrow: string;
-  title: string;
-  lead: string;
-}) {
+function Header({ eyebrow, title, lead }: { eyebrow: string; title: string; lead: string }) {
   return (
     <div className="mx-auto max-w-6xl px-6 pt-24 pb-10">
-      <h2 className="mb-3 font-mono text-xs uppercase tracking-widest text-accent">
-        {eyebrow}
-      </h2>
+      <h2 className="mb-3 font-mono text-xs uppercase tracking-widest text-accent">{eyebrow}</h2>
       <p className="max-w-2xl text-3xl font-semibold tracking-tight text-primary sm:text-4xl">
         {title}
       </p>
@@ -63,7 +54,7 @@ function Header({
   );
 }
 
-function Scrolly({ panels }: { panels: PanelData[] }) {
+function Scrolly({ panels, hint }: { panels: PanelData[]; hint: string }) {
   const total = panels.length;
   const [pinned, setPinned] = useState(false);
 
@@ -79,10 +70,18 @@ function Scrolly({ panels }: { panels: PanelData[] }) {
     return <StaticList panels={panels} />;
   }
 
-  return <PinnedTour panels={panels} total={total} />;
+  return <PinnedTour panels={panels} total={total} hint={hint} />;
 }
 
-function PinnedTour({ panels, total }: { panels: PanelData[]; total: number }) {
+function PinnedTour({
+  panels,
+  total,
+  hint,
+}: {
+  panels: PanelData[];
+  total: number;
+  hint: string;
+}) {
   const wrapperRef = useRef<HTMLDivElement>(null);
   const fillRef = useRef<HTMLSpanElement>(null);
   const stepRef = useRef(0);
@@ -99,8 +98,7 @@ function PinnedTour({ panels, total }: { panels: PanelData[]; total: number }) {
       const range = wrapper.offsetHeight - window.innerHeight;
       const p = range > 0 ? Math.min(1, Math.max(0, -rect.top / range)) : 0;
 
-      if (fillRef.current)
-        fillRef.current.style.transform = `scaleY(${p.toFixed(4)})`;
+      if (fillRef.current) fillRef.current.style.transform = `scaleY(${p.toFixed(4)})`;
 
       const next = Math.min(total - 1, Math.floor(p * total));
       if (next !== stepRef.current) {
@@ -126,14 +124,19 @@ function PinnedTour({ panels, total }: { panels: PanelData[]; total: number }) {
     <div ref={wrapperRef} style={{ height: `${total * STEP_VH}dvh` }}>
       <div className="sticky top-0 flex h-dvh items-center justify-center overflow-hidden px-6">
         <span
-          className="absolute top-10 left-1/2 -translate-x-1/2 whitespace-nowrap border border-[var(--border)] bg-surface px-3 py-1.5 font-mono text-[11px] text-muted transition-opacity duration-500"
+          className="absolute top-24 left-1/2 -translate-x-1/2 whitespace-nowrap border border-[var(--border)] bg-surface px-3 py-1.5 font-mono text-[11px] text-muted transition-opacity duration-500"
           style={{ opacity: step === total - 1 ? 0 : 1 }}
         >
-          Tour guiado: role pra avançar
+          {hint}
         </span>
 
-        <div className="flex w-full max-w-4xl flex-col items-center gap-10 sm:flex-row sm:gap-16">
-          <div className="relative min-h-[180px] w-full max-w-sm pl-8 text-center sm:min-h-[220px] sm:text-left">
+        <div className="flex w-full max-w-5xl flex-col-reverse items-center gap-12 sm:flex-row sm:gap-20">
+          {/* coluna da legenda: o trilho mora na borda esquerda e as legendas
+              ficam recuadas dele. As legendas sao absolutas pra trocarem sem
+              pular a altura, e absoluto resolve contra o PADDING BOX — por
+              isso o recuo vive em cada legenda (left-12), nunca num padding
+              do container, que seria simplesmente ignorado. */}
+          <div className="relative min-h-[300px] w-full sm:flex-1">
             <Rail total={total} step={step} fillRef={fillRef} />
             {panels.map((p, i) => (
               <Caption key={p.n} panel={p} active={i === step} />
@@ -157,7 +160,7 @@ function Rail({
   fillRef: React.RefObject<HTMLSpanElement>;
 }) {
   return (
-    <div className="absolute left-2 top-[8%] bottom-[8%] w-px bg-[var(--border)] sm:left-0">
+    <div aria-hidden="true" className="absolute inset-y-0 left-0 w-px bg-[var(--border)]">
       <span
         ref={fillRef}
         className="absolute inset-0 origin-top bg-accent"
@@ -166,10 +169,8 @@ function Rail({
       {Array.from({ length: total }, (_, i) => (
         <span
           key={i}
-          className={`absolute -left-[3px] h-[7px] w-[7px] rounded-full border transition-colors duration-300 ${
-            i <= step
-              ? "border-accent bg-accent"
-              : "border-[var(--border)] bg-page"
+          className={`absolute left-1/2 h-2 w-2 -translate-x-1/2 -translate-y-1/2 rounded-full border transition-colors duration-300 ${
+            i <= step ? "border-accent bg-accent" : "border-[var(--border)] bg-page"
           }`}
           style={{ top: `${((i + 0.5) / total) * 100}%` }}
         />
@@ -181,60 +182,44 @@ function Rail({
 function Caption({ panel, active }: { panel: PanelData; active: boolean }) {
   return (
     <div
-      className="absolute inset-0 transition-all duration-500"
+      className="absolute inset-y-0 left-12 right-0 flex flex-col justify-center transition-all duration-500 sm:left-16"
       style={{
         opacity: active ? 1 : 0,
         transform: active ? "translateY(0)" : "translateY(10px)",
         pointerEvents: active ? "auto" : "none",
       }}
     >
-      <span className="font-mono text-xs text-accent">{panel.n}</span>
-      <h3 className="mt-3 text-xl font-semibold tracking-tight text-primary sm:text-2xl">
+      <span className="w-fit border border-accent px-2.5 py-1 font-mono text-[10px] uppercase tracking-widest text-accent">
+        {panel.tag}
+      </span>
+      <h3 className="mt-5 text-2xl font-semibold leading-tight tracking-tight text-primary sm:text-3xl">
         {panel.title}
       </h3>
-      <p className="mt-3 text-sm leading-relaxed text-muted sm:text-base">
-        {panel.body}
-      </p>
+      <p className="mt-4 max-w-md text-sm leading-relaxed text-muted sm:text-base">{panel.body}</p>
     </div>
   );
 }
 
 function Phone({ panels, step }: { panels: PanelData[]; step: number }) {
   return (
-    <div className="relative shrink-0">
-      <div
-        aria-hidden="true"
-        className="pointer-events-none absolute -inset-10 -z-10 rounded-full blur-2xl"
-        style={{
-          background:
-            "radial-gradient(circle, var(--border) 0%, transparent 70%)",
-        }}
-      />
-      <div
-        className="relative overflow-hidden rounded-[2rem] border border-[var(--border)] bg-surface p-1.5 shadow-2xl shadow-black/10"
-        style={{
-          width: "clamp(200px, 26vw, 280px)",
-          aspectRatio: "590 / 1278",
-        }}
-      >
-        {panels.map((p, i) => (
-          // eslint-disable-next-line @next/next/no-img-element
-          <img
-            key={p.n}
-            src={p.shot}
-            alt={p.alt}
-            loading={i === 0 ? "eager" : "lazy"}
-            className="absolute inset-0 h-full w-full rounded-[1.6rem] object-cover transition-all duration-500"
-            style={{
-              opacity: i === step ? 1 : 0,
-              transform:
-                i === step
-                  ? "translateY(0) scale(1)"
-                  : "translateY(10px) scale(0.98)",
-            }}
-          />
-        ))}
-      </div>
+    <div
+      className="relative shrink-0 overflow-hidden rounded-[2rem] border border-[var(--border)] bg-surface p-1.5 shadow-2xl shadow-black/20"
+      style={{ width: "clamp(190px, 24vw, 260px)", aspectRatio: "590 / 1278" }}
+    >
+      {panels.map((p, i) => (
+        // eslint-disable-next-line @next/next/no-img-element
+        <img
+          key={p.n}
+          src={p.shot}
+          alt={p.alt}
+          loading={i === 0 ? "eager" : "lazy"}
+          className="absolute inset-1.5 h-[calc(100%-0.75rem)] w-[calc(100%-0.75rem)] rounded-[1.6rem] object-cover transition-all duration-500"
+          style={{
+            opacity: i === step ? 1 : 0,
+            transform: i === step ? "translateY(0) scale(1)" : "translateY(10px) scale(0.98)",
+          }}
+        />
+      ))}
     </div>
   );
 }
@@ -248,7 +233,7 @@ function StaticList({ panels }: { panels: PanelData[] }) {
       {panels.map((p, i) => (
         <div
           key={p.n}
-          className="flex flex-col items-center gap-8 text-center sm:flex-row sm:gap-16 sm:text-left"
+          className="flex flex-col-reverse items-center gap-8 sm:flex-row sm:gap-16"
           style={{
             transitionDelay: `${i * 80}ms`,
             opacity: inView ? 1 : 0,
@@ -256,21 +241,19 @@ function StaticList({ panels }: { panels: PanelData[] }) {
             transition: "opacity 0.5s ease, transform 0.5s ease",
           }}
         >
-          <div className="overflow-hidden rounded-[1.75rem] border border-[var(--border)] bg-surface p-1.5 shadow-2xl shadow-black/10">
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img
-              src={p.shot}
-              alt={p.alt}
-              loading="lazy"
-              className="block w-[200px] rounded-[1.35rem]"
-            />
-          </div>
-          <div>
-            <span className="font-mono text-xs text-accent">{p.n}</span>
-            <h3 className="mt-3 text-2xl font-semibold tracking-tight text-primary">
+          <div className="flex-1">
+            <span className="inline-block border border-accent px-2.5 py-1 font-mono text-[10px] uppercase tracking-widest text-accent">
+              {p.tag}
+            </span>
+            <h3 className="mt-5 text-2xl font-semibold leading-tight tracking-tight text-primary">
               {p.title}
             </h3>
             <p className="mt-4 leading-relaxed text-muted">{p.body}</p>
+          </div>
+
+          <div className="shrink-0 overflow-hidden rounded-[1.75rem] border border-[var(--border)] bg-surface p-1.5 shadow-2xl shadow-black/20">
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img src={p.shot} alt={p.alt} loading="lazy" className="block w-[190px] rounded-[1.35rem]" />
           </div>
         </div>
       ))}
