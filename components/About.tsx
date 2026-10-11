@@ -8,7 +8,7 @@ export default function About() {
   const [ref, inView] = useInView();
 
   return (
-    <section id="about" className="py-16 sm:py-24 bg-page">
+    <section id="about" className="py-16 sm:py-24">
       <div className="max-w-6xl mx-auto px-6">
         <div
           ref={ref}
@@ -21,9 +21,12 @@ export default function About() {
             <h2 className="font-mono text-xs text-accent uppercase tracking-widest mb-8">
               {t.sections.about}
             </h2>
-            <p className="text-lg text-muted leading-relaxed">
-              {t.about.bio}
-            </p>
+            <p className="text-lg text-muted leading-relaxed">{t.about.bio}</p>
+            <div
+              data-moon-slot
+              aria-hidden="true"
+              className="mt-8 hidden h-[180px] lg:block"
+            />
           </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-1 gap-4">
@@ -32,7 +35,9 @@ export default function About() {
                 key={d.label}
                 style={{ transitionDelay: `${i * 80}ms` }}
                 className={`border border-[var(--border)] p-5 sm:p-6 transition-all duration-500 ease-out hover:border-[#404040] ${
-                  inView ? "opacity-100 translate-x-0" : "opacity-0 translate-x-4"
+                  inView
+                    ? "opacity-100 translate-x-0"
+                    : "opacity-0 translate-x-4"
                 }`}
               >
                 <div className="flex flex-wrap items-baseline gap-2 mb-2">
