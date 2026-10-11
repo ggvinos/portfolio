@@ -44,8 +44,8 @@ Resultados quantitativos só devem ser publicados com contexto de medição: per
 
 ## Direção visual
 
-Preto e branco, tipografia Inter e JetBrains Mono. A lua acompanha o scroll da abertura até um espaço reservado ao lado do Sobre e sai com a seção. Meteoros e estrelas ficam na abertura; o conteúdo tem fundo limpo. Os cards compartilham informações e hierarquia em todos os tamanhos, sem scroll interno ou empilhamento que esconda conteúdo. O cursor é o do navegador.
+Preto e branco, tipografia Inter e JetBrains Mono. A lua acompanha o scroll da abertura até um ponto ao lado do Sobre e sai com a seção. Meteoros e estrelas ficam na abertura; o conteúdo tem fundo limpo. Os cards compartilham informações e hierarquia em todos os tamanhos, sem scroll interno ou empilhamento que esconda conteúdo. O cursor é o do navegador.
 
-A lua usa um único frame agendado por evento de scroll, com medidas de layout em cache e atualizadas por ResizeObserver. A textura se move por transform, sem WebGL ou renderização do React por frame. Meteoros usam translação na direção do rastro e pausam fora da abertura ou em abas ocultas. Com movimento reduzido, a lua fica estática na abertura.
+A lua preserva a animação original em Motion: trajetória linear, escala final 0,28, entrada após 2,2 segundos e giro da textura de 0% a -140% sobre TODO o trecho Hero + Sobre. O giro mantém a suavização original (stiffness 60, damping 20, mass 0,6). MotionValues evitam renderização do React por frame; as medidas de layout são agrupadas, deduplicadas e atualizadas por ResizeObserver. Meteoros usam translação na direção do rastro e pausam fora da abertura ou em abas ocultas. Com movimento reduzido, a lua fica estática na abertura.
 
 A animação de partículas pausa fora da tela, em abas ocultas e com preferência por movimento reduzido. O conteúdo é visível no HTML inicial, sem depender de IntersectionObserver para aparecer.
