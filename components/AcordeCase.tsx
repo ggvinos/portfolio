@@ -63,27 +63,24 @@ export default function AcordeCase() {
     <main className="pt-14">
       {/* ── HERO ── */}
       <section className="max-w-6xl mx-auto px-6 pt-20 pb-16">
-        <p className="font-mono text-xs text-muted uppercase tracking-widest mb-6 animate-fade-in">
+        <p className="font-mono text-xs text-muted uppercase tracking-widest mb-6">
           {c.eyebrow}
         </p>
 
         <h1
           className="text-6xl sm:text-8xl font-bold tracking-tight text-primary text-edge-outline"
-          style={{ animation: "title 1.2s ease both" }}
         >
           {c.title}
         </h1>
 
         <p
-          className="mt-6 text-xl sm:text-2xl text-primary/90 max-w-2xl"
-          style={{ animation: "fade-up 0.8s ease both", animationDelay: "0.3s" }}
+          className="mt-6 text-xl sm:text-2xl text-primary max-w-2xl"
         >
           {c.tagline}
         </p>
 
         <p
           className="mt-6 text-muted leading-relaxed max-w-2xl"
-          style={{ animation: "fade-up 0.8s ease both", animationDelay: "0.5s" }}
         >
           {c.intro}
         </p>
@@ -93,14 +90,12 @@ export default function AcordeCase() {
           target="_blank"
           rel="noopener noreferrer"
           className="inline-block mt-8 font-mono text-sm border border-[var(--border)] px-5 py-2.5 text-primary hover:border-accent hover:text-accent transition-colors duration-150"
-          style={{ animation: "fade-up 0.8s ease both", animationDelay: "0.7s" }}
         >
           {c.linkLabel} ↗
         </a>
 
         <div
           className="mt-14 grid grid-cols-2 lg:grid-cols-4 border border-[var(--border)] divide-x-0 lg:divide-x divide-[var(--border)]"
-          style={{ animation: "fade-up 0.8s ease both", animationDelay: "0.9s" }}
         >
           {c.meta.map((m) => (
             <div key={m.label} className="px-5 py-4 border-b lg:border-b-0 border-[var(--border)]">
@@ -182,7 +177,7 @@ export default function AcordeCase() {
       </section>
 
       {/* ── QUALIDADE ── */}
-      <section className="border-t border-[var(--border)] bg-surface/40">
+      <section className="border-t border-[var(--border)] bg-surface">
         <div className="max-w-6xl mx-auto px-6 py-24">
           <Reveal className="max-w-2xl mb-14">
             <Eyebrow>{c.quality.eyebrow}</Eyebrow>

@@ -19,13 +19,13 @@ const doubled = [...TOOLS, ...TOOLS];
  * (fundo, partículas, glow) só chega depois que o texto assentou.
  */
 const T = {
-  name: "0.2s",
-  label: "0.75s",
-  subtitle: "0.95s",
-  tagline: "1.25s",
+  name: "0s",
+  label: "0s",
+  subtitle: "0s",
+  tagline: "0s",
   world: "1.6s",
-  marquee: "2s",
-  ctas: "2.2s",
+  marquee: "0.3s",
+  ctas: "0s",
   hint: "2.7s",
   corners: "3s",
 };
@@ -42,7 +42,7 @@ export default function Hero() {
   return (
     <section
       id="hero"
-      className="relative flex flex-col items-center justify-center w-full min-h-screen overflow-hidden"
+      className="relative flex flex-col items-center justify-center w-full min-h-[640px] sm:min-h-[760px] lg:min-h-screen overflow-hidden"
     >
       {/* camadas de ambiente: entram por último, ao redor do nome já posto */}
       <div
@@ -51,7 +51,7 @@ export default function Hero() {
       >
         <HeroAtmosphere />
 
-        <Particles className="absolute inset-0 z-[1]" quantity={380} staticity={40} />
+        <Particles className="absolute inset-0 z-[1]" quantity={80} staticity={40} />
 
         <div
           className="hidden md:block absolute top-[72px] left-0 right-0 h-px z-[2] animate-glow"
@@ -69,7 +69,7 @@ export default function Hero() {
       {/* conteúdo: recua ao rolar */}
       <div
         ref={content}
-        className="relative z-[3] w-full max-w-6xl mx-auto px-6 flex flex-col items-center text-center py-24 will-change-transform"
+        className="relative z-[3] w-full max-w-6xl mx-auto px-6 min-w-0 flex flex-col items-center text-center py-24 will-change-transform"
       >
         <p
           className="font-mono text-xs text-muted mb-6 tracking-[0.3em] uppercase animate-fade-in"
@@ -79,9 +79,9 @@ export default function Hero() {
         </p>
 
         <h1
-          className="font-bold tracking-tight text-primary text-edge-outline animate-title"
+          className="font-bold tracking-tight text-primary text-edge-outline"
           style={{
-            fontSize: "clamp(3rem, 11vw, 8rem)",
+            fontSize: "clamp(2.65rem, 10vw, 7rem)",
             lineHeight: 0.95,
             animationDelay: T.name,
             animationFillMode: "both",
@@ -91,14 +91,14 @@ export default function Hero() {
         </h1>
 
         <p
-          className="mt-4 font-mono text-base sm:text-lg text-primary tracking-widest animate-fade-in"
+          className="mt-6 font-mono text-sm sm:text-lg text-primary tracking-widest animate-fade-in"
           style={fadeIn(T.subtitle)}
         >
           {t.hero.subtitle}
         </p>
 
         <p
-          className="mt-3 text-sm text-muted max-w-md leading-relaxed animate-fade-in"
+          className="mt-3 text-base text-muted max-w-lg leading-relaxed animate-fade-in"
           style={fadeIn(T.tagline)}
         >
           {t.hero.tagline}
@@ -114,14 +114,14 @@ export default function Hero() {
             (1152px) mesmo num container de 375, porque a porcentagem do item
             flex resolve contra o tamanho intrinseco, nao contra os 375. */}
         <div
-          className="relative mt-8 -mx-6 w-screen overflow-hidden animate-fade-in"
+          aria-hidden="true" className="relative mt-6 -mx-6 w-screen overflow-hidden animate-fade-in"
           style={fadeIn(T.marquee)}
         >
           <div className="pointer-events-none absolute left-0 top-0 bottom-0 w-24 z-10"
             style={{ background: "linear-gradient(to right, var(--bg), transparent)" }} />
           <div className="pointer-events-none absolute right-0 top-0 bottom-0 w-24 z-10"
             style={{ background: "linear-gradient(to left, var(--bg), transparent)" }} />
-          <div className="flex gap-3 w-max py-1" style={{ animation: "marquee 22s linear infinite" }}>
+          <div className="flex gap-3 w-max py-1 animate-marquee">
             {doubled.map((tool, i) => (
               <span key={i} className="font-mono text-[11px] text-muted border border-[var(--border)] px-3 py-1.5 whitespace-nowrap hover:text-[var(--text)] hover:border-[var(--text)] transition-colors duration-150">
                 {tool}
@@ -131,12 +131,12 @@ export default function Hero() {
         </div>
 
         {/* CTAs */}
-        <div className="mt-10 flex gap-4 animate-fade-in" style={fadeIn(T.ctas)}>
+        <div className="mt-8 flex flex-wrap justify-center gap-3 animate-fade-in" style={fadeIn(T.ctas)}>
           <a href="#projects" className="px-6 py-3 bg-[var(--text)] text-[var(--bg)] text-sm font-medium hover:opacity-85 transition-opacity">
             {t.hero.cta_primary}
           </a>
-          <a href="#contact" className="px-6 py-3 border border-[var(--border)] text-muted text-sm font-medium hover:border-[var(--text)] hover:text-[var(--text)] transition-colors">
-            {t.hero.cta_secondary}
+          <a href="/cv-vinicios-ferreira.pdf" className="px-6 py-3 border border-[var(--border)] text-muted text-sm font-medium hover:border-[var(--text)] hover:text-[var(--text)] transition-colors">
+            {t.contact.cv_label}
           </a>
         </div>
       </div>

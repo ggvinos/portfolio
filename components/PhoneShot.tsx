@@ -1,4 +1,5 @@
 "use client";
+import Image from "next/image";
 
 type Props = {
   srcs: string[];
@@ -84,11 +85,10 @@ export default function PhoneShot({ srcs, alt, width = 260, className = "" }: Pr
                 className="relative overflow-hidden bg-black"
                 style={{ borderRadius: width * 0.15 }}
               >
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img
+                <Image
                   src={src}
                   alt={alt}
-                  loading="lazy"
+                  sizes="(max-width: 767px) 40vw, 260px"
                   width={590}
                   height={1278}
                   className="block w-full"

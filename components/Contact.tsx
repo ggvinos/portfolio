@@ -27,7 +27,10 @@ export default function Contact() {
   const [ref, inView] = useInView();
 
   return (
-    <section id="contact" className="py-24 bg-page border-t border-default">
+    <section
+      id="contact"
+      className="py-16 sm:py-24 bg-page border-t border-default"
+    >
       <div className="max-w-6xl mx-auto px-6">
         <h2 className="font-mono text-xs text-accent uppercase tracking-widest mb-8">
           {t.sections.contact}
@@ -49,13 +52,13 @@ export default function Contact() {
               download="Vinicios-Ferreira-CV.pdf"
               className={`px-6 py-3 bg-[var(--text)] text-[var(--bg)] text-sm font-medium hover:opacity-85 transition-opacity ${inView ? "opacity-100" : "opacity-0"}`}
             >
-              {(t as any).contact?.cv_label ?? "Download CV"}
+              {t.contact.cv_label}
             </a>
             <a
               href="mailto:viniciosferreira.ti@gmail.com"
               className={`px-6 py-3 border border-[var(--border)] text-muted text-sm font-medium hover:border-[var(--text)] hover:text-[var(--text)] transition-colors ${inView ? "opacity-100" : "opacity-0"}`}
             >
-              {(t as any).contact?.email_label ?? "Send Email"}
+              {t.contact.email_label}
             </a>
           </div>
 
@@ -65,7 +68,9 @@ export default function Contact() {
                 key={label}
                 href={href}
                 target={href.startsWith("mailto") ? undefined : "_blank"}
-                rel={href.startsWith("mailto") ? undefined : "noopener noreferrer"}
+                rel={
+                  href.startsWith("mailto") ? undefined : "noopener noreferrer"
+                }
                 style={{ transitionDelay: `${i * 60}ms` }}
                 className={`inline-block py-2 font-mono text-sm text-muted hover:text-accent transition-colors duration-150 border-b border-transparent hover:border-accent ${
                   inView ? "opacity-100" : "opacity-0"

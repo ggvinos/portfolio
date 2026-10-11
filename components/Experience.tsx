@@ -16,7 +16,8 @@ export default function Experience() {
   const alternar = (i: number) => {
     setAbertos((prev) => {
       const next = new Set(prev);
-      next.has(i) ? next.delete(i) : next.add(i);
+      if (next.has(i)) next.delete(i);
+      else next.add(i);
       return next;
     });
   };
@@ -39,7 +40,9 @@ export default function Experience() {
                 key={i}
                 style={{ transitionDelay: `${i * 80}ms` }}
                 className={`relative transition-all duration-500 ease-out group ${
-                  inViewExp ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
+                  inViewExp
+                    ? "opacity-100 translate-y-0"
+                    : "opacity-0 translate-y-4"
                 }`}
               >
                 <span
@@ -82,7 +85,7 @@ export default function Experience() {
                 <div
                   id={`experiencia-detalhe-${i}`}
                   className="overflow-hidden transition-[max-height] duration-300 ease-out"
-                  style={{ maxHeight: aberto ? 320 : 0 }}
+                  hidden={!aberto}
                 >
                   <p className="max-w-xl pt-3 text-sm leading-relaxed text-muted">
                     {item.description}
@@ -93,12 +96,19 @@ export default function Experience() {
           })}
         </div>
 
-        {"languages" in t && Array.isArray((t as any).languages) && (
+        {"languages" in t && Array.isArray(t.languages) && (
           <div className="mt-10 flex flex-wrap gap-3">
-            {((t as any).languages as {lang: string; level: string}[]).map((l) => (
-              <div key={l.lang} className="border border-[var(--border)] px-4 py-2 flex gap-2 items-baseline">
-                <span className="text-sm font-semibold text-primary">{l.lang}</span>
-                <span className="font-mono text-[10px] text-muted">{l.level}</span>
+            {t.languages.map((l) => (
+              <div
+                key={l.lang}
+                className="border border-[var(--border)] px-4 py-2 flex gap-2 items-baseline"
+              >
+                <span className="text-sm font-semibold text-primary">
+                  {l.lang}
+                </span>
+                <span className="font-mono text-[10px] text-muted">
+                  {l.level}
+                </span>
               </div>
             ))}
           </div>
@@ -126,10 +136,16 @@ export default function Experience() {
                   }}
                 >
                   <div className="flex items-baseline gap-3 mb-2">
-                    <span className="text-primary font-semibold text-sm">{item.title}</span>
-                    <span className="font-mono text-[10px] text-accent">{item.result}</span>
+                    <span className="text-primary font-semibold text-sm">
+                      {item.title}
+                    </span>
+                    <span className="font-mono text-[10px] text-accent">
+                      {item.result}
+                    </span>
                   </div>
-                  <p className="text-sm text-muted leading-relaxed">{item.description}</p>
+                  <p className="text-sm text-muted leading-relaxed">
+                    {item.description}
+                  </p>
                 </div>
               </SpotlightCard>
             ))}

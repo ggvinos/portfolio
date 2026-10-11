@@ -4,7 +4,7 @@ import { useLanguage } from "@/lib/context";
 import { useInView } from "@/hooks/useInView";
 
 export default function Articles() {
-  const { t } = useLanguage();
+  const { t, lang } = useLanguage();
   const [ref, inView] = useInView();
 
   return (
@@ -35,7 +35,7 @@ export default function Articles() {
                 </h3>
               </div>
               <div className="mt-6 flex items-center text-muted font-mono text-xs gap-1 group-hover:text-[var(--text)] transition-colors duration-300">
-                <span>Read</span>
+                <span>{lang === "pt" ? "Ler artigo" : "Read article"}</span>
                 <span aria-hidden="true" className="transition-transform duration-300 group-hover:translate-x-1">→</span>
               </div>
             </a>

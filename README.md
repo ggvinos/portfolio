@@ -1,36 +1,49 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Vinicios Ferreira — Portfolio
 
-## Getting Started
+Portfólio de QA Engineer / Software Engineer in Test. Site bilíngue (PT/EN) com produto em produção, projetos de automação, ferramentas internas e estudos de UX/UI.
 
-First, run the development server:
+- Site: https://vinicios-ferreira.vercel.app
+- Stack: Next.js 16 App Router, React 19, TypeScript e Tailwind CSS 4.
+- Node.js: 22 ou superior.
+
+## Desenvolvimento e validação
 
 ```bash
+npm ci
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+npm run lint
+npm run build
+npm run typecheck
+npx playwright install chromium
+npm run test:e2e
+npm audit
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+O build usa webpack explicitamente para manter a compilação consistente entre o ambiente local e o CI. Os testes iniciam o build de produção na porta 3108 e verificam layouts de 320 a 1440 px, foco do menu, tradução, acessibilidade com axe, rotas de projetos, CV, movimento reduzido e leitura sem JavaScript. Screenshots e relatórios ficam em `test-results/` e `playwright-report/`.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+O workflow `.github/workflows/quality.yml` executa as verificações em pushes e pull requests. O deploy é feito pela integração do repositório com a Vercel.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## Estrutura
 
-## Learn More
+- `app/page.tsx`: home.
+- `app/projetos/acorde`: estudo de caso do produto publicado.
+- `app/projetos/[slug]`: resumos técnicos de ferramentas internas.
+- `app/opengraph-image.tsx`: imagem de compartilhamento.
+- `lib/translations.ts`: textos e dados PT/EN.
+- `lib/context.tsx`: idioma da interface e do documento.
+- `components`: seções e componentes de apresentação.
+- `tests`: regressões de navegação, conteúdo e acessibilidade.
 
-To learn more about Next.js, take a look at the following resources:
+## Conteúdo e evidências
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+Dashboard e Flow CLI são ferramentas internas. Os resumos mostram contexto e contribuição sem publicar dados, código ou capturas corporativas. As pequenas ilustrações dos cards são visões técnicas simplificadas, não screenshots dos sistemas.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+O projeto Cypress aponta para o desafio público Coco Bambu. O EspaçoCalmo aponta para o estudo de UX/UI no Behance e está apresentado como iniciativa em evolução, sem afirmar que é um aplicativo em produção.
 
-## Deploy on Vercel
+Resultados quantitativos só devem ser publicados com contexto de medição: período, definição da métrica, origem e participação do autor. Percentuais sem esse contexto foram substituídos por descrições técnicas. O estudo do Acorde distingue metas de resultados.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## Direção visual
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Preto e branco, tipografia Inter e JetBrains Mono. Efeitos espaciais ficam na abertura; o conteúdo tem fundo limpo. Os cards compartilham informações e hierarquia em todos os tamanhos, sem scroll interno ou empilhamento que esconda conteúdo. O cursor é o do navegador.
+
+A animação de partículas pausa fora da tela, em abas ocultas e com preferência por movimento reduzido. O conteúdo é visível no HTML inicial, sem depender de IntersectionObserver para aparecer.
