@@ -15,13 +15,18 @@ export const translations = {
       label: "// software engineer in test",
       name: "VINICIOS FERREIRA",
       subtitle: "QA Engineer · Builder · 6+ years in tech",
-      tagline: "QA who automates, measures, and delivers what the team doesn't have yet.",
+      tagline:
+        "QA who automates, measures, and delivers what the team doesn't have yet.",
       cta_primary: "View Projects",
       cta_secondary: "Contact",
       // tradução literal do bloco de valores pessoais que existe só em PT
       // na referência visual — ajuste se preferir outra ênfase em inglês
       values: ["DISCIPLINE", "TRANSFORMS", "POSSIBILITY"],
-      coordinates: { lat: "-27.5954° S", lng: "-48.5480° W", route: "BR → WORLD" },
+      coordinates: {
+        lat: "-27.5954° S",
+        lng: "-48.5480° W",
+        route: "BR → WORLD",
+      },
     },
     sections: {
       about: "ABOUT",
@@ -35,7 +40,7 @@ export const translations = {
       achievements: "ACHIEVEMENTS",
     },
     about: {
-      bio: "QA focused on automation, coverage, and the metrics that turn instinct into decisions. Background in front-end dev and UX design, it changes how I read a spec, where I look for defects, and how I translate quality to the business. Beyond testing, I build the tools the team doesn't have yet, and Acorde, a live product where I apply those same quality standards end to end.",
+      bio: "QA Engineer with a background in front-end development and UX. I automate critical flows, build quality tools and operate Acorde, my own live product.",
       differentials: [
         {
           label: "Cross-domain",
@@ -45,17 +50,17 @@ export const translations = {
         {
           label: "Builder",
           value: "2 tools + 1 product live",
-          note: "Two internal tools in production: a metrics dashboard that turns issue tracker data into a go/no-go criterion per release, and a flow CLI that eliminates 60 minutes of manual configuration. Plus Acorde, my own product live with real users. I build because it's faster than waiting.",
+          note: "I built an internal quality dashboard and a chatbot-flow CLI. In Acorde, I own the complete cycle: development, testing and operation.",
         },
         {
           label: "User-first",
           value: "UX background",
-          note: "Five years in UX taught me to think about the journey before writing the scenario. Usability bugs show up in wireframes, not in the backlog.",
+          note: "My UX background helps me map the user journey and spot usability risks before writing test scenarios.",
         },
         {
           label: "AI-augmented",
           value: "AI in every stage",
-          note: "I use AI across the entire QA cycle: generating test cases from requirements, analyzing logs for bug triage, automating documentation, and building internal tools. Our internal flow CLI was born from this, AI as a capacity multiplier, not a buzzword.",
+          note: "I use AI to support test-case generation, log analysis, documentation and internal tooling, with review and validation of the output.",
         },
       ],
     },
@@ -87,7 +92,7 @@ export const translations = {
         id: "qa-dashboard",
         title: "QA Metrics Dashboard",
         description:
-          "QA metrics lived in outdated spreadsheets. Built from scratch: Streamlit + Python pulling live data from the issue tracker via REST, processing with Pandas, rendering 12+ interactive charts in real time. A composite quality score defines the go/no-go for each release, used daily by the team.",
+          "Built an internal QA dashboard with Python, Streamlit and Pandas. It consolidates issue-tracker data, trends and release-quality indicators, with views adapted to each access profile.",
         detail: [
           "Role-based access: 4 profiles, each seeing only what it needs",
           "Covers the whole cycle: quality, backlog, clients, history and a leadership panel",
@@ -95,64 +100,67 @@ export const translations = {
           "Authentication integrated with the internal API",
         ],
         snapshot: null,
-        metrics: ["12+ live charts", "Go/no-go per release", "Used daily by the team"],
+        metrics: ["Release indicators", "Role-based access", "Internal tool"],
         tags: ["Python", "Streamlit", "REST API", "Pandas", "Plotly"],
         label: "INTERNAL TOOL",
-        link: null,
+        link: "/projetos/qa-dashboard",
         featured: false,
       },
       {
         id: "flow-cli",
         title: "Flow CLI Generator",
         description:
-          "Node-by-node chatbot flow configuration took 30–60 minutes. Flow CLI Generator solves it: describe the flow in natural language, the CLI outputs the JSON ready to import. No templates, no manual configuration.",
+          "Built an internal CLI that turns natural-language descriptions into chatbot-flow JSON. It supports conditional branches and API calls, and validates the schema before saving the output.",
         detail: [
-          "Generates flows with stable random IDs, ready to import with no manual adjustments",
-          "Supports conditional branches, API call nodes, and multi-turn dialogues",
-          "Validates output schema before writing to disk",
-          "Runs offline after initial Claude API call",
+          "Generates node identifiers for import into the internal platform",
+          "Supports conditional branches, API calls and multi-turn dialogues",
+          "Validates the output schema before saving",
+          "The generated JSON can be used independently of the generation API",
         ],
         snapshot: null,
-        metrics: ["30–60 min/flow saved", "JSON schema validated", "CLI-first"],
+        metrics: [
+          "Natural language → JSON",
+          "Schema validation",
+          "Internal tool",
+        ],
         tags: ["Python", "Claude API", "CLI", "JSON Schema"],
         label: "INTERNAL TOOL",
-        link: null,
+        link: "/projetos/flow-cli",
         featured: false,
       },
       {
         id: "cypress-e2e",
         title: "Cypress E2E Automation",
         description:
-          "Manual validation took 20 minutes per deploy. The E2E suite cut it to 2 minutes, runs on CI at every push, and caught 47 bugs before they reached production.",
+          "Technical challenge covering the Coco Bambu purchase journey and cart API. Cypress tests are organized with Page Object Model, including negative scenarios and documentation of external application limitations.",
         detail: [
-          "Page Object Model pattern, maintainable selectors decoupled from test logic",
-          "Custom commands for repeated flows (login, form fill, API intercept)",
-          "GitHub Actions pipeline: runs on every push to main, fails fast on regression",
-          "Viewport tests across desktop, tablet and mobile breakpoints",
+          "Page objects separate selectors from test scenarios",
+          "UI flow covers login, cart and checkout",
+          "API scenarios cover POST, PUT and DELETE, including invalid quantities and missing resources",
+          "The README documents selector instability and restaurant opening-hour constraints",
         ],
         snapshot: null,
-        metrics: ["85% E2E coverage", "47 bugs caught pre-prod", "CI run: 4 min"],
-        tags: ["Cypress", "JavaScript", "GitHub Actions", "CI"],
+        metrics: ["UI + API", "Page Object Model", "Negative scenarios"],
+        tags: ["Cypress", "JavaScript", "API Testing", "Page Object Model"],
         label: null,
-        link: null,
+        link: "https://github.com/ggvinos/desafio-coco-bambu",
         featured: false,
       },
       {
         id: "espaco-calmo",
         title: "EspaçoCalmo",
         description:
-          "Mental health app born as a 2022 college thesis, rebuilt from scratch in 2026. Same mission, rewritten visual system: sage palette on cream paper, editorial typography, flows cut to the minimum. Built for someone not doing well today, not for wellness enthusiasts.",
+          "UX/UI study for a mental-health app, with designs published on Behance. I am resuming the initiative to evolve the concept into a product; the current portfolio presents the design work.",
         detail: [
-          "Onboarding cut from 5 data-collection screens to 3 slides + one registration",
-          "Daily check-in from 5 screens to 2, questions asked when they matter, not all at once",
-          "SOS button on every screen, two steps to reach a real person or call CVV",
-          "5 anti-wellness-slop principles: calm as product, honest not optimistic, real Brazilian Portuguese, accessible, fewer steps",
+          "Design work and the original case study are available on Behance",
+          "The next stage is to revisit user journeys and scope the product",
+          "The public material documents the design concept",
         ],
         snapshot: null,
-        metrics: ["14 screens", "TCC 2022, redesign 2026", "iOS / React Native"],
-        tags: ["UX Design", "Product Design", "Figma", "React Native", "Mental Health"],
-        label: "UX REDESIGN",
-        link: null,
+        metrics: ["UX/UI study", "Designs on Behance", "Product in planning"],
+        tags: ["UX Design", "UI Design", "Figma", "Product Discovery"],
+        label: "UX/UI STUDY",
+        link: "https://www.behance.net/gallery/204101211/Inovacao-em-Saude-Mental-Estudo-de-caso-espaco-calmo",
         featured: false,
       },
     ],
@@ -195,28 +203,28 @@ export const translations = {
         role: "QA Engineer",
         period: "Feb 2025 – Oct 2025",
         description:
-          "Volunteer QA in an open-source agile environment. Cypress E2E + Postman API (30+ critical failures found) + Appium mobile. Test documentation in TestRail and Jira, usability and accessibility validation (WCAG). 90% coverage, 40% fewer bugs, validation from 4 hours to 30 min/sprint.",
+          "Volunteer QA in an open-source agile environment. Cypress E2E automation, Postman API testing and Appium mobile testing. TestRail and Jira documentation, with a focus on regression, usability and accessibility.",
       },
       {
         company: "CTC Tech",
         role: "BackOffice Analyst",
         period: "Jun 2022 – Aug 2025",
         description:
-          "Started as Support Analyst N1 at the Ministry of Health, promoted to CNJ after earning ITIL 4 and MD-100 certifications, then returned as BackOffice Analyst. 500+ incidents validated in critical national systems. Resolution time reduced by 35%. 98% system availability. 40% reliability improvement.",
+          "Worked in N1 support at the Ministry of Health, at CNJ and as a BackOffice Analyst. Incident management and validation in critical systems, with a focus on SLAs, documentation and user communication.",
       },
       {
         company: "Workana",
         role: "UX/UI Product Designer",
         period: "Jan 2022 – May 2024",
         description:
-          "UX Freelancer on Workana. Figma and Adobe XD wireframes and prototypes with focus on usability and accessibility (WCAG). Cypress (web) + Appium (mobile) automation, 85% coverage, 20+ critical failures found, 25% UX improvement (user feedback), 35% faster validations.",
+          "Freelance UX Designer on Workana. Figma and Adobe XD wireframes and prototypes focused on user journeys, usability and accessibility.",
       },
       {
         company: "UNICEPLAC",
         role: "Infrastructure & UX/UI Analyst",
         period: "Jan 2020 – Jan 2022",
         description:
-          "Infrastructure and UX/UI in the Software Engineering graduation startup project. Figma wireframes and prototypes, usability testing (−30% inconsistencies), Docker support (+90% environment availability), +25% UX based on feedback.",
+          "Infrastructure and UX/UI in the Software Engineering academic startup project. Figma prototyping, usability testing and Docker environment support.",
       },
       {
         company: "Hospital Santa Lúcia",
@@ -236,12 +244,14 @@ export const translations = {
       {
         title: "Education",
         result: "B.Sc. Software Engineering",
-        description: "Centro Universitário UNICEPLAC, Brasília/DF (Jan 2020 – Jun 2024). Emphasis on software development and UX design. Final project applied in an academic startup.",
+        description:
+          "Centro Universitário UNICEPLAC, Brasília/DF (Jan 2020 – Jun 2024). Emphasis on software development and UX design. Final project applied in an academic startup.",
       },
       {
         title: "HDI Support Center Analyst",
         result: "HDI-SCA Certified",
-        description: "International certification for IT support and service desk professionals. Validates incident management, SLA compliance, and end-user communication under pressure.",
+        description:
+          "International certification for IT support and service desk professionals. Validates incident management, SLA compliance, and end-user communication under pressure.",
       },
     ],
     languages: [
@@ -267,9 +277,26 @@ export const translations = {
       },
     ],
     skills: {
-      Testing: ["Cypress", "Playwright", "Postman", "Appium", "JMeter", "pytest", "TestRail"],
+      Testing: [
+        "Cypress",
+        "Playwright",
+        "Postman",
+        "Appium",
+        "JMeter",
+        "pytest",
+        "TestRail",
+      ],
       Languages: ["Python", "JavaScript", "TypeScript"],
-      Tools: ["Git", "GitHub Actions", "Streamlit", "Claude API", "Figma", "Jira", "Docker", "ITIL 4"],
+      Tools: [
+        "Git",
+        "GitHub Actions",
+        "Streamlit",
+        "Claude API",
+        "Figma",
+        "Jira",
+        "Docker",
+        "ITIL 4",
+      ],
       Methodologies: [
         "E2E Testing",
         "API Testing",
@@ -291,10 +318,38 @@ export const translations = {
       lead: "Acorde turns a song you already listen to into an English lesson. This is the QA lens on the four flows that carry the product.",
       hint: "Guided tour: scroll to advance",
       panels: [
-        { n: "01", tag: "FUNNEL ENTRY", title: "You pick the song", body: "No fixed word list: the session starts on the song someone already wants to hear. It's the first flow I test, because it's the first thing the user sees.", shot: "/acorde/home.webp", alt: "Acorde home screen" },
-        { n: "02", tag: "CRITICAL PATH", title: "Synced lyrics, the most used path", body: "The lyric lights up with the audio, translation one tap away. Critical path: I validate this flow before every deploy.", shot: "/acorde/letra.webp", alt: "Synced lyrics with translation" },
-        { n: "03", tag: "TESTED FALLBACK", title: "Speaking practice, scored word by word", body: "AI transcription (Whisper), with automatic fallback to the browser engine when the API fails. I tested both paths, not just the happy one.", shot: "/acorde/fala.webp", alt: "Speaking practice with per-word score" },
-        { n: "04", tag: "MEASURED RETENTION", title: "Spaced repetition drives retention", body: "What you missed comes back right on time (SM-2). Activation funnel instrumented before spending a cent on ads.", shot: "/acorde/revisao.webp", alt: "Spaced repetition flashcard" },
+        {
+          n: "01",
+          tag: "FUNNEL ENTRY",
+          title: "You pick the song",
+          body: "No fixed word list: the session starts on the song someone already wants to hear. It's the first flow I test, because it's the first thing the user sees.",
+          shot: "/acorde/home.webp",
+          alt: "Acorde home screen",
+        },
+        {
+          n: "02",
+          tag: "CRITICAL PATH",
+          title: "Synced lyrics, the most used path",
+          body: "The lyric lights up with the audio, translation one tap away. Critical path: I validate this flow before every deploy.",
+          shot: "/acorde/letra.webp",
+          alt: "Synced lyrics with translation",
+        },
+        {
+          n: "03",
+          tag: "TESTED FALLBACK",
+          title: "Speaking practice, scored word by word",
+          body: "AI transcription (Whisper), with automatic fallback to the browser engine when the API fails. I tested both paths, not just the happy one.",
+          shot: "/acorde/fala.webp",
+          alt: "Speaking practice with per-word score",
+        },
+        {
+          n: "04",
+          tag: "MEASURED RETENTION",
+          title: "Spaced repetition drives retention",
+          body: "What you missed comes back right on time (SM-2). Activation funnel instrumented before spending a cent on ads.",
+          shot: "/acorde/revisao.webp",
+          alt: "Spaced repetition flashcard",
+        },
       ],
       closing: {
         title: "Built, tested and operated end to end",
@@ -421,7 +476,10 @@ export const translations = {
         items: [
           { value: "Live", label: "in production at acorde.club" },
           { value: "Jun 2026", label: "first real external users" },
-          { value: "18.5% → 30%", label: "speaking activation, measured target" },
+          {
+            value: "18.5% → 30%",
+            label: "speaking activation, measured target",
+          },
           { value: "SM-2", label: "review engine in production" },
         ],
         note: "Numbers reflect the product at the time of writing. The focus right now is retention, not acquisition.",
@@ -452,13 +510,17 @@ export const translations = {
       institution: "Centro Universitário UNICEPLAC",
       period: "Jan 2020 – Jun 2024",
       location: "Brasília/DF",
-      description: "Emphasis on software development, UX design and systems architecture. Final applied project in an academic startup, combining front-end development, infrastructure and quality assurance.",
+      description:
+        "Emphasis on software development, UX design and systems architecture. Final applied project in an academic startup, combining front-end development, infrastructure and quality assurance.",
     },
     certifications: [
-      { title: "ITIL® Foundation Certificate in IT Service Management", issuer: "PeopleCert" },
+      {
+        title: "ITIL® Foundation Certificate in IT Service Management",
+        issuer: "PeopleCert",
+      },
       { title: "HDI Support Center Analyst (HDI-SCA)", issuer: "HDI" },
       { title: "Exam MD-100: Windows Client", issuer: "Microsoft" },
-      { title: "Introduction to Software Testing & QA", issuer: "Coursera" },
+      { title: "Introduction to Software Testing & QA", issuer: "Alura" },
     ],
     contact: {
       headline: "Open to connecting, collaborating or just talking about QA.",
@@ -487,7 +549,11 @@ export const translations = {
       cta_primary: "Ver Projetos",
       cta_secondary: "Contato",
       values: ["DISCIPLINA", "TRANSFORMA", "POSSIBILIDADES"],
-      coordinates: { lat: "-27.5954° S", lng: "-48.5480° W", route: "BR → WORLD" },
+      coordinates: {
+        lat: "-27.5954° S",
+        lng: "-48.5480° W",
+        route: "BR → WORLD",
+      },
     },
     sections: {
       about: "SOBRE",
@@ -501,7 +567,7 @@ export const translations = {
       achievements: "CONQUISTAS",
     },
     about: {
-      bio: "QA com foco em automação, cobertura e nas métricas que transformam instinto em decisão. Background em dev front-end e UX design, muda como leio uma spec, onde procuro falhas e como traduzo qualidade para o negócio. Além de testar, construo as ferramentas que o time ainda não tem, e o Acorde, um produto no ar onde aplico esses mesmos padrões de qualidade de ponta a ponta.",
+      bio: "QA Engineer com experiência em desenvolvimento front-end e UX. Automatizo fluxos críticos, construo ferramentas de qualidade e opero o Acorde, meu próprio produto no ar.",
       differentials: [
         {
           label: "Multidisciplinar",
@@ -511,17 +577,17 @@ export const translations = {
         {
           label: "Builder",
           value: "2 ferramentas + 1 produto no ar",
-          note: "Duas ferramentas internas em produção: um dashboard de métricas que transforma dados do issue tracker em critério de go/no-go por release, e uma CLI de fluxos que elimina 60 minutos de configuração manual. Além do Acorde, produto próprio no ar com usuários reais. Construo porque é mais rápido que esperar.",
+          note: "Construí um dashboard interno de qualidade e uma CLI de fluxos de chatbot. No Acorde, cuido do ciclo completo: desenvolvimento, testes e operação.",
         },
         {
           label: "User-first",
           value: "Background em UX",
-          note: "Cinco anos de UX ensinaram a pensar na jornada antes de escrever o cenário. Bugs de usabilidade aparecem nos wireframes, não no backlog.",
+          note: "A experiência em UX ajuda a mapear a jornada e identificar riscos de usabilidade antes de escrever os cenários de teste.",
         },
         {
           label: "AI-augmented",
           value: "IA em todo o processo",
-          note: "Uso IA em praticamente todo o ciclo de QA: geração de casos de teste a partir de requisitos, análise de logs para triagem de bugs, automação de documentação e criação de ferramentas internas. Nossa CLI de fluxos nasceu disso, IA como multiplicador de capacidade, não como buzzword.",
+          note: "Uso IA como apoio na geração de cenários, análise de logs, documentação e ferramentas internas, com revisão e validação da saída.",
         },
       ],
     },
@@ -553,7 +619,7 @@ export const translations = {
         id: "qa-dashboard",
         title: "QA Metrics Dashboard",
         description:
-          "Métricas de qualidade viviam em planilhas desatualizadas. Construí do zero: Streamlit + Python consumindo o issue tracker via REST, processando com Pandas, exibindo 12+ gráficos em tempo real. Um score composto de qualidade define o go/no-go de cada release, usado diariamente pelo time.",
+          "Construí um dashboard interno de QA com Python, Streamlit e Pandas. Consolida dados do issue tracker, tendências e indicadores de qualidade por release, com visões adaptadas a cada perfil de acesso.",
         detail: [
           "4 perfis de acesso com visibilidade distinta: cada colaborador vê só o que precisa",
           "Cobre todo o ciclo: qualidade, backlog, clientes, histórico e painel de liderança",
@@ -561,64 +627,75 @@ export const translations = {
           "Autenticação integrada à API interna",
         ],
         snapshot: null,
-        metrics: ["12+ gráficos em tempo real", "Go/no-go por release", "Uso diário pelo time"],
+        metrics: [
+          "Indicadores por release",
+          "Acesso por perfil",
+          "Ferramenta interna",
+        ],
         tags: ["Python", "Streamlit", "REST API", "Pandas", "Plotly"],
         label: "FERRAMENTA INTERNA",
-        link: null,
+        link: "/projetos/qa-dashboard",
         featured: false,
       },
       {
         id: "flow-cli",
         title: "Flow CLI Generator",
         description:
-          "Configurar um fluxo de chatbot nó por nó levava 30–60 minutos. O Flow CLI Generator resolve: descreva o fluxo em linguagem natural, a CLI gera o JSON pronto para importar. Sem template, sem configuração manual.",
+          "Construí uma CLI interna que transforma descrições em linguagem natural em JSON de fluxos de chatbot. Suporta condições e chamadas de API, validando o schema antes de salvar a saída.",
         detail: [
-          "IDs aleatórios e estáveis, pronto para importar sem ajustes manuais",
-          "Suporta fluxos complexos: branches condicionais, chamadas de API e diálogos multi-turno",
-          "Valida o schema antes de salvar, zero imports inválidos",
-          "Após a geração, funciona offline, sem dependência contínua da API",
+          "Gera identificadores de nós para importação na plataforma interna",
+          "Suporta condições, chamadas de API e diálogos com múltiplas etapas",
+          "Valida o schema da saída antes de salvar",
+          "O JSON gerado pode ser usado sem depender da API de geração",
         ],
         snapshot: null,
-        metrics: ["30–60 min/fluxo economizados", "Schema validado na saída", "CLI-first"],
+        metrics: [
+          "Linguagem natural → JSON",
+          "Validação de schema",
+          "Ferramenta interna",
+        ],
         tags: ["Python", "Claude API", "CLI", "JSON Schema"],
         label: "FERRAMENTA INTERNA",
-        link: null,
+        link: "/projetos/flow-cli",
         featured: false,
       },
       {
         id: "cypress-e2e",
         title: "Cypress E2E Automation",
         description:
-          "Validação manual levava 20 minutos por deploy. A suite E2E reduziu para 2 minutos, roda no CI a cada push e capturou 47 bugs antes de chegarem em produção.",
+          "Desafio técnico que cobre a jornada de compra do Coco Bambu e a API de carrinho. Testes Cypress organizados com Page Object Model, cenários negativos e documentação das limitações da aplicação externa.",
         detail: [
-          "Padrão Page Object Model, seletores desacoplados da lógica de teste",
-          "Comandos customizados para fluxos repetidos (login, preenchimento, interceptação de API)",
-          "Pipeline GitHub Actions: roda a cada push para main, falha rápido em regressão",
-          "Testes de viewport em desktop, tablet e mobile",
+          "Page objects separam seletores dos cenários de teste",
+          "Fluxo de UI inclui login, carrinho e finalização do pedido",
+          "Cenários de API cobrem POST, PUT e DELETE, incluindo quantidades inválidas e recursos inexistentes",
+          "O README documenta instabilidade de seletores e restrições de horário dos restaurantes",
         ],
         snapshot: null,
-        metrics: ["85% cobertura E2E", "47 bugs pré-prod", "CI: 4 min/run"],
-        tags: ["Cypress", "JavaScript", "GitHub Actions", "CI"],
+        metrics: ["UI + API", "Page Object Model", "Cenários negativos"],
+        tags: ["Cypress", "JavaScript", "Testes de API", "Page Object Model"],
         label: null,
-        link: null,
+        link: "https://github.com/ggvinos/desafio-coco-bambu",
         featured: false,
       },
       {
         id: "espaco-calmo",
         title: "EspaçoCalmo",
         description:
-          "App de saúde mental nascido como TCC em 2022, reconstruído do zero em 2026. Mesma missão, sistema visual reescrito: paleta sage sobre papel creme, tipografia editorial, fluxos cortados ao mínimo. Feito pra quem não está bem hoje, não para entusiastas de wellness.",
+          "Estudo de UX/UI para um aplicativo de saúde mental, com artes publicadas no Behance. Estou retomando a iniciativa para evoluir o conceito em produto; o portfólio atual apresenta o trabalho de design.",
         detail: [
-          "Onboarding reduzido de 5 telas de coleta para 3 slides + um cadastro",
-          "Avaliação diária de 5 telas para 2, perguntas feitas quando importam, não tudo de uma vez",
-          "Botão SOS em todas as telas, duas etapas para falar com alguém de verdade ou ligar pro CVV",
-          "5 princípios anti-wellness-slop: calma é o produto, honesto não otimista, português BR de verdade, acessível, menos passos",
+          "Artes e estudo de caso original disponíveis no Behance",
+          "A próxima etapa é revisar as jornadas e definir o escopo do produto",
+          "O material público documenta o conceito de design",
         ],
         snapshot: null,
-        metrics: ["14 telas", "TCC 2022, redesign 2026", "iOS / React Native"],
-        tags: ["UX Design", "Product Design", "Figma", "React Native", "Saúde Mental"],
-        label: "UX REDESIGN",
-        link: null,
+        metrics: [
+          "Estudo de UX/UI",
+          "Artes no Behance",
+          "Produto em planejamento",
+        ],
+        tags: ["UX Design", "UI Design", "Figma", "Descoberta de produto"],
+        label: "ESTUDO UX/UI",
+        link: "https://www.behance.net/gallery/204101211/Inovacao-em-Saude-Mental-Estudo-de-caso-espaco-calmo",
         featured: false,
       },
     ],
@@ -661,28 +738,28 @@ export const translations = {
         role: "QA Engineer",
         period: "Fev 2025 – Out 2025",
         description:
-          "QA voluntário em ambiente ágil open source. Cypress E2E + Postman API (30+ falhas críticas identificadas) + Appium mobile. Documentação no TestRail e Jira, validação com foco em usabilidade e acessibilidade (WCAG). 90% de cobertura, 40% menos bugs, ciclo reduzido de 4 horas para 30 min/sprint.",
+          "QA voluntário em ambiente ágil open source. Automação E2E com Cypress, testes de API com Postman e testes mobile com Appium. Documentação no TestRail e Jira, com foco em regressão, usabilidade e acessibilidade.",
       },
       {
         company: "CTC Tech",
         role: "Analista BackOffice",
         period: "Jun 2022 – Ago 2025",
         description:
-          "Iniciou como Analista de Suporte N1 no Ministério da Saúde, promovido ao CNJ após certificações ITIL 4 e MD-100, retornando como Analista BackOffice. 500+ incidentes validados em sistemas críticos nacionais. Tempo de resolução reduzido em 35%. 98% de disponibilidade. 40% de melhoria na confiabilidade dos sistemas.",
+          "Atuação em suporte N1 no Ministério da Saúde, no CNJ e como Analista BackOffice. Gestão e validação de incidentes em sistemas críticos, com atenção a SLAs, documentação e comunicação com usuários.",
       },
       {
         company: "Workana",
         role: "UX/UI Product Designer",
         period: "Jan 2022 – Mai 2024",
         description:
-          "UX Designer Freelancer na Workana. Wireframes e protótipos em Figma e Adobe XD com foco em usabilidade e acessibilidade (WCAG). Cypress (web) + Appium (mobile), 85% de cobertura, 20+ falhas críticas, UX melhorada em 25% (feedback), validações 35% mais rápidas.",
+          "UX Designer freelancer na Workana. Wireframes e protótipos em Figma e Adobe XD, com foco em jornadas de usuário, usabilidade e acessibilidade.",
       },
       {
         company: "UNICEPLAC",
         role: "Analista de Infraestrutura e UX/UI",
         period: "Jan 2020 – Jan 2022",
         description:
-          "Infraestrutura e UX/UI no Projeto Startup da graduação em Engenharia de Software. Protótipos em Figma, testes de usabilidade (-30% inconsistências), suporte com Docker (+90% disponibilidade dos ambientes), +25% UX.",
+          "Infraestrutura e UX/UI no Projeto Startup da graduação em Engenharia de Software. Prototipação em Figma, testes de usabilidade e suporte a ambientes com Docker.",
       },
       {
         company: "Hospital Santa Lúcia",
@@ -702,17 +779,19 @@ export const translations = {
       {
         title: "Formação",
         result: "Bacharelado em Eng. de Software",
-        description: "Centro Universitário UNICEPLAC, Brasília/DF (jan/2020 – jun/2024). Ênfase em desenvolvimento de software e UX design. Projeto de conclusão aplicado em startup acadêmica.",
+        description:
+          "Centro Universitário UNICEPLAC, Brasília/DF (jan/2020 – jun/2024). Ênfase em desenvolvimento de software e UX design. Projeto de conclusão aplicado em startup acadêmica.",
       },
       {
         title: "HDI Support Center Analyst",
         result: "Certificado HDI-SCA",
-        description: "Certificação internacional para profissionais de suporte e service desk. Valida gestão de incidentes, cumprimento de SLA e comunicação sob pressão.",
+        description:
+          "Certificação internacional para profissionais de suporte e service desk. Valida gestão de incidentes, cumprimento de SLA e comunicação sob pressão.",
       },
     ],
     languages: [
-      { lang: "Inglês", level: "Professional Working" },
-      { lang: "Espanhol", level: "Professional Working" },
+      { lang: "Inglês", level: "Proficiência profissional" },
+      { lang: "Espanhol", level: "Proficiência profissional" },
       { lang: "Português", level: "Nativo" },
     ],
     articles: [
@@ -733,9 +812,26 @@ export const translations = {
       },
     ],
     skills: {
-      Testing: ["Cypress", "Playwright", "Postman", "Appium", "JMeter", "pytest", "TestRail"],
+      Testing: [
+        "Cypress",
+        "Playwright",
+        "Postman",
+        "Appium",
+        "JMeter",
+        "pytest",
+        "TestRail",
+      ],
       Languages: ["Python", "JavaScript", "TypeScript"],
-      Tools: ["Git", "GitHub Actions", "Streamlit", "Claude API", "Figma", "Jira", "Docker", "ITIL 4"],
+      Tools: [
+        "Git",
+        "GitHub Actions",
+        "Streamlit",
+        "Claude API",
+        "Figma",
+        "Jira",
+        "Docker",
+        "ITIL 4",
+      ],
       Methodologies: [
         "Testes E2E",
         "Testes de API",
@@ -757,10 +853,38 @@ export const translations = {
       lead: "O Acorde transforma uma música que você já ouve em aula de inglês. Esta é a lente de QA sobre os quatro fluxos que sustentam o produto.",
       hint: "Tour guiado: role pra avançar",
       panels: [
-        { n: "01", tag: "ENTRADA DO FUNIL", title: "Você escolhe a música", body: "Sem lista fixa de palavras: a sessão começa na música que a pessoa já quer ouvir. É o primeiro fluxo que eu testo, porque é o primeiro que o usuário vê.", shot: "/acorde/home.webp", alt: "Tela inicial do Acorde" },
-        { n: "02", tag: "CAMINHO CRÍTICO", title: "Letra sincronizada, o caminho mais usado", body: "A letra acende junto com o áudio, tradução a um toque. Caminho crítico: valido esse fluxo antes de qualquer deploy.", shot: "/acorde/letra.webp", alt: "Letra sincronizada com tradução" },
-        { n: "03", tag: "FALLBACK TESTADO", title: "Fala com nota por palavra", body: "Transcrição por IA (Whisper), com fallback automático pro motor do navegador quando a API falha. Testei os dois caminhos, não só o feliz.", shot: "/acorde/fala.webp", alt: "Prática de fala com nota por palavra" },
-        { n: "04", tag: "RETENÇÃO MEDIDA", title: "Revisão espaçada segura a retenção", body: "O que você errou volta na hora certa (SM-2). Funil de ativação instrumentado antes de gastar um real em anúncio.", shot: "/acorde/revisao.webp", alt: "Flashcard de revisão espaçada" },
+        {
+          n: "01",
+          tag: "ENTRADA DO FUNIL",
+          title: "Você escolhe a música",
+          body: "Sem lista fixa de palavras: a sessão começa na música que a pessoa já quer ouvir. É o primeiro fluxo que eu testo, porque é o primeiro que o usuário vê.",
+          shot: "/acorde/home.webp",
+          alt: "Tela inicial do Acorde",
+        },
+        {
+          n: "02",
+          tag: "CAMINHO CRÍTICO",
+          title: "Letra sincronizada, o caminho mais usado",
+          body: "A letra acende junto com o áudio, tradução a um toque. Caminho crítico: valido esse fluxo antes de qualquer deploy.",
+          shot: "/acorde/letra.webp",
+          alt: "Letra sincronizada com tradução",
+        },
+        {
+          n: "03",
+          tag: "FALLBACK TESTADO",
+          title: "Fala com nota por palavra",
+          body: "Transcrição por IA (Whisper), com fallback automático pro motor do navegador quando a API falha. Testei os dois caminhos, não só o feliz.",
+          shot: "/acorde/fala.webp",
+          alt: "Prática de fala com nota por palavra",
+        },
+        {
+          n: "04",
+          tag: "RETENÇÃO MEDIDA",
+          title: "Revisão espaçada segura a retenção",
+          body: "O que você errou volta na hora certa (SM-2). Funil de ativação instrumentado antes de gastar um real em anúncio.",
+          shot: "/acorde/revisao.webp",
+          alt: "Flashcard de revisão espaçada",
+        },
       ],
       closing: {
         title: "Construído, testado e operado de ponta a ponta",
@@ -887,7 +1011,7 @@ export const translations = {
         items: [
           { value: "No ar", label: "em produção em acorde.club" },
           { value: "jun/2026", label: "primeiros usuários externos reais" },
-          { value: "18,5% → 30%", label: "ativação de fala, meta medida" },
+          { value: "18,5% → 30%", label: "ativação de fala: baseline → meta" },
           { value: "SM-2", label: "motor de revisão em produção" },
         ],
         note: "Os números refletem o produto no momento em que este case foi escrito. O foco agora é retenção, não aquisição.",
@@ -918,16 +1042,21 @@ export const translations = {
       institution: "Centro Universitário UNICEPLAC",
       period: "Jan 2020 – Jun 2024",
       location: "Brasília/DF",
-      description: "Ênfase em desenvolvimento de software, UX design e arquitetura de sistemas. Projeto de conclusão aplicado em startup acadêmica, combinando desenvolvimento front-end, infraestrutura e garantia de qualidade.",
+      description:
+        "Ênfase em desenvolvimento de software, UX design e arquitetura de sistemas. Projeto de conclusão aplicado em startup acadêmica, combinando desenvolvimento front-end, infraestrutura e garantia de qualidade.",
     },
     certifications: [
-      { title: "ITIL® Foundation Certificate in IT Service Management", issuer: "PeopleCert" },
+      {
+        title: "ITIL® Foundation Certificate in IT Service Management",
+        issuer: "PeopleCert",
+      },
       { title: "HDI Support Center Analyst (HDI-SCA)", issuer: "HDI" },
       { title: "Exam MD-100: Windows Client", issuer: "Microsoft" },
       { title: "Início em Teste e QA", issuer: "Alura" },
     ],
     contact: {
-      headline: "Aberto a conexões, colaborações ou só uma boa conversa sobre QA.",
+      headline:
+        "Aberto a conexões, colaborações ou só uma boa conversa sobre QA.",
       cv_label: "Baixar CV",
       email_label: "Enviar Email",
     },

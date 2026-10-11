@@ -1,101 +1,128 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useLanguage } from "@/lib/context";
 
 const ITEMS = [
-  ["about", "#about"],
-  ["projects", "#projects"],
-  ["experience", "#experience"],
-  ["education", "#education"],
-  ["skills", "#skills"],
-  ["writing", "#writing"],
-  ["contact", "#contact"],
+  "about",
+  "projects",
+  "experience",
+  "education",
+  "skills",
+  "writing",
+  "contact",
 ] as const;
 
 export default function Nav() {
   const { t, lang, toggle } = useLanguage();
-  const [aberto, setAberto] = useState(false);
+  const [open, setOpen] = useState(false);
+  const menuButton = useRef<HTMLButtonElement>(null);
 
-  // troca de idioma ou de rota fecha o menu; scroll trava enquanto aberto
   useEffect(() => {
-    if (!aberto) return;
-    document.body.style.overflow = "hidden";
-    return () => {
-      document.body.style.overflow = "";
+    const breakpoint = window.matchMedia("(min-width: 768px)");
+    const close = () => setOpen(false);
+    breakpoint.addEventListener("change", close);
+    return () => breakpoint.removeEventListener("change", close);
+  }, []);
+
+  useEffect(() => {
+    if (!open) return;
+    const onKey = (event: KeyboardEvent) => {
+      if (event.key === "Escape") {
+        setOpen(false);
+        menuButton.current?.focus();
+      }
     };
-  }, [aberto]);
+    document.addEventListener("keydown", onKey);
+    return () => document.removeEventListener("keydown", onKey);
+  }, [open]);
 
   return (
-    <header
-      className="fixed top-0 left-0 right-0 z-50 backdrop-blur-md border-b border-[var(--border)]"
-      style={{ backgroundColor: "var(--bg-alpha)" }}
-    >
-      <nav className="max-w-6xl mx-auto px-6 h-14 flex items-center justify-center sm:justify-center relative">
-        <div className="flex items-center gap-6 text-sm">
-          {ITEMS.map(([key, href]) => (
+    <header className="fixed inset-x-0 top-0 z-50 border-b border-default bg-white/95 backdrop-blur-md">
+      <a
+        href="#main-content"
+        className="absolute left-4 top-2 -translate-y-20 bg-page px-4 py-2 text-sm focus:translate-y-0 z-50"
+      >
+        {lang === "pt" ? "Pular para o conteúdo" : "Skip to content"}
+      </a>
+      <nav
+        aria-label={lang === "pt" ? "Navegação principal" : "Main navigation"}
+        className="mx-auto flex h-16 max-w-6xl items-center justify-between gap-4 px-6"
+      >
+        <a
+          href="#hero"
+          aria-label={
+            lang === "pt"
+              ? "Vinicios Ferreira — início"
+              : "Vinicios Ferreira — home"
+          }
+          className="font-mono text-sm font-semibold"
+        >
+          VF<span className="text-muted">.</span>
+        </a>
+        <div className="hidden items-center gap-5 text-sm md:flex">
+          {ITEMS.map((key) => (
             <a
               key={key}
-              href={href}
-              className="text-muted hover:text-primary transition-colors duration-150 hidden sm:block"
+              href={`#${key}`}
+              className="py-3 text-muted hover:text-primary"
             >
               {t.nav[key]}
             </a>
           ))}
-
+        </div>
+        <div className="flex items-center gap-3">
           <button
-            onClick={toggle}
-            className="font-mono text-xs border border-[var(--border)] px-3 py-2.5 hover:border-accent hover:text-accent transition-colors duration-150 text-muted"
+            type="button"
+            onClick={() => {
+              toggle();
+              setOpen(false);
+            }}
+            aria-label={
+              lang === "pt" ? "Switch to English" : "Mudar para português"
+            }
+            className="min-h-11 min-w-11 border border-default px-3 font-mono text-xs hover:border-black"
           >
             {lang === "pt" ? "EN" : "PT"}
           </button>
+          <button
+            ref={menuButton}
+            type="button"
+            onClick={() => setOpen((value) => !value)}
+            aria-expanded={open}
+            aria-controls="mobile-menu"
+            aria-label={
+              lang === "pt"
+                ? open
+                  ? "Fechar menu"
+                  : "Abrir menu"
+                : open
+                  ? "Close menu"
+                  : "Open menu"
+            }
+            className="flex h-11 w-11 items-center justify-center md:hidden"
+          >
+            <span aria-hidden="true" className="text-2xl">
+              {open ? "×" : "☰"}
+            </span>
+          </button>
         </div>
-
-        {/* hambúrguer: só existe abaixo de sm, onde os links somem */}
-        <button
-          onClick={() => setAberto((v) => !v)}
-          aria-label={aberto ? (lang === "pt" ? "Fechar menu" : "Close menu") : (lang === "pt" ? "Abrir menu" : "Open menu")}
-          aria-expanded={aberto}
-          className="absolute right-6 flex h-11 w-11 items-center justify-center sm:hidden"
-        >
-          <span className="relative block h-4 w-5">
-            <span
-              className="absolute left-0 top-0 h-px w-5 bg-[var(--text)] transition-transform duration-200"
-              style={{ transform: aberto ? "translateY(7.5px) rotate(45deg)" : "none" }}
-            />
-            <span
-              className="absolute left-0 top-1/2 h-px w-5 -translate-y-1/2 bg-[var(--text)] transition-opacity duration-150"
-              style={{ opacity: aberto ? 0 : 1 }}
-            />
-            <span
-              className="absolute left-0 bottom-0 h-px w-5 bg-[var(--text)] transition-transform duration-200"
-              style={{ transform: aberto ? "translateY(-7.5px) rotate(-45deg)" : "none" }}
-            />
-          </span>
-        </button>
       </nav>
-
-      {/* painel do menu mobile */}
       <div
-        className="overflow-hidden border-t sm:hidden transition-[max-height] duration-300 ease-out"
-        style={{
-          maxHeight: aberto ? 420 : 0,
-          borderColor: aberto ? "var(--border)" : "transparent",
-          backgroundColor: "var(--bg)",
-        }}
+        id="mobile-menu"
+        hidden={!open}
+        className="max-h-[calc(100dvh-64px)] overflow-y-auto border-t border-default bg-page px-6 md:hidden"
       >
-        <div className="flex flex-col px-6 py-2">
-          {ITEMS.map(([key, href]) => (
-            <a
-              key={key}
-              href={href}
-              onClick={() => setAberto(false)}
-              className="border-b border-[var(--border)] py-4 text-base text-primary last:border-none"
-            >
-              {t.nav[key]}
-            </a>
-          ))}
-        </div>
+        {ITEMS.map((key) => (
+          <a
+            key={key}
+            href={`#${key}`}
+            onClick={() => setOpen(false)}
+            className="block border-b border-default py-3 text-base last:border-0"
+          >
+            {t.nav[key]}
+          </a>
+        ))}
       </div>
     </header>
   );

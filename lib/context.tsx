@@ -4,6 +4,7 @@ import {
   createContext,
   useContext,
   useState,
+  useEffect,
   ReactNode,
 } from "react";
 import { translations, Lang, Translations } from "./translations";
@@ -18,6 +19,11 @@ const LanguageContext = createContext<LanguageContextType | null>(null);
 
 export function LanguageProvider({ children }: { children: ReactNode }) {
   const [lang, setLang] = useState<Lang>("pt");
+
+  useEffect(() => {
+    document.documentElement.lang = lang === "pt" ? "pt-BR" : "en";
+    document.documentElement.dir = "ltr";
+  }, [lang]);
 
   const toggle = () => setLang((prev) => (prev === "en" ? "pt" : "en"));
 

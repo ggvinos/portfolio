@@ -9,7 +9,7 @@ export default function Projects() {
   const { t, lang } = useLanguage();
   const [refPersonal, inViewPersonal] = useInView();
 
-  // o Acorde (featured) vive na faixa horizontal propria, acima desta secao
+  // O produto em produção tem uma seção própria acima da lista.
   const rest = t.projects.filter((p) => !p.featured);
 
   return (
@@ -24,7 +24,7 @@ export default function Projects() {
             : "Ferramentas internas e suites de teste que entreguei."}
         </p>
 
-        <ProjectStack projects={rest as unknown as Parameters<typeof ProjectStack>[0]["projects"]} />
+        <ProjectStack projects={rest} />
 
         {/* PERSONAL PROJECTS */}
         <div className="mt-20">

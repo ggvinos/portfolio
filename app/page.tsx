@@ -1,5 +1,4 @@
 import Nav from "@/components/Nav";
-import Grain from "@/components/Grain";
 import ScrollProgress from "@/components/ScrollProgress";
 import HeroAboutJourney from "@/components/HeroAboutJourney";
 import Hero from "@/components/Hero";
@@ -16,10 +15,9 @@ import Footer from "@/components/Footer";
 export default function Home() {
   return (
     <>
-      <Grain />
       <ScrollProgress />
       <Nav />
-      <main>
+      <main id="main-content">
         <HeroAboutJourney>
           <Hero />
           <About />

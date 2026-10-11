@@ -1,5 +1,4 @@
 import type { Metadata } from "next";
-import Grain from "@/components/Grain";
 import ScrollProgress from "@/components/ScrollProgress";
 import CaseNav from "@/components/CaseNav";
 import AcordeCase from "@/components/AcordeCase";
@@ -21,7 +20,6 @@ export const metadata: Metadata = {
 export default function AcordeCasePage() {
   return (
     <>
-      <Grain />
       <ScrollProgress />
       <CaseNav />
       <AcordeCase />
