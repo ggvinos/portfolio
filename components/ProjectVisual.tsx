@@ -1,4 +1,5 @@
 import Image from "next/image";
+import PortfolioImage from "./PortfolioImage";
 
 /** Public design artwork or an explicitly labelled technical overview. */
 export default function ProjectVisual({
@@ -8,6 +9,7 @@ export default function ProjectVisual({
   id: string;
   english: boolean;
 }) {
+  if (id === "qa-dashboard") return <PortfolioImage src="/images/portfolio/dashboard-overview.svg" alt={english ? "Concept dashboard with fictional delivery indicators" : "Redesign do dashboard com indicadores fictícios de entrega"} caption={english ? "Illustrative redesign · Fictional data" : "Redesign demonstrativo · Dados fictícios"} />;
   if (id === "espaco-calmo")
     return (
       <figure className="mb-6 overflow-hidden rounded-lg border border-default bg-surface">

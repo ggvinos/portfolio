@@ -92,7 +92,7 @@ export const translations = {
         id: "qa-dashboard",
         title: "QA Metrics Dashboard",
         description:
-          "Built an internal QA dashboard with Python, Streamlit and Pandas. It consolidates issue-tracker data, trends and release-quality indicators, with views adapted to each access profile.",
+          "Built an internal QA dashboard with Python, Streamlit and Pandas. It connects product planning, development, QA validation and production delivery, with indicators by team, product and release.",
         detail: [
           "Role-based access: 4 profiles, each seeing only what it needs",
           "Covers the whole cycle: quality, backlog, clients, history and a leadership panel",
@@ -619,7 +619,7 @@ export const translations = {
         id: "qa-dashboard",
         title: "QA Metrics Dashboard",
         description:
-          "Construí um dashboard interno de QA com Python, Streamlit e Pandas. Consolida dados do issue tracker, tendências e indicadores de qualidade por release, com visões adaptadas a cada perfil de acesso.",
+          "Construí um dashboard interno de QA com Python, Streamlit e Pandas. Conecta planejamento de produto, desenvolvimento, validação de QA e entrega em produção, com indicadores por equipe, produto e release.",
         detail: [
           "4 perfis de acesso com visibilidade distinta: cada colaborador vê só o que precisa",
           "Cobre todo o ciclo: qualidade, backlog, clientes, histórico e painel de liderança",

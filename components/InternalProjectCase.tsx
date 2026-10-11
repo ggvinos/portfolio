@@ -1,4 +1,5 @@
 "use client";
+import PortfolioImage from "./PortfolioImage";
 import { useLanguage } from "@/lib/context";
 
 export default function InternalProjectCase({ id }: { id: string }) {
@@ -32,6 +33,10 @@ export default function InternalProjectCase({ id }: { id: string }) {
           ? "Ferramenta desenvolvida para uso interno na empresa. Este resumo apresenta minha contribuição sem publicar telas, código ou dados corporativos."
           : "Built for internal company use. This summary describes my contribution without publishing company screenshots, code or data."}
       </div>
+      {dashboard && <section aria-label={lang === "pt" ? "Redesign demonstrativo" : "Illustrative redesign"}>
+        <PortfolioImage src="/images/portfolio/dashboard-overview.svg" alt={lang === "pt" ? "Visão geral de entregas por produto com dados fictícios" : "Delivery overview by product with fictional data"} caption={lang === "pt" ? "Proposta visual para o portfólio: visão de produto até produção. Todos os valores e produtos são fictícios; esta não é uma captura do sistema em produção." : "Portfolio visual concept: product through production. All values and products are fictional; this is not a production screenshot."} />
+        <PortfolioImage src="/images/portfolio/dashboard-qa.svg" alt={lang === "pt" ? "Funil demonstrativo de validação QA" : "Illustrative QA validation funnel"} caption={lang === "pt" ? "Detalhe de QA: etapas de validação, bloqueios e investigação de retrabalho. Dados fictícios." : "QA detail: validation stages, blockers and rework investigation. Fictional data."} />
+      </section>}
       <h2 className="mt-12 text-2xl font-semibold">
         {lang === "pt" ? "Fluxo técnico" : "Technical flow"}
       </h2>
