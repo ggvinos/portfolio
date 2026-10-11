@@ -228,48 +228,6 @@ summary {
   }
 }
 
-.moon-sphere {
-  position: absolute;
-  inset: 0;
-  overflow: hidden;
-  border-radius: 50%;
-  box-shadow:
-    0 35px 70px -25px #0006,
-    0 8px 24px -10px #0004;
-}
-.moon-texture {
-  position: absolute;
-  inset: 0;
-  width: calc(100% + 120px);
-  background: url("/textures/moon-1k.jpg") repeat-x left center / auto 100%;
-  will-change: transform;
-}
-.moon-light {
-  position: absolute;
-  inset: 0;
-  background: radial-gradient(
-    circle at 30% 24%,
-    #ffffff35 0%,
-    #ffffff0d 18%,
-    transparent 34%,
-    #00000038 55%,
-    #00000094 78%,
-    #000000e0 100%
-  );
-}
-.moon-rim {
-  position: absolute;
-  inset: 0;
-  border-radius: 50%;
-  box-shadow: inset 0 0 40px 2px #0005;
-  background: radial-gradient(
-    circle at center,
-    transparent 58%,
-    #00000029 80%,
-    #0000006b 94%,
-    #0000009e
-  );
-}
 [data-motion-running="false"] .celestial-motion {
   animation-play-state: paused !important;
 }
@@ -291,8 +249,5 @@ summary {
 @media (prefers-reduced-motion: reduce) {
   .meteor {
     display: none;
-  }
-  .moon-texture {
-    will-change: auto;
   }
 }

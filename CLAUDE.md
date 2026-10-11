@@ -13,5 +13,5 @@ Leia `README.md` para stack, comandos, arquitetura e validação. Este arquivo c
 - Preservar os mesmos destaques e links nos cards desktop e mobile.
 - Imagens locais em `public/acorde` e `public/textures`; arte do EspaçoCalmo vem do CDN público do Behance, com caminho permitido explicitamente em `next.config.mjs`.
 
-- A lua de `HeroAboutJourney` deve manter o trajeto por scroll e o ponto de repouso ao lado do Sobre; não substituir por uma decoração estática. O espaço `data-moon-slot` mantém a lua fora do texto. Layout é medido somente em alterações de tamanho; o scroll atualiza transform/opacity em um rAF agendado, sem loops contínuos ou state por frame.
-- Meteoros em `HeroAtmosphere` devem usar translação antes de rotação para alinhar deslocamento e rastro. Pausar animações fora da abertura e em abas ocultas.
+- A lua deve preservar exatamente a coreografia do commit `132a143`: textura com backgroundPositionX 0% → -140% via useSpring (60/20/0.6), progresso do container Hero + Sobre inteiro, trajetória linear, escala 0.28, entrada 2.2s + 1.1s e saída natural por sticky. Não substituir o giro por uma translação curta nem vincular o giro ao progresso de chegada ao Sobre. Otimizações devem atuar nas medições e na execução, sem mudar o movimento.
+- Meteoros em `HeroAtmosphere` usam translação antes de rotação para alinhar deslocamento e rastro. Pausar animações fora da abertura e em abas ocultas.

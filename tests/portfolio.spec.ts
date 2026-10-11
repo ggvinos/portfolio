@@ -136,55 +136,61 @@ test("reduced motion and no JavaScript keep project content readable", async ({
 });
 
 for (const width of [1024, 1440]) {
-  test(`moon follows scroll, parks below biography and exits at ${width}px`, async ({
+  test(`original moon rotation continues through About at ${width}px`, async ({
     page,
   }) => {
     await page.setViewportSize({ width, height: 900 });
     await page.goto("/");
-    const moon = page.locator("[data-scroll-moon]");
-    await expect(page.locator("[data-moon-layer]")).toBeVisible();
-    const initial = await moon.boundingBox();
-    expect(initial!.width).toBeGreaterThan(500);
-    const park = await page.locator("#about").evaluate((element) => {
-      const bio = element.querySelector("[data-bio-col]") as HTMLElement;
-      const css = getComputedStyle(element);
-      const top =
-        element.getBoundingClientRect().top +
-        window.scrollY +
-        parseFloat(css.paddingTop);
-      const contentHeight =
-        element.clientHeight -
-        parseFloat(css.paddingTop) -
-        parseFloat(css.paddingBottom);
-      return top - 96 + Math.max(0, (contentHeight - bio.offsetHeight) / 2);
+    const surface = page.locator("[data-moon-surface]");
+    const texture = page.locator("[data-moon-texture]");
+    await expect
+      .poll(() =>
+        page
+          .locator("[data-moon-entrance]")
+          .evaluate((e) => Number(getComputedStyle(e).opacity)),
+      )
+      .toBeGreaterThan(0.98);
+    expect((await surface.boundingBox())!.width).toBeGreaterThan(500);
+    const range = await page.locator("#hero").evaluate((e) => {
+      const story = e.parentElement!.parentElement!;
+      return {
+        hero: (e as HTMLElement).offsetHeight,
+        travel: (story as HTMLElement).offsetHeight - window.innerHeight,
+      };
     });
+    expect(range.travel).toBeGreaterThan(range.hero);
+    const rotation = () =>
+      texture.evaluate((e) =>
+        parseFloat(getComputedStyle(e).backgroundPositionX),
+      );
+    const firstStop = range.hero + (range.travel - range.hero) * 0.2;
     await page.evaluate(
       (y) => window.scrollTo({ top: y, behavior: "instant" }),
-      park,
+      firstStop,
     );
     await expect
-      .poll(async () => (await moon.boundingBox())!.width)
-      .toBeCloseTo(156, 0);
-    const parked = await moon.boundingBox();
+      .poll(rotation)
+      .toBeCloseTo((-140 * firstStop) / range.travel, 0);
+    const firstRotation = await rotation();
+    expect((await surface.boundingBox())!.width).toBeCloseTo(145.6, 0);
     const text = await page.locator("[data-bio-col] p").boundingBox();
-    expect(parked!.y).toBeGreaterThan(text!.y + text!.height);
-    expect(parked!.y + parked!.height).toBeLessThan(900);
-    await page.screenshot({ path: `test-results/moon-about-${width}.png` });
+    const sphere = await surface.boundingBox();
+    expect(sphere!.y).toBeGreaterThan(text!.y + text!.height);
+    await page.screenshot({
+      path: `test-results/original-moon-about-${width}.png`,
+    });
+    const secondStop = range.hero + (range.travel - range.hero) * 0.8;
     await page.evaluate(
-      (y) => window.scrollTo({ top: y + 8, behavior: "instant" }),
-      park,
+      (y) => window.scrollTo({ top: y, behavior: "instant" }),
+      secondStop,
     );
+    await expect.poll(rotation).toBeLessThan(firstRotation - 3);
     await expect
-      .poll(async () => (await moon.boundingBox())!.y)
-      .toBeCloseTo(parked!.y, 0);
-    await page.getByRole("button", { name: "Switch to English" }).click();
-    await expect
-      .poll(async () => {
-        const box = await moon.boundingBox();
-        const bio = await page.locator("[data-bio-col] p").boundingBox();
-        return box!.y >= bio!.y + bio!.height;
-      })
-      .toBe(true);
+      .poll(rotation)
+      .toBeCloseTo((-140 * secondStop) / range.travel, 0);
+    await page.screenshot({
+      path: `test-results/original-moon-rotated-${width}.png`,
+    });
     const end = await page
       .locator("#about")
       .evaluate((e) => e.getBoundingClientRect().bottom + window.scrollY);
@@ -192,12 +198,16 @@ for (const width of [1024, 1440]) {
       (y) => window.scrollTo({ top: y, behavior: "instant" }),
       end,
     );
-    await expect(page.locator("[data-moon-layer]")).toBeHidden();
-    await page.screenshot({ path: `test-results/moon-exit-${width}.png` });
+    await expect
+      .poll(async () => {
+        const box = await surface.boundingBox();
+        return box!.y + box!.height;
+      })
+      .toBeLessThanOrEqual(0);
   });
 }
 
-test("moon and meteors honor motion preference; atmosphere pauses away from hero", async ({
+test("original moon respects reduced motion and meteor pause is preserved", async ({
   page,
 }) => {
   await page.setViewportSize({ width: 1440, height: 900 });
@@ -206,50 +216,36 @@ test("moon and meteors honor motion preference; atmosphere pauses away from hero
     "data-motion-running",
     "true",
   );
-  const trajectory = await page
-    .locator(".meteor")
-    .first()
-    .evaluate((e) => {
-      const s = getComputedStyle(e);
-      return {
-        angle: parseFloat(s.getPropertyValue("--meteor-rot")),
-        dx: parseFloat(s.getPropertyValue("--meteor-dx")),
-        dy: parseFloat(s.getPropertyValue("--meteor-dy")),
-      };
-    });
-  expect(
-    (Math.atan2(trajectory.dy, trajectory.dx) * 180) / Math.PI,
-  ).toBeCloseTo(trajectory.angle, 0);
   await page.emulateMedia({ reducedMotion: "reduce" });
+  await expect(page.locator(".meteor").first()).toBeHidden();
   await expect
     .poll(() =>
       page
-        .locator("[data-moon-layer]")
-        .evaluate((e) => getComputedStyle(e).position),
+        .locator("[data-moon-texture]")
+        .evaluate((e) => getComputedStyle(e).backgroundPositionX),
     )
-    .toBe("absolute");
-  await expect(page.locator(".meteor").first()).toBeHidden();
+    .toBe("0%");
+  await page.evaluate(() => window.scrollTo({ top: 800, behavior: "instant" }));
+  await expect
+    .poll(() =>
+      page
+        .locator("[data-moon-texture]")
+        .evaluate((e) => getComputedStyle(e).backgroundPositionX),
+    )
+    .toBe("0%");
   await page.emulateMedia({ reducedMotion: "no-preference" });
   await expect
     .poll(() =>
       page
-        .locator("[data-moon-layer]")
-        .evaluate((e) => getComputedStyle(e).position),
+        .locator("[data-moon-texture]")
+        .evaluate((e) => parseFloat(getComputedStyle(e).backgroundPositionX)),
     )
-    .toBe("fixed");
+    .toBeLessThan(-1);
   await page.evaluate(() =>
-    window.scrollTo({ top: 2500, behavior: "instant" }),
+    window.scrollTo({ top: 3000, behavior: "instant" }),
   );
   await expect(page.locator("[data-motion-running]")).toHaveAttribute(
     "data-motion-running",
     "false",
   );
-  await expect
-    .poll(() =>
-      page
-        .locator(".meteor")
-        .first()
-        .evaluate((e) => getComputedStyle(e).animationPlayState),
-    )
-    .toBe("paused");
 });

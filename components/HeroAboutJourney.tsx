@@ -1,179 +1,256 @@
 "use client";
 
-import { useEffect, useRef, type ReactNode } from "react";
-import Moon from "./Moon";
+import { useReducedMotionPreference } from "@/hooks/useReducedMotionPreference";
 
-const SIZE = 520;
-const clamp = (value: number, min: number, max: number) =>
-  Math.max(min, Math.min(max, value));
-const smooth = (value: number) => value * value * (3 - 2 * value);
+import { useEffect, useLayoutEffect, useRef, useState } from "react";
+import { motion, useMotionValue, useTransform } from "motion/react";
+import Moon from "@/components/Moon";
 
-/** One scheduled frame per scroll event; layout is measured only when it changes. */
+/**
+ * Envolve Hero + Sobre e faz a lua viajar entre as duas seções: grande
+ * no Hero, encolhe enquanto o Hero sai, e fica PARADA ao lado do texto
+ * do Sobre enquanto o usuário lê os cards.
+ *
+ * Como funciona, na ordem mais simples possível:
+ *
+ * 1. A lua vive numa camada `sticky top-0 h-screen` que cobre a altura
+ *    de Hero+Sobre. Enquanto sobra pista de scroll no container, essa
+ *    camada fica grudada na tela.
+ * 2. scale/x/y são interpolados sobre o scroll em PIXEL ABSOLUTO da
+ *    página (não fração do container). Depois do fim da transição o
+ *    `useTransform` trava nos valores finais — a lua fica no mesmo
+ *    pixel da tela, igual à bio, que também é sticky.
+ * 3. Quando o container acaba, o sticky solta sozinho e a lua rola
+ *    embora junto com a página, como qualquer elemento normal. Não
+ *    existe efeito de "sumir" (nada de opacity/display animado).
+ *
+ * Trabalhar em pixel absoluto é proposital: versões anteriores
+ * converteram px -> fração do `scrollYProgress` e erraram o
+ * denominador (com offset ["start start","end end"] o progresso 0-1
+ * cobre `altura do container - altura da tela`, não a altura total),
+ * o que desalinhava todos os breakpoints.
+ *
+ * Layout: CSS Grid com as duas camadas na MESMA célula (col-start-1
+ * row-start-1). Um `sticky` ocupa espaço próprio no fluxo, então como
+ * irmão antes do conteúdo empurraria tudo pra baixo; sobreposto, a
+ * altura do grid vem só do conteúdo.
+ */
 export default function HeroAboutJourney({
   children,
 }: {
-  children: ReactNode;
+  children: React.ReactNode;
 }) {
-  const root = useRef<HTMLDivElement>(null);
-  const layer = useRef<HTMLDivElement>(null);
-  const moon = useRef<HTMLDivElement>(null);
+  const ref = useRef<HTMLDivElement>(null);
+  const contentRef = useRef<HTMLDivElement>(null);
+  const reduced = useReducedMotionPreference();
 
-  useEffect(() => {
-    const container = root.current;
-    const overlay = layer.current;
-    const sphere = moon.current;
-    if (!container || !overlay || !sphere) return;
-    const hero = container.querySelector<HTMLElement>("#hero");
-    const about = container.querySelector<HTMLElement>("#about");
-    const bio = container.querySelector<HTMLElement>("[data-bio-col]");
-    const slot = container.querySelector<HTMLElement>("[data-moon-slot]");
-    const texture = sphere.querySelector<HTMLElement>("[data-moon-texture]");
-    if (!hero || !about || !bio || !slot || !texture) return;
-    const desktop = window.matchMedia("(min-width: 1024px)");
-    const reduced = window.matchMedia("(prefers-reduced-motion: reduce)");
+  // Absolute scroll remains the input to the original position/scale maps.
+  const scrollY = useMotionValue(0);
+  useLayoutEffect(() => {
     let frame = 0;
-    let dirty = true;
-    let disposed = false;
-    let geometry = {
-      top: 0,
-      heroHeight: 0,
-      aboutBottom: 0,
-      bioTop: 0,
-      bioBottom: 0,
-      bioHeight: 0,
-      slotOffset: 0,
-      targetX: 0,
-      width: 0,
-      height: 0,
-    };
-
-    const measure = () => {
-      const scroll = window.scrollY;
-      const bioRect = bio.getBoundingClientRect();
-      const slotRect = slot.getBoundingClientRect();
-      const aboutRect = about.getBoundingClientRect();
-      const padding = parseFloat(getComputedStyle(about).paddingBottom);
-      geometry = {
-        top: container.getBoundingClientRect().top + scroll,
-        heroHeight: hero.offsetHeight,
-        aboutBottom: aboutRect.bottom + scroll,
-        // offsetTop stays stable while the biography is sticky.
-        bioTop:
-          aboutRect.top +
-          scroll +
-          parseFloat(getComputedStyle(about).paddingTop),
-        bioBottom: aboutRect.bottom + scroll - padding,
-        bioHeight: bio.offsetHeight,
-        slotOffset: slotRect.top - bioRect.top + slotRect.height / 2,
-        targetX: slotRect.left + slotRect.width / 2,
-        width: window.innerWidth,
-        height: window.innerHeight,
-      };
-      dirty = false;
-    };
-
-    const render = () => {
+    const update = () => {
       frame = 0;
-      if (!desktop.matches) {
-        overlay.hidden = true;
-        return;
-      }
-      if (dirty) measure();
-      const g = geometry;
-      const scroll = window.scrollY;
-      const local = scroll - g.top;
-      const startX = -g.width * 0.1 + SIZE / 2;
-      const startY = g.heroHeight * 1.2 - SIZE / 2;
-      if (reduced.matches) {
-        overlay.style.position = "absolute";
-        overlay.style.height = `${g.heroHeight}px`;
-        overlay.hidden = false;
-        overlay.style.opacity = "1";
-        sphere.style.transform = `translate3d(${startX - SIZE / 2}px,${startY - SIZE / 2}px,0)`;
-        texture.style.transform = "none";
-        return;
-      }
-      overlay.style.position = "fixed";
-      overlay.style.removeProperty("height");
-      const end = g.aboutBottom - g.top;
-      // Browser scroll positions are rounded, while section bounds can be fractional.
-      if (local >= end - 1 || local < -g.height) {
-        overlay.hidden = true;
-        return;
-      }
-      overlay.hidden = false;
-      const progress = smooth(
-        clamp((local - g.heroHeight * 0.3) / (g.heroHeight * 0.7), 0, 1),
-      );
-      const bioY = Math.min(
-        Math.max(g.bioTop - scroll, 96),
-        g.bioBottom - scroll - g.bioHeight,
-      );
-      const targetY = bioY + g.slotOffset;
-      const scale = 1 - progress * 0.7;
-      const x = startX + (g.targetX - startX) * progress;
-      const y = startY + (targetY - startY) * progress;
-      const fade =
-        1 -
-        smooth(
-          clamp((local - (end - g.height * 0.25)) / (g.height * 0.25), 0, 1),
-        );
-
-      overlay.style.opacity = String(fade);
-      sphere.style.transform = `translate3d(${(x - SIZE / 2).toFixed(2)}px,${(y - SIZE / 2).toFixed(2)}px,0) scale(${scale.toFixed(4)})`;
-      texture.style.transform = `translate3d(${(-progress * 110).toFixed(2)}px,0,0)`;
+      scrollY.set(window.scrollY);
     };
     const schedule = () => {
-      if (!disposed && !document.hidden && !frame)
-        frame = requestAnimationFrame(render);
+      if (!document.hidden && !frame) frame = requestAnimationFrame(update);
     };
-    const resize = () => {
-      dirty = true;
-      schedule();
-    };
-    const observer = new ResizeObserver(resize);
-    [container, hero, about, bio, slot].forEach((element) =>
-      observer.observe(element),
-    );
+    update();
     window.addEventListener("scroll", schedule, { passive: true });
-    window.addEventListener("resize", resize);
-    document.addEventListener("visibilitychange", resize);
-    desktop.addEventListener("change", resize);
-    reduced.addEventListener("change", resize);
-    document.fonts.ready.then(() => {
-      if (!disposed) resize();
-    });
-    render();
+    document.addEventListener("visibilitychange", schedule);
+    return () => {
+      cancelAnimationFrame(frame);
+      window.removeEventListener("scroll", schedule);
+      document.removeEventListener("visibilitychange", schedule);
+    };
+  }, [scrollY]);
+
+  // a lua só entra depois que o nome do Hero termina de se resolver
+  // (animate-title: delay 0.2s + 2s), não no instante do load.
+  const [podeAparecer, setPodeAparecer] = useState(false);
+  useEffect(() => {
+    const t = setTimeout(() => setPodeAparecer(true), 2200);
+    return () => clearTimeout(t);
+  }, []);
+
+  const [layout, setLayout] = useState({
+    w: 1440,
+    h: 900,
+    heroAlturaPx: 900,
+    conteudoAlturaPx: 2200,
+    topoContainerPx: 0,
+    bioAlturaPx: 260,
+    bioTopoPaginaPx: 1060,
+  });
+  const {
+    heroAlturaPx,
+    conteudoAlturaPx,
+    topoContainerPx,
+    bioAlturaPx,
+    bioTopoPaginaPx,
+  } = layout;
+  const viewport = { w: layout.w, h: layout.h };
+  // Same start/start → end/end progress as the original useScroll target.
+  // The endpoints come from cached measurements, never from layout reads per frame.
+  const scrollYProgress = useTransform(
+    scrollY,
+    [
+      topoContainerPx,
+      topoContainerPx + Math.max(1, conteudoAlturaPx - viewport.h),
+    ],
+    [0, 1],
+  );
+
+  useLayoutEffect(() => {
+    let frame = 0;
+    let disposed = false;
+    function medir() {
+      frame = 0;
+      const container = contentRef.current;
+      if (!container || disposed) return;
+      const hero = container.querySelector<HTMLElement>("#hero");
+      const about = container.querySelector<HTMLElement>("#about");
+      const bio = container.querySelector<HTMLElement>("[data-bio-col]");
+      if (!hero || !bio || !about) return;
+      const scroll = window.scrollY;
+      const next = {
+        w: window.innerWidth,
+        h: window.innerHeight,
+        heroAlturaPx: hero.offsetHeight,
+        conteudoAlturaPx: container.offsetHeight,
+        topoContainerPx: container.getBoundingClientRect().top + scroll,
+        bioAlturaPx: bio.offsetHeight,
+        // Logical document position stays stable even when the biography is sticky.
+        bioTopoPaginaPx:
+          about.getBoundingClientRect().top +
+          scroll +
+          parseFloat(getComputedStyle(about).paddingTop),
+      };
+      setLayout((previous) =>
+        Object.keys(next).every(
+          (key) =>
+            previous[key as keyof typeof next] ===
+            next[key as keyof typeof next],
+        )
+          ? previous
+          : next,
+      );
+    }
+    const schedule = () => {
+      if (!disposed && !frame) frame = requestAnimationFrame(medir);
+    };
+    medir();
+    window.addEventListener("resize", schedule);
+    const observer = new ResizeObserver(schedule);
+    if (contentRef.current) {
+      observer.observe(contentRef.current);
+      const bio = contentRef.current.querySelector("[data-bio-col]");
+      if (bio) observer.observe(bio);
+    }
+    document.fonts.ready.then(schedule);
     return () => {
       disposed = true;
       cancelAnimationFrame(frame);
+      window.removeEventListener("resize", schedule);
       observer.disconnect();
-      window.removeEventListener("scroll", schedule);
-      window.removeEventListener("resize", resize);
-      document.removeEventListener("visibilitychange", resize);
-      desktop.removeEventListener("change", resize);
-      reduced.removeEventListener("change", resize);
     };
   }, []);
 
+  // A caixa (520px) fica ancorada em bottom:-20%/left:-10% do container
+  // h-screen — de propósito cortada por duas bordas no Hero. x/y são %
+  // da PRÓPRIA caixa, então o alvo precisa ser calculado em pixel real
+  // de tela pra garantir que o círculo entre inteiro.
+  const BOX = 520;
+  const ESCALA_SOBRE = 0.28;
+  const centroHeroX = -0.1 * viewport.w + BOX / 2;
+  const centroHeroY = 1.2 * viewport.h - BOX / 2;
+  const raioSobre = (BOX * ESCALA_SOBRE) / 2;
+
+  // Onde o sticky solta sozinho: fim do container encostando no fim da
+  // tela. Serve como o ponto em que o movimento natural da página
+  // assume o lugar do transform (ver `subidaPx` abaixo).
+  const soltaPx = topoContainerPx + Math.max(0, conteudoAlturaPx - viewport.h);
+
+  // Transição: começa depois do primeiro terço do Hero e termina quando
+  // o Hero acaba de sair, ou seja, a lua já chega pequena e no lugar no
+  // instante em que o Sobre ocupa a tela. O clamp evita que ela termine
+  // depois do sticky soltar (senão sairia da tela ainda gigante).
+  const comecaPx = topoContainerPx + heroAlturaPx * 0.3;
+  const terminaPx = Math.min(topoContainerPx + heroAlturaPx, soltaPx - 40);
+  const fimPx = Math.max(terminaPx, comecaPx + 1);
+
+  // Zona proibida: onde o texto da bio estará na tela no momento em que
+  // a lua para. A bio é sticky em top-24, mas até ela colar nesse ponto
+  // fica mais embaixo — usar 96px direto faria a lua parar por cima do
+  // parágrafo justo no fim da transição.
+  const bioTopoNaTelaNoFim = Math.max(96, bioTopoPaginaPx - fimPx);
+  const zonaProibidaAteY = bioTopoNaTelaNoFim + bioAlturaPx + 40;
+  const centroSobreX = Math.max(0.14 * viewport.w, raioSobre + 24);
+  const centroSobreY = Math.min(
+    zonaProibidaAteY + raioSobre,
+    viewport.h - raioSobre - 24,
+  );
+  const xSobrePct = ((centroSobreX - centroHeroX) / BOX) * 100;
+  const ySobrePct = ((centroSobreY - centroHeroY) / BOX) * 100;
+
+  // Depois de chegar no lugar, a lua para de ser perseguida pela câmera:
+  // ela sobe 1:1 com o scroll, ancorada ao Sobre como qualquer elemento
+  // da página. Isso é feito no próprio transform até `soltaPx`, porque a
+  // partir dali o sticky solta sozinho e o movimento natural assume — se
+  // o transform continuasse, ela subiria com o dobro da velocidade.
+  const subidaPx = Math.max(0, soltaPx - fimPx);
+  const ySobeComPagina = ySobrePct - (subidaPx / BOX) * 100;
+  const fimSubidaPx = Math.max(fimPx + 1, soltaPx);
+
+  const scale = useTransform(scrollY, [comecaPx, fimPx], [1, ESCALA_SOBRE]);
+  const x = useTransform(scrollY, [comecaPx, fimPx], ["0%", `${xSobrePct}%`]);
+  const y = useTransform(
+    scrollY,
+    [comecaPx, fimPx, fimSubidaPx],
+    ["0%", `${ySobrePct}%`, `${ySobeComPagina}%`],
+  );
+
   return (
-    <div ref={root} className="relative">
-      <div
-        ref={layer}
-        data-moon-layer
-        aria-hidden="true"
-        hidden
-        className="pointer-events-none fixed inset-0 z-[1] overflow-hidden"
-      >
-        <div
-          ref={moon}
-          data-scroll-moon
-          className="absolute left-0 top-0 h-[520px] w-[520px] will-change-transform"
-        >
-          <Moon />
+    <div ref={ref} className="relative grid">
+      {/* sem altura fixa: precisa esticar pra célula inteira do grid
+          (Hero+Sobre), senão o sticky de dentro só tem h-screen de
+          pista. hidden abaixo de lg: no mobile o Sobre vira coluna
+          única e não sobra espaço decorativo. */}
+      <div className="pointer-events-none relative col-start-1 row-start-1 hidden h-full lg:block">
+        <div data-moon-layer className="sticky top-0 h-screen overflow-hidden">
+          <motion.div
+            data-scroll-moon
+            className="absolute"
+            style={{
+              width: 520,
+              height: 520,
+              bottom: "-20%",
+              left: "-10%",
+              scale: reduced ? 1 : scale,
+              x: reduced ? "0%" : x,
+              y: reduced ? "0%" : y,
+            }}
+          >
+            {/* entrada por tempo, separada do scale de scroll acima */}
+            <motion.div
+              data-moon-entrance
+              initial={reduced ? false : { opacity: 0, scale: 0.82 }}
+              animate={podeAparecer || reduced ? { opacity: 1, scale: 1 } : {}}
+              transition={{ duration: reduced ? 0 : 1.1, ease: "easeOut" }}
+            >
+              <div
+                className="absolute rounded-full border border-black/[0.07]"
+                style={{ width: 660, height: 660, top: -70, left: -70 }}
+              />
+              <Moon size={520} progress={scrollYProgress} />
+            </motion.div>
+          </motion.div>
         </div>
       </div>
-      <div className="relative z-[2]">{children}</div>
+
+      <div ref={contentRef} className="relative z-10 col-start-1 row-start-1">
+        {children}
+      </div>
     </div>
   );
 }

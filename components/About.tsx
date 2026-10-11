@@ -8,7 +8,7 @@ export default function About() {
   const [ref, inView] = useInView();
 
   return (
-    <section id="about" className="py-16 sm:py-24">
+    <section id="about" className="py-16 sm:py-24 lg:py-40">
       <div className="max-w-6xl mx-auto px-6">
         <div
           ref={ref}
@@ -22,19 +22,14 @@ export default function About() {
               {t.sections.about}
             </h2>
             <p className="text-lg text-muted leading-relaxed">{t.about.bio}</p>
-            <div
-              data-moon-slot
-              aria-hidden="true"
-              className="mt-8 hidden h-[180px] lg:block"
-            />
           </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-1 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-1 gap-4 lg:gap-6">
             {t.about.differentials.map((d, i) => (
               <div
                 key={d.label}
                 style={{ transitionDelay: `${i * 80}ms` }}
-                className={`border border-[var(--border)] p-5 sm:p-6 transition-all duration-500 ease-out hover:border-[#404040] ${
+                className={`border border-[var(--border)] p-5 sm:p-6 lg:p-9 transition-all duration-500 ease-out hover:border-[#404040] ${
                   inView
                     ? "opacity-100 translate-x-0"
                     : "opacity-0 translate-x-4"
