@@ -1,14 +1,12 @@
 "use client";
 
+import { useEffect, useRef } from "react";
 import { useParallax } from "@/hooks/useScrollFx";
 
 /**
  * Decoração do Hero: uma esfera lisa desfocada ao fundo (dá profundidade),
  * anéis de órbita, meteoros e sparkles. Tudo em cinza puro (nenhum valor
- * com R≠G≠B). A lua 3D mora em outro lugar: veja PersistentMoon.tsx, que
- * fica fixa na tela e continua visível ao rolar do Hero pro Sobre — não
- * dava pra ficar presa aqui dentro, num container que rola junto com a
- * página e some quando o Hero sai de vista.
+ * com R≠G≠B). A lua ligada ao scroll vive em HeroAboutJourney.
  */
 
 /** Base da esfera lisa (BlurOrb): luz vindo de cima-esquerda. */
@@ -19,7 +17,13 @@ const ESFERA_BASE = `
 `;
 
 /** Esfera lisa desfocada: dá profundidade sem competir com a lua. */
-function BlurOrb({ size, style }: { size: number; style?: React.CSSProperties }) {
+function BlurOrb({
+  size,
+  style,
+}: {
+  size: number;
+  style?: React.CSSProperties;
+}) {
   const drift = useParallax<HTMLDivElement>(0.05);
   return (
     <div
@@ -30,7 +34,8 @@ function BlurOrb({ size, style }: { size: number; style?: React.CSSProperties })
         width: size,
         height: size,
         background: ESFERA_BASE,
-        boxShadow: "inset -14px -14px 46px rgba(0,0,0,0.4), 0 0 70px rgba(0,0,0,0.04)",
+        boxShadow:
+          "inset -14px -14px 46px rgba(0,0,0,0.4), 0 0 70px rgba(0,0,0,0.04)",
         filter: "blur(6px)",
         opacity: 0.85,
         ...style,
@@ -39,7 +44,13 @@ function BlurOrb({ size, style }: { size: number; style?: React.CSSProperties })
   );
 }
 
-function OrbitRing({ size, style }: { size: number; style?: React.CSSProperties }) {
+function OrbitRing({
+  size,
+  style,
+}: {
+  size: number;
+  style?: React.CSSProperties;
+}) {
   return (
     <div
       aria-hidden="true"
@@ -67,21 +78,22 @@ function Meteor({
   // percorre a propria direcao (cos/sin do angulo), nao uma diagonal fixa —
   // senao o rasto nao bate com a inclinacao do risco
   const rad = (angle * Math.PI) / 180;
-  const dist = 55;
+  const dist = 260;
   const dx = Math.round(Math.cos(rad) * dist);
   const dy = Math.round(Math.sin(rad) * dist);
 
   return (
     <div
       aria-hidden="true"
-      className="absolute"
+      className="absolute meteor celestial-motion"
       style={
         {
           left: x,
           top: y,
           width: length,
           height: 1,
-          background: "linear-gradient(90deg, transparent, rgba(0,0,0,0.55) 65%, rgba(0,0,0,0.9))",
+          background:
+            "linear-gradient(90deg, transparent, rgba(0,0,0,0.55) 65%, rgba(0,0,0,0.9))",
           transformOrigin: "left center",
           // a rotacao precisa estar DENTRO do keyframe: animar so
           // `translate` no keyframe sobrescreve qualquer transform estatico
@@ -90,7 +102,7 @@ function Meteor({
           "--meteor-rot": `${angle}deg`,
           "--meteor-dx": `${dx}px`,
           "--meteor-dy": `${dy}px`,
-          animation: `meteor-fall ${duration}s ease-in ${delay}s infinite`,
+          animation: `meteor-fall ${duration}s ease-in ${delay}s infinite both`,
         } as React.CSSProperties
       }
     />
@@ -114,8 +126,12 @@ function Sparkle({
       viewBox="0 0 24 24"
       width={size}
       height={size}
-      className="absolute"
-      style={{ left: x, top: y, animation: `sparkle-twinkle 3.4s ease-in-out ${delay}s infinite` }}
+      className="absolute celestial-motion"
+      style={{
+        left: x,
+        top: y,
+        animation: `sparkle-twinkle 3.4s ease-in-out ${delay}s infinite`,
+      }}
     >
       <path
         d="M12 0 L13.6 10.4 L24 12 L13.6 13.6 L12 24 L10.4 13.6 L0 12 L10.4 10.4 Z"
@@ -126,8 +142,32 @@ function Sparkle({
 }
 
 export default function HeroAtmosphere() {
+  const ref = useRef<HTMLDivElement>(null);
+  useEffect(() => {
+    const element = ref.current;
+    if (!element) return;
+    let visible = false;
+    const sync = () => {
+      element.dataset.motionRunning = String(visible && !document.hidden);
+    };
+    const observer = new IntersectionObserver(([entry]) => {
+      visible = entry.isIntersecting;
+      sync();
+    });
+    observer.observe(element);
+    document.addEventListener("visibilitychange", sync);
+    return () => {
+      observer.disconnect();
+      document.removeEventListener("visibilitychange", sync);
+    };
+  }, []);
   return (
-    <div aria-hidden="true" className="absolute inset-0 z-0 overflow-hidden">
+    <div
+      ref={ref}
+      data-motion-running="false"
+      aria-hidden="true"
+      className="absolute inset-0 z-0 overflow-hidden"
+    >
       {/* esfera lisa desfocada: menor, ao fundo, da profundidade */}
       <BlurOrb size={200} style={{ top: "8%", right: "-4%" }} />
       <OrbitRing size={320} style={{ top: "-2%", right: "-9%" }} />
@@ -135,7 +175,14 @@ export default function HeroAtmosphere() {
       {/* meteoros: quase verticais (60-72deg da horizontal), caem, nao "voam de lado" */}
       <Meteor x="28%" y="12%" length={80} angle={68} delay={0} duration={6} />
       <Meteor x="78%" y="8%" length={110} angle={72} delay={2.4} duration={7} />
-      <Meteor x="10%" y="50%" length={60} angle={64} delay={4.5} duration={5.5} />
+      <Meteor
+        x="10%"
+        y="50%"
+        length={60}
+        angle={64}
+        delay={4.5}
+        duration={5.5}
+      />
 
       {/* sparkles: pontinhos de 4 pontas, brilho pulsante */}
       <Sparkle x="30%" y="20%" size={16} delay={0} />

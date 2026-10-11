@@ -43,11 +43,21 @@ body {
    tailwind.config.ts (colors.accent = #AF0C37). Redefini-las aqui as
    sobrescrevia sempre, porque a regra escrita depois ganha em empate de
    especificidade — foi assim que o vermelho de marca nunca apareceu. */
-.bg-page        { background-color: var(--bg); }
-.bg-surface     { background-color: var(--surface); }
-.border-default { border-color: var(--border); }
-.text-primary   { color: var(--text); }
-.text-muted     { color: var(--muted); }
+.bg-page {
+  background-color: var(--bg);
+}
+.bg-surface {
+  background-color: var(--surface);
+}
+.border-default {
+  border-color: var(--border);
+}
+.text-primary {
+  color: var(--text);
+}
+.text-muted {
+  color: var(--muted);
+}
 
 /* ── Text outline (hero title) ── */
 .text-edge-outline {
@@ -56,49 +66,96 @@ body {
 
 /* ── Animations ── */
 @keyframes fade-in {
-  from { opacity: 0; }
-  to   { opacity: 1; }
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
 }
 
 @keyframes fade-up {
-  from { opacity: 0; transform: translateY(16px); }
-  to   { opacity: 1; transform: translateY(0); }
+  from {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 @keyframes fade-left {
-  from { opacity: 0; transform: translateX(20px); }
-  to   { opacity: 1; transform: translateX(0); }
+  from {
+    opacity: 0;
+    transform: translateX(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
 }
 
 @keyframes fade-right {
-  from { opacity: 0; transform: translateX(-20px); }
-  to   { opacity: 1; transform: translateX(0); }
+  from {
+    opacity: 0;
+    transform: translateX(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
 }
 
 @keyframes title {
-  0%   { opacity: 0; filter: blur(10px); transform: translateY(10px); }
-  100% { opacity: 1; filter: blur(0);    transform: translateY(0); }
+  0% {
+    opacity: 0;
+    filter: blur(10px);
+    transform: translateY(10px);
+  }
+  100% {
+    opacity: 1;
+    filter: blur(0);
+    transform: translateY(0);
+  }
 }
 
 @keyframes glow {
-  0%, 100% { opacity: 0; }
-  50%       { opacity: 1; }
+  0%,
+  100% {
+    opacity: 0;
+  }
+  50% {
+    opacity: 1;
+  }
 }
 
 @keyframes marquee {
-  0%   { transform: translateX(0); }
-  100% { transform: translateX(-50%); }
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
 }
 
 @keyframes marquee-reverse {
-  0%   { transform: translateX(-50%); }
-  100% { transform: translateX(0); }
+  0% {
+    transform: translateX(-50%);
+  }
+  100% {
+    transform: translateX(0);
+  }
 }
 
 /* fade lento e ambiente: usado pelo fundo do hero, que chega por último */
 @keyframes fade-in-ambient {
-  from { opacity: 0; }
-  to   { opacity: 1; }
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
 }
 
 /* meteoro: desliza um pouco no proprio eixo e some, em loop lento */
@@ -106,16 +163,35 @@ body {
    qualquer transform estatico aplicado por fora (o rotate() do meteoro
    desaparecia assim que a animacao comecava, ficando sempre deitado) */
 @keyframes meteor-fall {
-  0%   { opacity: 0; transform: rotate(var(--meteor-rot)) translate(0, 0); }
-  10%  { opacity: 1; }
-  80%  { opacity: 1; }
-  100% { opacity: 0; transform: rotate(var(--meteor-rot)) translate(var(--meteor-dx), var(--meteor-dy)); }
+  0% {
+    opacity: 0;
+    transform: translate3d(0, 0, 0) rotate(var(--meteor-rot));
+  }
+  8% {
+    opacity: 0.6;
+  }
+  28% {
+    opacity: 0.6;
+  }
+  38%,
+  100% {
+    opacity: 0;
+    transform: translate3d(var(--meteor-dx), var(--meteor-dy), 0)
+      rotate(var(--meteor-rot));
+  }
 }
 
 /* sparkle: brilho pulsante devagar, nunca some de vez */
 @keyframes sparkle-twinkle {
-  0%, 100% { opacity: 0.25; transform: scale(0.85); }
-  50%      { opacity: 0.9;  transform: scale(1); }
+  0%,
+  100% {
+    opacity: 0.25;
+    transform: scale(0.85);
+  }
+  50% {
+    opacity: 0.9;
+    transform: scale(1);
+  }
 }
 
 /* ── Acessibilidade: quem pediu menos movimento recebe a página pronta ── */
@@ -131,10 +207,92 @@ body {
   }
 }
 
-:focus-visible { outline: 2px solid var(--text); outline-offset: 5px; }
-section[id] { scroll-margin-top: 24px; }
-button, a { -webkit-tap-highlight-color: rgba(0,0,0,.08); }
-summary { cursor: pointer; }
+:focus-visible {
+  outline: 2px solid var(--text);
+  outline-offset: 5px;
+}
+section[id] {
+  scroll-margin-top: 24px;
+}
+button,
+a {
+  -webkit-tap-highlight-color: rgba(0, 0, 0, 0.08);
+}
+summary {
+  cursor: pointer;
+}
 @media (prefers-reduced-motion: reduce) {
-  [data-reveal] { opacity: 1 !important; transform: none !important; }
+  [data-reveal] {
+    opacity: 1 !important;
+    transform: none !important;
+  }
+}
+
+.moon-sphere {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  border-radius: 50%;
+  box-shadow:
+    0 35px 70px -25px #0006,
+    0 8px 24px -10px #0004;
+}
+.moon-texture {
+  position: absolute;
+  inset: 0;
+  width: calc(100% + 120px);
+  background: url("/textures/moon-1k.jpg") repeat-x left center / auto 100%;
+  will-change: transform;
+}
+.moon-light {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(
+    circle at 30% 24%,
+    #ffffff35 0%,
+    #ffffff0d 18%,
+    transparent 34%,
+    #00000038 55%,
+    #00000094 78%,
+    #000000e0 100%
+  );
+}
+.moon-rim {
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  box-shadow: inset 0 0 40px 2px #0005;
+  background: radial-gradient(
+    circle at center,
+    transparent 58%,
+    #00000029 80%,
+    #0000006b 94%,
+    #0000009e
+  );
+}
+[data-motion-running="false"] .celestial-motion {
+  animation-play-state: paused !important;
+}
+.meteor {
+  opacity: 0;
+  transform-origin: right center;
+}
+.meteor::after {
+  content: "";
+  position: absolute;
+  right: -1px;
+  top: -1px;
+  width: 3px;
+  height: 3px;
+  border-radius: 50%;
+  background: #333;
+  box-shadow: 0 0 5px #0004;
+}
+@media (prefers-reduced-motion: reduce) {
+  .meteor {
+    display: none;
+  }
+  .moon-texture {
+    will-change: auto;
+  }
 }

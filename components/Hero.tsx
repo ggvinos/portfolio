@@ -23,7 +23,7 @@ const T = {
   label: "0s",
   subtitle: "0s",
   tagline: "0s",
-  world: "1.6s",
+  world: "0.3s",
   marquee: "0.3s",
   ctas: "0s",
   hint: "2.7s",
@@ -47,7 +47,7 @@ export default function Hero() {
       {/* camadas de ambiente: entram por último, ao redor do nome já posto */}
       <div
         className="absolute inset-0 z-0"
-        style={{ animation: "fade-in-ambient 2.2s ease both", animationDelay: T.world }}
+        style={{ animation: "fade-in-ambient 1.2s ease both", animationDelay: T.world }}
       >
         <HeroAtmosphere />
 

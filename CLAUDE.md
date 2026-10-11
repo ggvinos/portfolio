@@ -12,3 +12,6 @@ Leia `README.md` para stack, comandos, arquitetura e validação. Este arquivo c
 - Não inventar métricas, telas ou evidências. O EspaçoCalmo é um estudo de UX/UI em evolução; o produto publicado é o Acorde.
 - Preservar os mesmos destaques e links nos cards desktop e mobile.
 - Imagens locais em `public/acorde` e `public/textures`; arte do EspaçoCalmo vem do CDN público do Behance, com caminho permitido explicitamente em `next.config.mjs`.
+
+- A lua de `HeroAboutJourney` deve manter o trajeto por scroll e o ponto de repouso ao lado do Sobre; não substituir por uma decoração estática. O espaço `data-moon-slot` mantém a lua fora do texto. Layout é medido somente em alterações de tamanho; o scroll atualiza transform/opacity em um rAF agendado, sem loops contínuos ou state por frame.
+- Meteoros em `HeroAtmosphere` devem usar translação antes de rotação para alinhar deslocamento e rastro. Pausar animações fora da abertura e em abas ocultas.
