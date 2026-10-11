@@ -3,10 +3,11 @@
 import { useLanguage } from "@/lib/context";
 import { useInView } from "@/hooks/useInView";
 import SpotlightCard from "@/components/SpotlightCard";
+import PortfolioImage from "./PortfolioImage";
 import { useState } from "react";
 
 export default function Experience() {
-  const { t } = useLanguage();
+  const { t, lang } = useLanguage();
   const [refExp, inViewExp] = useInView();
   const [refAch, inViewAch] = useInView();
   // Set em vez de indice unico: abrir um cargo nao fecha os outros que o
@@ -135,6 +136,7 @@ export default function Experience() {
                     transition: "opacity 0.5s ease, transform 0.5s ease",
                   }}
                 >
+                  {i < 2 && <PortfolioImage photo src={i === 0 ? "/images/portfolio/hackathon.png" : "/images/portfolio/graduation.png"} alt={i === 0 ? (lang === "pt" ? "Equipe no evento Hackathon Brasília +TI" : "Team at Hackathon Brasília +TI") : (lang === "pt" ? "Vinicios na formatura em Engenharia de Software" : "Vinicios at his Software Engineering graduation")} caption={i === 0 ? (lang === "pt" ? "Registro da equipe no evento" : "Team at the event") : (lang === "pt" ? "Bacharelado em Engenharia de Software · UNICEPLAC" : "B.Sc. Software Engineering · UNICEPLAC")} />}
                   <div className="flex items-baseline gap-3 mb-2">
                     <span className="text-primary font-semibold text-sm">
                       {item.title}

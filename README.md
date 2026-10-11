@@ -49,3 +49,11 @@ Preto e branco, tipografia Inter e JetBrains Mono. A lua acompanha o scroll da a
 A lua preserva a animação original em Motion: trajetória linear, escala final 0,28, entrada após 2,2 segundos e giro da textura de 0% a -140% sobre TODO o trecho Hero + Sobre. O giro mantém a suavização original (stiffness 60, damping 20, mass 0,6). MotionValues evitam renderização do React por frame; as medidas de layout são agrupadas, deduplicadas e atualizadas por ResizeObserver. Meteoros usam translação na direção do rastro e pausam fora da abertura ou em abas ocultas. Com movimento reduzido, a lua fica estática na abertura.
 
 A animação de partículas pausa fora da tela, em abas ocultas e com preferência por movimento reduzido. O conteúdo é visível no HTML inicial, sem depender de IntersectionObserver para aparecer.
+
+### Imagens de evidência
+
+As fotos de formatura e hackathon foram fornecidas pelo autor. O dashboard em
+`public/images/portfolio/dashboard-*.svg` é um redesign demonstrativo criado
+para o portfólio, com produtos e valores fictícios, e não uma captura do sistema
+interno. Não substituir esses arquivos por capturas corporativas sem revisão
+dos dados. `PortfolioImage` aplica textura estática leve apenas às imagens.
