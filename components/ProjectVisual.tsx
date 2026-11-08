@@ -37,7 +37,15 @@ export default function ProjectVisual({
       ? ["Issue tracker", "Pandas", "Streamlit"]
       : id === "flow-cli"
         ? [english ? "Description" : "Descrição", "Schema", "JSON"]
-        : ["UI", "Cypress", "API"];
+        : id === "playwright-e2e"
+          ? ["Page Objects", "Playwright", "axe"]
+          : id === "api-test-suite"
+            ? ["Fixtures", "pytest", "JSON Schema"]
+            : id === "k6-performance"
+              ? ["Smoke", "Load", "Stress"]
+              : id === "erp-fakes"
+                ? ["Feegow · NetPacs · Tasy", english ? "Fake ERP" : "ERP fake", "pytest"]
+                : ["UI", "Cypress", "API"];
   return (
     <figure className="mb-6 rounded-lg border border-default bg-surface p-4">
       <figcaption className="font-mono text-[10px] uppercase tracking-wider text-muted">

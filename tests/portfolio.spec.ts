@@ -15,7 +15,7 @@ for (const width of [320, 390, 768, 1440]) {
       await page.evaluate(() => document.documentElement.scrollWidth),
     ).toBeLessThanOrEqual(width);
     const cards = page.locator("#projects article");
-    await expect(cards).toHaveCount(4);
+    await expect(cards).toHaveCount(8);
     for (const card of await cards.all()) {
       await expect(card.getByRole("list", { name: "Destaques" })).toBeVisible();
       await expect(card.getByRole("link")).toHaveAttribute(
@@ -126,6 +126,9 @@ test("reduced motion and no JavaScript keep project content readable", async ({
     ).toBeVisible();
     await expect(
       page.getByRole("link", { name: "Ver código no GitHub" }),
+    ).toHaveCount(5);
+    await expect(
+      page.getByRole("link", { name: "Ver código no GitHub" }).first(),
     ).toBeVisible();
     await page.screenshot({
       path: `test-results/${"javaScriptEnabled" in options ? "no-js" : "reduced-motion"}.png`,

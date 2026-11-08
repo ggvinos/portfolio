@@ -6,7 +6,7 @@ import HeroAtmosphere from "@/components/HeroAtmosphere";
 import { useScrollRecede } from "@/hooks/useScrollFx";
 
 const TOOLS = [
-  "Cypress", "Playwright", "Postman", "Appium", "JMeter", "pytest",
+  "Cypress", "Playwright", "Postman", "Appium", "JMeter", "pytest", "k6",
   "Python", "JavaScript", "TypeScript", "Pandas", "Streamlit", "Plotly",
   "GitHub Actions", "Jira", "Claude API", "Figma", "React", "Next.js",
   "Tailwind", "Git", "Vercel", "REST API", "JSON Schema", "JWT", "SQL",

@@ -1,7 +1,7 @@
 "use client";
 
 const ROW_A = [
-  "Cypress", "Playwright", "Postman", "Appium", "JMeter", "pytest",
+  "Cypress", "Playwright", "Postman", "Appium", "JMeter", "pytest", "k6",
   "Python", "JavaScript", "TypeScript", "Pandas", "Streamlit", "Plotly",
   "GitHub Actions", "Jira", "Figma", "Claude API",
 ];
