@@ -34,24 +34,19 @@ export default function ProjectVisual({
     );
   if (id === "second-brain")
     return (
-      <figure className="mb-6 rounded-lg border border-default bg-surface p-4">
-        <figcaption className="font-mono text-[10px] uppercase tracking-wider text-muted">
-          {english ? "Vault structure" : "Estrutura do vault"}
-        </figcaption>
-        <ul className="mt-4 grid grid-cols-2 gap-2 font-mono text-[11px]">
-          {(english
-            ? ["Work/", "Personal/", "Career/", "Reflections/", "AI-Chats/", "Releases/", "Inbox/", "daily/"]
-            : ["Trabalho/", "Pessoal/", "Carreira/", "Reflexoes/", "Conversas-IA/", "Releases/", "Inbox/", "diario/"]
-          ).map((name) => (
-            <li
-              key={name}
-              className="border border-default bg-page px-2 py-2 text-center"
-            >
-              {name}
-            </li>
-          ))}
-        </ul>
-      </figure>
+      <PortfolioImage
+        src={`/images/portfolio/second-brain-graph-${english ? "en" : "pt"}.svg`}
+        alt={
+          english
+            ? "Illustrative graph of the knowledge vault: folders as large dots and notes linked around them"
+            : "Grafo ilustrativo do vault de conhecimento: pastas como pontos grandes e notas linkadas ao redor"
+        }
+        caption={
+          english
+            ? "Illustrative graph · Real structure, fictional notes"
+            : "Grafo ilustrativo · Estrutura real, notas fictícias"
+        }
+      />
     );
   if (id === "claude-skills")
     return (

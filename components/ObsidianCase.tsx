@@ -1,5 +1,6 @@
 "use client";
 import { useLanguage } from "@/lib/context";
+import BrainGraph from "./BrainGraph";
 
 const copy = {
   pt: {
@@ -7,6 +8,9 @@ const copy = {
     title: "Segundo Cérebro",
     lead: "Meu sistema de conhecimento no Obsidian: um vault em Markdown que guarda trabalho, estudo, carreira e vida pessoal, versionado no Git e pensado para ser lido tanto por mim quanto por agentes de IA.",
     note: "O vault é privado. Este resumo mostra a estrutura e as decisões, sem publicar conteúdo.",
+    graphTitle: "Como tudo se conecta",
+    graphLead:
+      "É assim que o vault se parece no grafo do Obsidian. Explore: cada grupo é uma pasta e as linhas mostram como as notas se linkam entre si.",
     numbersTitle: "Em números",
     numbers: [
       ["3.000+", "notas em Markdown"],
@@ -75,6 +79,9 @@ const copy = {
     title: "Second Brain",
     lead: "My knowledge system in Obsidian: a Markdown vault holding work, study, career and personal life, versioned in Git and designed to be read by both me and AI agents.",
     note: "The vault is private. This summary shows the structure and decisions without publishing content.",
+    graphTitle: "How everything connects",
+    graphLead:
+      "This is what the vault looks like in Obsidian's graph. Explore it: each group is a folder and the lines show how notes link to each other.",
     numbersTitle: "In numbers",
     numbers: [
       ["3,000+", "Markdown notes"],
@@ -167,6 +174,14 @@ export default function ObsidianCase() {
       </p>
       <div className="mt-8 border-l-2 border-black bg-surface p-5 text-sm leading-relaxed text-muted">
         {c.note}
+      </div>
+
+      <h2 className="mt-12 text-2xl font-semibold">{c.graphTitle}</h2>
+      <p className="mt-2 max-w-2xl text-sm leading-relaxed text-muted">
+        {c.graphLead}
+      </p>
+      <div className="mt-6">
+        <BrainGraph />
       </div>
 
       <h2 className="mt-12 text-2xl font-semibold">{c.numbersTitle}</h2>
