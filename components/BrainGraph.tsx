@@ -36,6 +36,21 @@ const copy = {
   },
 } as const;
 
+function mix(hex: string, target: string, p: number) {
+  const a = parseInt(hex.slice(1), 16);
+  const b = parseInt(target.slice(1), 16);
+  const ch = (sh: number) =>
+    Math.round(((a >> sh) & 255) * (1 - p) + ((b >> sh) & 255) * p);
+  return `rgb(${ch(16)},${ch(8)},${ch(0)})`;
+}
+
+/** Mesma esfera lisa do Hero: luz vinda de cima à esquerda, em cinza puro. */
+const ORB = `
+  radial-gradient(circle at 30% 25%, rgba(255,255,255,0.9) 0%, transparent 36%),
+  radial-gradient(circle at 70% 74%, rgba(0,0,0,0.14) 0%, transparent 32%),
+  linear-gradient(135deg, #ededed 0%, #c4c4c4 45%, #8a8a8a 78%, #4a4a4a 100%)
+`;
+
 type View = { s: number; ox: number; oy: number; w: number; h: number; k: number };
 
 export default function BrainGraph() {
@@ -49,6 +64,8 @@ export default function BrainGraph() {
   const viewRef = useRef<View>({ s: 1, ox: 0, oy: 0, w: 0, h: 0, k: 1 });
   const stateRef = useRef({
     hover: -1,
+    px: -1,
+    py: -1,
     selected: -1,
     group: null as GroupId | null,
     alpha: 0,
@@ -83,16 +100,29 @@ export default function BrainGraph() {
       const dpr = window.devicePixelRatio || 1;
       ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
       ctx.clearRect(0, 0, v.w, v.h);
-      ctx.fillStyle = "rgba(13,13,13,0.11)";
-      const step = 28;
-      for (let gx = step / 2; gx < v.w; gx += step)
-        for (let gy = step / 2; gy < v.h; gy += step) ctx.fillRect(gx - 0.5, gy - 0.5, 1, 1);
 
       const focus = st.hover >= 0 ? st.hover : st.selected;
       const near = focus >= 0 ? neighbors.get(focus) : undefined;
       const amp = st.reduced ? 0 : 0.014;
       const X = g.nodes.map((n, i) => v.ox + (n.x + Math.sin(time * 0.0007 + i * 1.9) * amp) * v.s);
       const Y = g.nodes.map((n, i) => v.oy + (n.y + Math.cos(time * 0.0006 + i * 2.3) * amp) * v.s);
+
+      // luz: segue o cursor; sem cursor, fica no ponto em foco
+      const lx = st.px >= 0 ? st.px : focus >= 0 ? X[focus] : -1;
+      const ly = st.px >= 0 ? st.py : focus >= 0 ? Y[focus] : -1;
+      const step = 28;
+      for (let gx = step / 2; gx < v.w; gx += step) {
+        for (let gy = step / 2; gy < v.h; gy += step) {
+          let a = 0.1;
+          if (lx >= 0) {
+            const d2 = (gx - lx) ** 2 + (gy - ly) ** 2;
+            a += 0.34 * Math.exp(-d2 / (2 * 78 * 78));
+          }
+          ctx.fillStyle = `rgba(13,13,13,${a})`;
+          ctx.fillRect(gx - 0.5, gy - 0.5, 1, 1);
+        }
+      }
+
       const dim = (i: number) => {
         const n = g.nodes[i];
         if (focus >= 0) return i === focus || near?.has(i) ? 1 : 0.12;
@@ -109,29 +139,54 @@ export default function BrainGraph() {
         ctx.lineTo(X[link.b], Y[link.b]);
         ctx.stroke();
       }
+
+      if (focus >= 0) {
+        const n = g.nodes[focus];
+        const rr = n.r * v.k * 0.95 + 34;
+        const glow = ctx.createRadialGradient(X[focus], Y[focus], 0, X[focus], Y[focus], rr);
+        glow.addColorStop(0, mix(GROUPS[n.group].color, "#ffffff", 0.25).replace("rgb", "rgba").replace(")", ",0.34)"));
+        glow.addColorStop(1, "rgba(255,255,255,0)");
+        ctx.fillStyle = glow;
+        ctx.beginPath();
+        ctx.arc(X[focus], Y[focus], rr, 0, Math.PI * 2);
+        ctx.fill();
+      }
+
       g.nodes.forEach((n, i) => {
         ctx.globalAlpha = dim(i);
-        ctx.fillStyle = GROUPS[n.group].color;
+        const color = GROUPS[n.group].color;
+        const r = n.hub ? n.r * v.k * 0.95 : n.r * v.k * 0.85;
+        ctx.shadowColor = "rgba(0,0,0,0.3)";
+        ctx.shadowBlur = n.hub ? 11 : 4;
+        ctx.shadowOffsetY = n.hub ? 3 : 1;
         if (n.hub) {
-          const side = n.r * v.k * 1.55;
-          ctx.fillRect(X[i] - side / 2, Y[i] - side / 2, side, side);
-          if (i === st.selected) {
-            ctx.strokeStyle = "#0d0d0d";
-            ctx.lineWidth = 1.5;
-            ctx.strokeRect(X[i] - side / 2 - 4, Y[i] - side / 2 - 4, side + 8, side + 8);
-          }
+          const grad = ctx.createRadialGradient(X[i] - r * 0.35, Y[i] - r * 0.4, r * 0.08, X[i], Y[i], r);
+          grad.addColorStop(0, mix(color, "#ffffff", 0.6));
+          grad.addColorStop(0.55, color);
+          grad.addColorStop(1, mix(color, "#000000", 0.4));
+          ctx.fillStyle = grad;
         } else {
-          const r = n.r * v.k * 0.85;
+          ctx.fillStyle = color;
+        }
+        ctx.beginPath();
+        ctx.arc(X[i], Y[i], r, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.shadowColor = "transparent";
+        ctx.shadowBlur = 0;
+        ctx.shadowOffsetY = 0;
+        if (n.hub) {
+          ctx.strokeStyle = color;
+          ctx.lineWidth = 1;
           ctx.beginPath();
-          ctx.arc(X[i], Y[i], r, 0, Math.PI * 2);
-          ctx.fill();
-          if (i === st.selected) {
-            ctx.strokeStyle = "#0d0d0d";
-            ctx.lineWidth = 1.5;
-            ctx.beginPath();
-            ctx.arc(X[i], Y[i], r + 4, 0, Math.PI * 2);
-            ctx.stroke();
-          }
+          ctx.arc(X[i], Y[i], r + 3.5, 0, Math.PI * 2);
+          ctx.stroke();
+        }
+        if (i === st.selected) {
+          ctx.strokeStyle = "#0d0d0d";
+          ctx.lineWidth = 1.5;
+          ctx.beginPath();
+          ctx.arc(X[i], Y[i], r + (n.hub ? 8 : 4.5), 0, Math.PI * 2);
+          ctx.stroke();
         }
       });
       ctx.globalAlpha = 1;
@@ -146,7 +201,7 @@ export default function BrainGraph() {
         if (!(n.hub && label && major) && i !== focus) return;
         if (dim(i) < 0.5) return;
         const text = (label ?? KINDS[n.kind].name[st.langKey]).toUpperCase();
-        const off = n.hub ? n.r * v.k * 0.78 : n.r * v.k * 0.85;
+        const off = n.hub ? n.r * v.k * 0.95 + 4 : n.r * v.k * 0.85;
         const y = Y[i] + off + fontSize + 4;
         ctx.lineWidth = 4;
         ctx.strokeStyle = "rgba(255,255,255,0.95)";
@@ -341,6 +396,9 @@ export default function BrainGraph() {
         if (st.moved) moveNode(st.drag, e.clientX, e.clientY);
         return;
       }
+      const rect = canvas.getBoundingClientRect();
+      st.px = e.clientX - rect.left;
+      st.py = e.clientY - rect.top;
       const i = hit(e.clientX, e.clientY, false);
       if (i !== st.hover) {
         st.hover = i;
@@ -356,6 +414,8 @@ export default function BrainGraph() {
       if (i >= 0 && !dragged) select(st.selected === i ? -1 : i);
     };
     const onLeave = () => {
+      st.px = -1;
+      st.py = -1;
       if (st.hover !== -1) {
         st.hover = -1;
         schedule();
@@ -419,7 +479,7 @@ export default function BrainGraph() {
             >
               <span
                 aria-hidden="true"
-                className="inline-block h-2.5 w-2.5"
+                className="inline-block h-2.5 w-2.5 rounded-full"
                 style={{ background: GROUPS[id].color }}
               />
               {GROUPS[id].name[l]}
@@ -431,11 +491,45 @@ export default function BrainGraph() {
         ref={wrapRef}
         className="relative overflow-hidden border border-default bg-white"
       >
+        <div aria-hidden="true" className="pointer-events-none absolute inset-0 overflow-hidden">
+          <div
+            className="absolute rounded-full border border-black/[0.07]"
+            style={{ width: "62%", aspectRatio: "1", left: "19%", top: "50%", transform: "translateY(-50%)" }}
+          />
+          <div
+            className="absolute rounded-full border border-black/[0.06]"
+            style={{ width: "98%", aspectRatio: "1", left: "1%", top: "50%", transform: "translateY(-50%)" }}
+          />
+          <div
+            className="absolute rounded-full"
+            style={{
+              width: "34%",
+              aspectRatio: "1",
+              right: "-6%",
+              top: "-12%",
+              background: ORB,
+              filter: "blur(16px)",
+              opacity: 0.55,
+            }}
+          />
+          <div
+            className="absolute rounded-full"
+            style={{
+              width: "22%",
+              aspectRatio: "1",
+              left: "-4%",
+              bottom: "-8%",
+              background: ORB,
+              filter: "blur(10px)",
+              opacity: 0.5,
+            }}
+          />
+        </div>
         <canvas
           ref={canvasRef}
           role="img"
           aria-label={c.alt}
-          className="block w-full"
+          className="relative block w-full"
           style={{ height: 420, touchAction: "pan-y" }}
         />
         <p className="border-t border-default px-3 py-2 font-mono text-[10px] uppercase tracking-wider text-muted">
@@ -451,7 +545,7 @@ export default function BrainGraph() {
             <div className="flex flex-wrap items-center gap-2">
               <span
                 aria-hidden="true"
-                className="inline-block h-2.5 w-2.5"
+                className="inline-block h-2.5 w-2.5 rounded-full"
                 style={{ background: GROUPS[node.group].color }}
               />
               <h3 className="font-semibold">{KINDS[node.kind].name[l]}</h3>
