@@ -36,7 +36,7 @@ O workflow `.github/workflows/quality.yml` executa as verificações em pushes e
 
 ## Conteúdo e evidências
 
-Dashboard e Flow CLI são ferramentas internas. Os resumos mostram contexto e contribuição sem publicar dados, código ou capturas corporativas. As pequenas ilustrações dos cards são visões técnicas simplificadas, não screenshots dos sistemas.
+O QualityDash é uma ferramenta interna. Os resumos mostram contexto e contribuição sem publicar dados, código ou capturas corporativas. As pequenas ilustrações dos cards são visões técnicas simplificadas, não screenshots dos sistemas.
 
 O projeto Cypress aponta para o desafio público Coco Bambu. O EspaçoCalmo aponta para o estudo de UX/UI no Behance e está apresentado como iniciativa em evolução, sem afirmar que é um aplicativo em produção.
 

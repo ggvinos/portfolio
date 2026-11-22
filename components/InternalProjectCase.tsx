@@ -7,14 +7,7 @@ export default function InternalProjectCase({ id }: { id: string }) {
   const project = t.projects.find((p) => p.id === id);
   if (!project) return null;
   const dashboard = id === "qa-dashboard";
-  const steps = dashboard
-    ? ["Jira API", "FastAPI", "React", "Cloud Run"]
-    : [
-        lang === "pt" ? "Descrição" : "Description",
-        "Claude API",
-        "JSON Schema",
-        "JSON",
-      ];
+  const steps = ["Jira API", "FastAPI", "React", "Cloud Run"];
   return (
     <main className="mx-auto max-w-4xl px-6 pb-20 pt-32">
       <p className="font-mono text-xs uppercase tracking-widest text-muted">

@@ -8,7 +8,6 @@ import ObsidianCase from "@/components/ObsidianCase";
 
 const titles = {
   "qa-dashboard": "QualityDash",
-  "flow-cli": "Flow CLI Generator",
   "claude-skills": "Claude Skills",
   "second-brain": "Segundo Cérebro",
 } as const;

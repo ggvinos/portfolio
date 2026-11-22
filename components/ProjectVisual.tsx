@@ -78,9 +78,7 @@ export default function ProjectVisual({
   const steps =
     id === "qa-dashboard"
       ? ["Jira API", "FastAPI", "React"]
-      : id === "flow-cli"
-        ? [english ? "Description" : "Descrição", "Schema", "JSON"]
-        : ["UI", "Cypress", "API"];
+      : ["UI", "Cypress", "API"];
   return (
     <figure className="mb-6 rounded-lg border border-default bg-surface p-4">
       <figcaption className="font-mono text-[10px] uppercase tracking-wider text-muted">

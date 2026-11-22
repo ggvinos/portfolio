@@ -71,99 +71,105 @@ export default function BrainGraph() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [l, reduced]);
 
-  const draw = useCallback(() => {
-    const canvas = canvasRef.current;
-    const g = graphRef.current;
-    if (!canvas || !g) return;
-    const ctx = canvas.getContext("2d");
-    if (!ctx) return;
-    const v = viewRef.current;
-    const st = stateRef.current;
-    const dpr = window.devicePixelRatio || 1;
-    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-    ctx.clearRect(0, 0, v.w, v.h);
-    const focus = st.hover >= 0 ? st.hover : st.selected;
-    const near = focus >= 0 ? neighbors.get(focus) : undefined;
-    const sx = (x: number) => v.ox + x * v.s;
-    const sy = (y: number) => v.oy + y * v.s;
-    const dim = (i: number) => {
-      const n = g.nodes[i];
-      if (focus >= 0) return i === focus || near?.has(i) ? 1 : 0.14;
-      if (st.group) return n.group === st.group ? 1 : 0.14;
-      return 1;
-    };
-    for (const link of g.links) {
-      const a = g.nodes[link.a];
-      const b = g.nodes[link.b];
-      const on = focus >= 0 ? link.a === focus || link.b === focus : false;
-      const alpha = on ? 0.85 : Math.min(dim(link.a), dim(link.b)) * 0.26;
-      ctx.strokeStyle = on ? "rgba(244,244,245," + alpha + ")" : "rgba(161,161,170," + alpha + ")";
-      ctx.lineWidth = on ? 1.6 : 1;
-      ctx.beginPath();
-      ctx.moveTo(sx(a.x), sy(a.y));
-      ctx.lineTo(sx(b.x), sy(b.y));
-      ctx.stroke();
-    }
-    g.nodes.forEach((n, i) => {
-      const a = dim(i);
-      const r = n.r * v.k * 1.15;
-      ctx.globalAlpha = a;
-      if (n.hub || i === focus) {
-        ctx.fillStyle = GROUPS[n.group].color;
-        ctx.globalAlpha = a * 0.14;
+  const draw = useCallback(
+    (time = 0) => {
+      const canvas = canvasRef.current;
+      const g = graphRef.current;
+      if (!canvas || !g) return;
+      const ctx = canvas.getContext("2d");
+      if (!ctx) return;
+      const v = viewRef.current;
+      const st = stateRef.current;
+      const dpr = window.devicePixelRatio || 1;
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+      ctx.clearRect(0, 0, v.w, v.h);
+      ctx.fillStyle = "rgba(13,13,13,0.11)";
+      const step = 28;
+      for (let gx = step / 2; gx < v.w; gx += step)
+        for (let gy = step / 2; gy < v.h; gy += step) ctx.fillRect(gx - 0.5, gy - 0.5, 1, 1);
+
+      const focus = st.hover >= 0 ? st.hover : st.selected;
+      const near = focus >= 0 ? neighbors.get(focus) : undefined;
+      const amp = st.reduced ? 0 : 0.014;
+      const X = g.nodes.map((n, i) => v.ox + (n.x + Math.sin(time * 0.0007 + i * 1.9) * amp) * v.s);
+      const Y = g.nodes.map((n, i) => v.oy + (n.y + Math.cos(time * 0.0006 + i * 2.3) * amp) * v.s);
+      const dim = (i: number) => {
+        const n = g.nodes[i];
+        if (focus >= 0) return i === focus || near?.has(i) ? 1 : 0.12;
+        if (st.group) return n.group === st.group ? 1 : 0.12;
+        return 1;
+      };
+      for (const link of g.links) {
+        const on = focus >= 0 && (link.a === focus || link.b === focus);
+        const alpha = on ? 0.8 : Math.min(dim(link.a), dim(link.b)) * 0.2;
+        ctx.strokeStyle = `rgba(13,13,13,${alpha})`;
+        ctx.lineWidth = on ? 1.3 : 0.8;
         ctx.beginPath();
-        ctx.arc(sx(n.x), sy(n.y), r + 5, 0, Math.PI * 2);
-        ctx.fill();
-        ctx.globalAlpha = a;
-      }
-      ctx.fillStyle = GROUPS[n.group].color;
-      ctx.beginPath();
-      ctx.arc(sx(n.x), sy(n.y), r, 0, Math.PI * 2);
-      ctx.fill();
-      if (i === st.selected) {
-        ctx.strokeStyle = "#ffffff";
-        ctx.lineWidth = 2;
-        ctx.beginPath();
-        ctx.arc(sx(n.x), sy(n.y), r + 4, 0, Math.PI * 2);
+        ctx.moveTo(X[link.a], Y[link.a]);
+        ctx.lineTo(X[link.b], Y[link.b]);
         ctx.stroke();
       }
-    });
-    ctx.globalAlpha = 1;
-    const fontSize = v.w < 520 ? 10.5 : 12.5;
-    ctx.font = `600 ${fontSize}px system-ui, -apple-system, "Segoe UI", sans-serif`;
-    ctx.textAlign = "center";
-    ctx.lineJoin = "round";
-    g.nodes.forEach((n, i) => {
-      const label = n.label?.[st.langKey];
-      const showSat = i === focus;
-      const major = v.w >= 520 || n.r >= 5.5;
-      if (!(n.hub && label && major) && !showSat) return;
-      const a = dim(i);
-      if (a < 0.5) return;
-      const text = label ?? KINDS[n.kind].name[st.langKey];
-      const x = sx(n.x);
-      const y = sy(n.y) + n.r * v.k * 1.15 + fontSize + 3;
-      ctx.lineWidth = 4;
-      ctx.strokeStyle = "rgba(9,9,11,0.92)";
-      ctx.strokeText(text, x, y);
-      ctx.fillStyle = "#f4f4f5";
-      ctx.fillText(text, x, y);
-    });
-  }, [neighbors]);
+      g.nodes.forEach((n, i) => {
+        ctx.globalAlpha = dim(i);
+        ctx.fillStyle = GROUPS[n.group].color;
+        if (n.hub) {
+          const side = n.r * v.k * 1.55;
+          ctx.fillRect(X[i] - side / 2, Y[i] - side / 2, side, side);
+          if (i === st.selected) {
+            ctx.strokeStyle = "#0d0d0d";
+            ctx.lineWidth = 1.5;
+            ctx.strokeRect(X[i] - side / 2 - 4, Y[i] - side / 2 - 4, side + 8, side + 8);
+          }
+        } else {
+          const r = n.r * v.k * 0.85;
+          ctx.beginPath();
+          ctx.arc(X[i], Y[i], r, 0, Math.PI * 2);
+          ctx.fill();
+          if (i === st.selected) {
+            ctx.strokeStyle = "#0d0d0d";
+            ctx.lineWidth = 1.5;
+            ctx.beginPath();
+            ctx.arc(X[i], Y[i], r + 4, 0, Math.PI * 2);
+            ctx.stroke();
+          }
+        }
+      });
+      ctx.globalAlpha = 1;
+      const fontSize = v.w < 520 ? 9.5 : 10.5;
+      ctx.font = `600 ${fontSize}px ui-monospace, SFMono-Regular, Menlo, Consolas, monospace`;
+      ctx.textAlign = "center";
+      ctx.lineJoin = "round";
+      (ctx as CanvasRenderingContext2D & { letterSpacing?: string }).letterSpacing = "0.6px";
+      g.nodes.forEach((n, i) => {
+        const label = n.label?.[st.langKey];
+        const major = v.w >= 520 || n.r >= 5.5;
+        if (!(n.hub && label && major) && i !== focus) return;
+        if (dim(i) < 0.5) return;
+        const text = (label ?? KINDS[n.kind].name[st.langKey]).toUpperCase();
+        const off = n.hub ? n.r * v.k * 0.78 : n.r * v.k * 0.85;
+        const y = Y[i] + off + fontSize + 4;
+        ctx.lineWidth = 4;
+        ctx.strokeStyle = "rgba(255,255,255,0.95)";
+        ctx.strokeText(text, X[i], y);
+        ctx.fillStyle = "#0d0d0d";
+        ctx.fillText(text, X[i], y);
+      });
+    },
+    [neighbors],
+  );
 
   const frame = useCallback(() => {
     const st = stateRef.current;
     st.raf = 0;
     const g = graphRef.current;
     if (!g) return;
-    if (st.alpha > 0.008 && !st.reduced && st.visible) {
+    const live = !st.reduced && st.visible;
+    if (live && st.alpha > 0.008) {
       tick(g, st.alpha);
       st.alpha *= 0.97;
     }
-    draw();
-    if (st.alpha > 0.008 && !st.reduced && st.visible) {
-      st.raf = requestAnimationFrame(frame);
-    }
+    draw(performance.now());
+    if (live) st.raf = requestAnimationFrame(frame);
   }, [draw]);
 
   function schedule() {
@@ -413,8 +419,8 @@ export default function BrainGraph() {
             >
               <span
                 aria-hidden="true"
-                className="inline-block h-2.5 w-2.5 rounded-full"
-                style={{ background: GROUPS[id].color, boxShadow: "0 0 0 1px rgba(0,0,0,0.35)" }}
+                className="inline-block h-2.5 w-2.5"
+                style={{ background: GROUPS[id].color }}
               />
               {GROUPS[id].name[l]}
             </button>
@@ -423,8 +429,7 @@ export default function BrainGraph() {
       </ul>
       <div
         ref={wrapRef}
-        className="relative overflow-hidden rounded-lg border border-default"
-        style={{ background: "radial-gradient(circle at 50% 50%, #17171b, #09090b 75%)" }}
+        className="relative overflow-hidden border border-default bg-white"
       >
         <canvas
           ref={canvasRef}
@@ -433,7 +438,7 @@ export default function BrainGraph() {
           className="block w-full"
           style={{ height: 420, touchAction: "pan-y" }}
         />
-        <p className="pointer-events-none absolute bottom-2 left-3 right-3 text-[11px] text-zinc-400">
+        <p className="border-t border-default px-3 py-2 font-mono text-[10px] uppercase tracking-wider text-muted">
           {c.hint}
         </p>
       </div>
@@ -446,8 +451,8 @@ export default function BrainGraph() {
             <div className="flex flex-wrap items-center gap-2">
               <span
                 aria-hidden="true"
-                className="inline-block h-2.5 w-2.5 rounded-full"
-                style={{ background: GROUPS[node.group].color, boxShadow: "0 0 0 1px rgba(0,0,0,0.35)" }}
+                className="inline-block h-2.5 w-2.5"
+                style={{ background: GROUPS[node.group].color }}
               />
               <h3 className="font-semibold">{KINDS[node.kind].name[l]}</h3>
               <span className="font-mono text-[11px] text-muted">

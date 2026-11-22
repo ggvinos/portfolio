@@ -77,7 +77,7 @@ test("language switch preserves facts, sets document language and translates act
 });
 
 test("case studies and CV are available", async ({ page, request }) => {
-  for (const slug of ["qa-dashboard", "flow-cli", "acorde"]) {
+  for (const slug of ["qa-dashboard", "claude-skills", "second-brain", "acorde"]) {
     const response = await page.goto(`/projetos/${slug}`);
     expect(response?.status()).toBe(200);
     await expect(page.getByRole("heading", { level: 1 })).toBeVisible();

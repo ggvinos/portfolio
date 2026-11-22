@@ -50,7 +50,7 @@ export const translations = {
         {
           label: "Builder",
           value: "2 tools + 1 product live",
-          note: "I built an internal quality dashboard and a chatbot-flow CLI. In Acorde, I own the complete cycle: development, testing and operation.",
+          note: "I built an internal quality dashboard, open-source Claude Code skills and a knowledge system in Obsidian. In Acorde, I own the complete cycle: development, testing and operation.",
         },
         {
           label: "User-first",
@@ -89,6 +89,24 @@ export const translations = {
         featured: true,
       },
       {
+        id: "second-brain",
+        title: "Second Brain",
+        description:
+          "My knowledge system in Obsidian: a Markdown vault holding work, study, career and personal life, versioned in Git and designed to be read by both me and AI agents. It keeps the project history that no single tool remembers.",
+        detail: [
+          "Two cores (work and personal) with a career folder as the bridge between them",
+          "Maps of content with static links, so an agent reading the raw file sees the full list",
+          "Project changelog and handoff as the only context bridge between separate AI accounts",
+          "Hook that logs every AI session as a note, with detected tags and links",
+        ],
+        snapshot: null,
+        metrics: ["3,000+ notes", "1,500+ AI sessions logged", "Git sync"],
+        tags: ["Obsidian", "Markdown", "Dataview", "Git", "Claude Code", "Hooks"],
+        label: "PERSONAL SYSTEM",
+        link: "/projetos/second-brain",
+        featured: false,
+      },
+      {
         id: "qa-dashboard",
         title: "QualityDash",
         description:
@@ -107,28 +125,6 @@ export const translations = {
         featured: false,
       },
       {
-        id: "flow-cli",
-        title: "Flow CLI Generator",
-        description:
-          "Built an internal CLI that turns natural-language descriptions into chatbot-flow JSON. It supports conditional branches and API calls, and validates the schema before saving the output.",
-        detail: [
-          "Generates node identifiers for import into the internal platform",
-          "Supports conditional branches, API calls and multi-turn dialogues",
-          "Validates the output schema before saving",
-          "The generated JSON can be used independently of the generation API",
-        ],
-        snapshot: null,
-        metrics: [
-          "Natural language → JSON",
-          "Schema validation",
-          "Internal tool",
-        ],
-        tags: ["Python", "Claude API", "CLI", "JSON Schema"],
-        label: "INTERNAL TOOL",
-        link: "/projetos/flow-cli",
-        featured: false,
-      },
-      {
         id: "claude-skills",
         title: "Claude Skills",
         description:
@@ -144,24 +140,6 @@ export const translations = {
         tags: ["Claude Code", "Skills", "Markdown", "Prompt design", "QA"],
         label: "OPEN SOURCE",
         link: "/projetos/claude-skills",
-        featured: false,
-      },
-      {
-        id: "second-brain",
-        title: "Second Brain",
-        description:
-          "My knowledge system in Obsidian: a Markdown vault holding work, study, career and personal life, versioned in Git and designed to be read by both me and AI agents. It keeps the project history that no single tool remembers.",
-        detail: [
-          "Two cores (work and personal) with a career folder as the bridge between them",
-          "Maps of content with static links, so an agent reading the raw file sees the full list",
-          "Project changelog and handoff as the only context bridge between separate AI accounts",
-          "Hook that logs every AI session as a note, with detected tags and links",
-        ],
-        snapshot: null,
-        metrics: ["3,000+ notes", "1,500+ AI sessions logged", "Git sync"],
-        tags: ["Obsidian", "Markdown", "Dataview", "Git", "Claude Code", "Hooks"],
-        label: "PERSONAL SYSTEM",
-        link: "/projetos/second-brain",
         featured: false,
       },
       {
@@ -613,7 +591,7 @@ export const translations = {
         {
           label: "Builder",
           value: "2 ferramentas + 1 produto no ar",
-          note: "Construí um dashboard interno de qualidade e uma CLI de fluxos de chatbot. No Acorde, cuido do ciclo completo: desenvolvimento, testes e operação.",
+          note: "Construí um dashboard interno de qualidade, skills de código aberto para o Claude Code e um sistema de conhecimento no Obsidian. No Acorde, cuido do ciclo completo: desenvolvimento, testes e operação.",
         },
         {
           label: "User-first",
@@ -652,6 +630,24 @@ export const translations = {
         featured: true,
       },
       {
+        id: "second-brain",
+        title: "Segundo Cérebro",
+        description:
+          "Meu sistema de conhecimento no Obsidian: um vault em Markdown que guarda trabalho, estudo, carreira e vida pessoal, versionado no Git e pensado para ser lido por mim e por agentes de IA. Guarda o histórico dos projetos que nenhuma ferramenta sozinha lembra.",
+        detail: [
+          "Dois núcleos (trabalho e pessoal) com a pasta de carreira como ponte entre eles",
+          "Mapas de conteúdo com links estáticos, para que um agente lendo o arquivo bruto veja a lista completa",
+          "Changelog e handoff de cada projeto como única ponte de contexto entre contas de IA separadas",
+          "Hook que registra cada sessão de IA como nota, com tags e links detectados",
+        ],
+        snapshot: null,
+        metrics: ["3.000+ notas", "1.500+ sessões de IA registradas", "Sync com Git"],
+        tags: ["Obsidian", "Markdown", "Dataview", "Git", "Claude Code", "Hooks"],
+        label: "SISTEMA PESSOAL",
+        link: "/projetos/second-brain",
+        featured: false,
+      },
+      {
         id: "qa-dashboard",
         title: "QualityDash",
         description:
@@ -674,28 +670,6 @@ export const translations = {
         featured: false,
       },
       {
-        id: "flow-cli",
-        title: "Flow CLI Generator",
-        description:
-          "Construí uma CLI interna que transforma descrições em linguagem natural em JSON de fluxos de chatbot. Suporta condições e chamadas de API, validando o schema antes de salvar a saída.",
-        detail: [
-          "Gera identificadores de nós para importação na plataforma interna",
-          "Suporta condições, chamadas de API e diálogos com múltiplas etapas",
-          "Valida o schema da saída antes de salvar",
-          "O JSON gerado pode ser usado sem depender da API de geração",
-        ],
-        snapshot: null,
-        metrics: [
-          "Linguagem natural → JSON",
-          "Validação de schema",
-          "Ferramenta interna",
-        ],
-        tags: ["Python", "Claude API", "CLI", "JSON Schema"],
-        label: "FERRAMENTA INTERNA",
-        link: "/projetos/flow-cli",
-        featured: false,
-      },
-      {
         id: "claude-skills",
         title: "Claude Skills",
         description:
@@ -711,24 +685,6 @@ export const translations = {
         tags: ["Claude Code", "Skills", "Markdown", "Prompt design", "QA"],
         label: "CÓDIGO ABERTO",
         link: "/projetos/claude-skills",
-        featured: false,
-      },
-      {
-        id: "second-brain",
-        title: "Segundo Cérebro",
-        description:
-          "Meu sistema de conhecimento no Obsidian: um vault em Markdown que guarda trabalho, estudo, carreira e vida pessoal, versionado no Git e pensado para ser lido por mim e por agentes de IA. Guarda o histórico dos projetos que nenhuma ferramenta sozinha lembra.",
-        detail: [
-          "Dois núcleos (trabalho e pessoal) com a pasta de carreira como ponte entre eles",
-          "Mapas de conteúdo com links estáticos, para que um agente lendo o arquivo bruto veja a lista completa",
-          "Changelog e handoff de cada projeto como única ponte de contexto entre contas de IA separadas",
-          "Hook que registra cada sessão de IA como nota, com tags e links detectados",
-        ],
-        snapshot: null,
-        metrics: ["3.000+ notas", "1.500+ sessões de IA registradas", "Sync com Git"],
-        tags: ["Obsidian", "Markdown", "Dataview", "Git", "Claude Code", "Hooks"],
-        label: "SISTEMA PESSOAL",
-        link: "/projetos/second-brain",
         featured: false,
       },
       {

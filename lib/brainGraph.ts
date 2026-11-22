@@ -14,7 +14,7 @@ type Text = { pt: string; en: string };
 
 export const GROUPS: Record<GroupId, { color: string; name: Text; desc: Text }> = {
   system: {
-    color: "#f4f4f5",
+    color: "#0d0d0d",
     name: { pt: "Núcleo", en: "Core" },
     desc: {
       pt: "A Home, a Inbox e o changelog do vault. É por aqui que qualquer sessão começa a se orientar.",
@@ -22,7 +22,7 @@ export const GROUPS: Record<GroupId, { color: string; name: Text; desc: Text }> 
     },
   },
   work: {
-    color: "#8b9cff",
+    color: "#2f5d8a",
     name: { pt: "Trabalho", en: "Work" },
     desc: {
       pt: "Projetos, cards validados, referências e processos do trabalho. Tem um mapa de conteúdo com a lista completa.",
@@ -30,7 +30,7 @@ export const GROUPS: Record<GroupId, { color: string; name: Text; desc: Text }> 
     },
   },
   personal: {
-    color: "#7fd1a8",
+    color: "#3f7d6a",
     name: { pt: "Pessoal", en: "Personal" },
     desc: {
       pt: "Projetos próprios, identidade, rotina e finanças. Fica separado do trabalho de propósito.",
@@ -38,7 +38,7 @@ export const GROUPS: Record<GroupId, { color: string; name: Text; desc: Text }> 
     },
   },
   career: {
-    color: "#f0b86e",
+    color: "#b0702a",
     name: { pt: "Carreira", en: "Career" },
     desc: {
       pt: "A ponte entre os dois núcleos: estratégia, inglês, portfólio e estudos. Liga o que faço ao que quero fazer.",
@@ -46,7 +46,7 @@ export const GROUPS: Record<GroupId, { color: string; name: Text; desc: Text }> 
     },
   },
   reflect: {
-    color: "#d98cc2",
+    color: "#8a5a7a",
     name: { pt: "Reflexões", en: "Reflections" },
     desc: {
       pt: "Pensamentos, logs e leituras que ainda não viraram projeto.",
@@ -54,7 +54,7 @@ export const GROUPS: Record<GroupId, { color: string; name: Text; desc: Text }> 
     },
   },
   ai: {
-    color: "#7dc4e8",
+    color: "#2a8c9a",
     name: { pt: "Sessões de IA", en: "AI sessions" },
     desc: {
       pt: "Cada conversa com IA vira uma nota, salva por um hook. É fonte secundária: dá contexto, mas o registro oficial mora nas notas temáticas.",
@@ -62,7 +62,7 @@ export const GROUPS: Record<GroupId, { color: string; name: Text; desc: Text }> 
     },
   },
   daily: {
-    color: "#a1a1aa",
+    color: "#8a8a8f",
     name: { pt: "Diário", en: "Daily" },
     desc: {
       pt: "Uma nota por dia, com o que foi feito e o que lembrar na daily. Linka para os cards do dia.",
