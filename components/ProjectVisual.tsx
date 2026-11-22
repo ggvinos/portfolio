@@ -32,9 +32,34 @@ export default function ProjectVisual({
         </figcaption>
       </figure>
     );
+  if (id === "claude-skills")
+    return (
+      <figure className="mb-6 rounded-lg border border-default bg-surface p-4">
+        <figcaption className="font-mono text-[10px] uppercase tracking-wider text-muted">
+          {english ? "Skills in the repository" : "Skills no repositório"}
+        </figcaption>
+        <ul className="mt-4 grid grid-cols-2 gap-2">
+          {[
+            "ticket-validation",
+            "work-digest",
+            "session-sorter",
+            "focus-blocks",
+            "ai-council",
+            "qa-copilot",
+          ].map((name) => (
+            <li
+              key={name}
+              className="border border-default bg-page px-2 py-2 text-center font-mono text-[11px]"
+            >
+              {name}
+            </li>
+          ))}
+        </ul>
+      </figure>
+    );
   const steps =
     id === "qa-dashboard"
-      ? ["Issue tracker", "Pandas", "Streamlit"]
+      ? ["Jira API", "FastAPI", "React"]
       : id === "flow-cli"
         ? [english ? "Description" : "Descrição", "Schema", "JSON"]
         : ["UI", "Cypress", "API"];

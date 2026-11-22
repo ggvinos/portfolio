@@ -122,7 +122,7 @@ test("reduced motion and no JavaScript keep project content readable", async ({
     const page = await context.newPage();
     await page.goto("http://127.0.0.1:3108/");
     await expect(
-      page.getByRole("heading", { name: "QA Metrics Dashboard", exact: true }),
+      page.getByRole("heading", { name: "QualityDash", exact: true }),
     ).toBeVisible();
     await expect(
       page.getByRole("link", { name: "Ver código no GitHub" }),

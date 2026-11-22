@@ -8,7 +8,7 @@ export default function InternalProjectCase({ id }: { id: string }) {
   if (!project) return null;
   const dashboard = id === "qa-dashboard";
   const steps = dashboard
-    ? ["Issue tracker", "REST API", "Pandas", "Streamlit"]
+    ? ["Jira API", "FastAPI", "React", "Cloud Run"]
     : [
         lang === "pt" ? "Descrição" : "Description",
         "Claude API",
@@ -34,8 +34,8 @@ export default function InternalProjectCase({ id }: { id: string }) {
           : "Built for internal company use. This summary describes my contribution without publishing company screenshots, code or data."}
       </div>
       {dashboard && <section aria-label={lang === "pt" ? "Redesign demonstrativo" : "Illustrative redesign"}>
-        <PortfolioImage src="/images/portfolio/dashboard-overview.svg" alt={lang === "pt" ? "Visão geral de entregas por produto com dados fictícios" : "Delivery overview by product with fictional data"} caption={lang === "pt" ? "Proposta visual para o portfólio: visão de produto até produção. Todos os valores e produtos são fictícios; esta não é uma captura do sistema em produção." : "Portfolio visual concept: product through production. All values and products are fictional; this is not a production screenshot."} />
-        <PortfolioImage src="/images/portfolio/dashboard-qa.svg" alt={lang === "pt" ? "Funil demonstrativo de validação QA" : "Illustrative QA validation funnel"} caption={lang === "pt" ? "Detalhe de QA: etapas de validação, bloqueios e investigação de retrabalho. Dados fictícios." : "QA detail: validation stages, blockers and rework investigation. Fictional data."} />
+        <PortfolioImage src="/images/portfolio/dashboard-overview.svg" alt={lang === "pt" ? "Visão geral da sprint com índice de saúde e estado do fluxo, com dados fictícios" : "Sprint overview with health score and workflow state, with fictional data"} caption={lang === "pt" ? "Recriação visual da visão geral da sprint. Todos os valores são fictícios; esta não é uma captura do sistema em produção." : "Visual recreation of the sprint overview. All values are fictional; this is not a production screenshot."} />
+        <PortfolioImage src="/images/portfolio/dashboard-qa.svg" alt={lang === "pt" ? "Aba de QA com indicadores, fila de validação e carga por QA, com dados fictícios" : "QA tab with indicators, validation queue and workload by QA, with fictional data"} caption={lang === "pt" ? "Detalhe da aba de QA: indicadores do período, fila de validação, janela de validação e carga por QA. Dados fictícios." : "QA tab detail: period indicators, validation queue, validation window and workload by QA. Fictional data."} />
       </section>}
       <h2 className="mt-12 text-2xl font-semibold">
         {lang === "pt" ? "Fluxo técnico" : "Technical flow"}

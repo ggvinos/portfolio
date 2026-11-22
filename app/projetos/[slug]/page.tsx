@@ -3,10 +3,12 @@ import { notFound } from "next/navigation";
 import CaseNav from "@/components/CaseNav";
 import Footer from "@/components/Footer";
 import InternalProjectCase from "@/components/InternalProjectCase";
+import SkillsCase from "@/components/SkillsCase";
 
 const titles = {
-  "qa-dashboard": "QA Metrics Dashboard",
+  "qa-dashboard": "QualityDash",
   "flow-cli": "Flow CLI Generator",
+  "claude-skills": "Claude Skills",
 } as const;
 export const dynamicParams = false;
 export function generateStaticParams() {
@@ -21,7 +23,9 @@ export async function generateMetadata({
   return {
     title: `${titles[slug as keyof typeof titles] || "Projeto"} | Vinicios Ferreira`,
     description:
-      "Resumo técnico de ferramenta interna: contexto, contribuição e tecnologias.",
+      slug === "claude-skills"
+        ? "Skills genéricas para Claude Code que organizam o trabalho de QA, com explicação de cada uma e link para o GitHub."
+        : "Resumo técnico de ferramenta interna: contexto, contribuição e tecnologias.",
   };
 }
 export default async function ProjectPage({
@@ -34,7 +38,11 @@ export default async function ProjectPage({
   return (
     <>
       <CaseNav />
-      <InternalProjectCase id={slug} />
+      {slug === "claude-skills" ? (
+        <SkillsCase />
+      ) : (
+        <InternalProjectCase id={slug} />
+      )}
       <Footer />
     </>
   );

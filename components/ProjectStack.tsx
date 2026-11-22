@@ -88,9 +88,13 @@ export default function ProjectStack({
                     href={project.link}
                     className="inline-block min-h-11 py-3 text-sm font-semibold underline underline-offset-4"
                   >
-                    {lang === "pt"
-                      ? "Ver resumo técnico"
-                      : "Read technical summary"}{" "}
+                    {project.id === "claude-skills"
+                      ? lang === "pt"
+                        ? "Ver as skills"
+                        : "See the skills"
+                      : lang === "pt"
+                        ? "Ver resumo técnico"
+                        : "Read technical summary"}{" "}
                     →
                   </Link>
                 ) : (
