@@ -92,6 +92,10 @@ export default function ProjectStack({
                       ? lang === "pt"
                         ? "Ver as skills"
                         : "See the skills"
+                      : project.id === "second-brain"
+                        ? lang === "pt"
+                          ? "Ver a estrutura"
+                          : "See the structure"
                       : lang === "pt"
                         ? "Ver resumo técnico"
                         : "Read technical summary"}{" "}

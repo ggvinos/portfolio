@@ -4,11 +4,13 @@ import CaseNav from "@/components/CaseNav";
 import Footer from "@/components/Footer";
 import InternalProjectCase from "@/components/InternalProjectCase";
 import SkillsCase from "@/components/SkillsCase";
+import ObsidianCase from "@/components/ObsidianCase";
 
 const titles = {
   "qa-dashboard": "QualityDash",
   "flow-cli": "Flow CLI Generator",
   "claude-skills": "Claude Skills",
+  "second-brain": "Segundo Cérebro",
 } as const;
 export const dynamicParams = false;
 export function generateStaticParams() {
@@ -25,7 +27,9 @@ export async function generateMetadata({
     description:
       slug === "claude-skills"
         ? "Skills genéricas para Claude Code que organizam o trabalho de QA, com explicação de cada uma e link para o GitHub."
-        : "Resumo técnico de ferramenta interna: contexto, contribuição e tecnologias.",
+        : slug === "second-brain"
+          ? "Sistema de conhecimento em Obsidian: estrutura, decisões e como serve de memória para agentes de IA."
+          : "Resumo técnico de ferramenta interna: contexto, contribuição e tecnologias.",
   };
 }
 export default async function ProjectPage({
@@ -40,6 +44,8 @@ export default async function ProjectPage({
       <CaseNav />
       {slug === "claude-skills" ? (
         <SkillsCase />
+      ) : slug === "second-brain" ? (
+        <ObsidianCase />
       ) : (
         <InternalProjectCase id={slug} />
       )}

@@ -147,6 +147,24 @@ export const translations = {
         featured: false,
       },
       {
+        id: "second-brain",
+        title: "Second Brain",
+        description:
+          "My knowledge system in Obsidian: a Markdown vault holding work, study, career and personal life, versioned in Git and designed to be read by both me and AI agents. It keeps the project history that no single tool remembers.",
+        detail: [
+          "Two cores (work and personal) with a career folder as the bridge between them",
+          "Maps of content with static links, so an agent reading the raw file sees the full list",
+          "Project changelog and handoff as the only context bridge between separate AI accounts",
+          "Hook that logs every AI session as a note, with detected tags and links",
+        ],
+        snapshot: null,
+        metrics: ["3,000+ notes", "1,500+ AI sessions logged", "Git sync"],
+        tags: ["Obsidian", "Markdown", "Dataview", "Git", "Claude Code", "Hooks"],
+        label: "PERSONAL SYSTEM",
+        link: "/projetos/second-brain",
+        featured: false,
+      },
+      {
         id: "cypress-e2e",
         title: "Cypress E2E Automation",
         description:
@@ -693,6 +711,24 @@ export const translations = {
         tags: ["Claude Code", "Skills", "Markdown", "Prompt design", "QA"],
         label: "CÓDIGO ABERTO",
         link: "/projetos/claude-skills",
+        featured: false,
+      },
+      {
+        id: "second-brain",
+        title: "Segundo Cérebro",
+        description:
+          "Meu sistema de conhecimento no Obsidian: um vault em Markdown que guarda trabalho, estudo, carreira e vida pessoal, versionado no Git e pensado para ser lido por mim e por agentes de IA. Guarda o histórico dos projetos que nenhuma ferramenta sozinha lembra.",
+        detail: [
+          "Dois núcleos (trabalho e pessoal) com a pasta de carreira como ponte entre eles",
+          "Mapas de conteúdo com links estáticos, para que um agente lendo o arquivo bruto veja a lista completa",
+          "Changelog e handoff de cada projeto como única ponte de contexto entre contas de IA separadas",
+          "Hook que registra cada sessão de IA como nota, com tags e links detectados",
+        ],
+        snapshot: null,
+        metrics: ["3.000+ notas", "1.500+ sessões de IA registradas", "Sync com Git"],
+        tags: ["Obsidian", "Markdown", "Dataview", "Git", "Claude Code", "Hooks"],
+        label: "SISTEMA PESSOAL",
+        link: "/projetos/second-brain",
         featured: false,
       },
       {
