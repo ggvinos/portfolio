@@ -134,13 +134,13 @@ export const translations = {
         description:
           "A set of skills I built for Claude Code to organize my QA work: card validation, task management, session organization and an answer style in short blocks for ADHD. All generic, open on GitHub and reusable outside my own workplace.",
         detail: [
-          "Card validation in four modes (start, resume, finish, test list) with evidence and severity-ranked bugs",
-          "Weekly highlights and pending work drawn from the same notes",
+          "The card cycle as slash commands (/validar, /retornou, /finalizar-card), with evidence and severity-ranked bugs",
+          "Weekly top cards drawn from the same notes",
           "Read-only tracker by rule: the skill drafts text, the QA pastes it",
           "Each skill explained in the project page, with a link to its folder on GitHub",
         ],
         snapshot: null,
-        metrics: ["6 skills", "Open source", "Reusable"],
+        metrics: ["9 skills", "Open source", "Reusable"],
         tags: ["Claude Code", "Skills", "Markdown", "Prompt design", "QA"],
         label: "OPEN SOURCE",
         link: "/projetos/claude-skills",
@@ -683,13 +683,13 @@ export const translations = {
         description:
           "Conjunto de skills que criei para o Claude Code para organizar meu trabalho de QA: validação de cards, gestão de tarefas, organização de sessões e um estilo de resposta em blocos curtos para TDAH. Todas genéricas, abertas no GitHub e reutilizáveis fora do meu contexto de trabalho.",
         detail: [
-          "Validação de card em quatro modos (iniciar, retomar, finalizar, lista de testes), com evidências e bugs por severidade",
-          "Destaques da semana e pendências extraídos das mesmas notas",
+          "O ciclo do card em comandos de barra (/validar, /retornou, /finalizar-card), com evidências e bugs por severidade",
+          "Top cards da semana extraídos das mesmas notas",
           "Rastreador somente leitura por regra: a skill gera o texto e o QA cola",
           "Cada skill explicada na página do projeto, com link para a pasta no GitHub",
         ],
         snapshot: null,
-        metrics: ["6 skills", "Código aberto", "Reutilizáveis"],
+        metrics: ["9 skills", "Código aberto", "Reutilizáveis"],
         tags: ["Claude Code", "Skills", "Markdown", "Prompt design", "QA"],
         label: "CÓDIGO ABERTO",
         link: "/projetos/claude-skills",

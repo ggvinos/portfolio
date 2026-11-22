@@ -40,9 +40,11 @@ export default function ProjectVisual({
         </figcaption>
         <ul className="mt-4 grid grid-cols-2 gap-2">
           {[
-            "ticket-validation",
-            "work-digest",
-            "session-sorter",
+            "validar",
+            "retornou",
+            "finalizar-card",
+            "top-cards-semana",
+            "organizar-sessoes",
             "focus-blocks",
             "ai-council",
             "qa-copilot",
