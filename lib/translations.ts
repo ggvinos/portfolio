@@ -537,7 +537,7 @@ export const translations = {
       { title: "Introduction to Software Testing & QA", issuer: "Alura" },
     ],
     contact: {
-      headline: "Open to connecting, collaborating or just talking about QA.",
+      headline: "Open to connecting, collaborating or just talking about software quality.",
       cv_label: "Download CV",
       email_label: "Send Email",
     },
@@ -1084,7 +1084,7 @@ export const translations = {
     ],
     contact: {
       headline:
-        "Aberto a conexões, colaborações ou só uma boa conversa sobre QA.",
+        "Aberto a conexões, colaborações ou só uma boa conversa sobre qualidade de software.",
       cv_label: "Baixar CV",
       email_label: "Enviar Email",
     },
